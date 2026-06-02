@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 
 function Admin() {
+  const API_URL = "https://global-gs-backend.onrender.com";
+
   const emptyForm = {
     name: "",
     description: "",
@@ -30,27 +32,35 @@ function Admin() {
   const [message, setMessage] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [uploading, setUploading] = useState(false);
+
   const totalProducts = products.length;
 
-const availableProducts = products.filter(
-  (product) => (product.stock ?? 0) > 3
-).length;
+  const availableProducts = products.filter(
+    (product) => (product.stock ?? 0) > 3
+  ).length;
 
-const lowStockProducts = products.filter(
-  (product) => (product.stock ?? 0) > 0 && (product.stock ?? 0) <= 3
-).length;
+  const lowStockProducts = products.filter(
+    (product) => (product.stock ?? 0) > 0 && (product.stock ?? 0) <= 3
+  ).length;
 
-const outOfStockProducts = products.filter(
-  (product) => (product.stock ?? 0) <= 0
-).length;
+  const outOfStockProducts = products.filter(
+    (product) => (product.stock ?? 0) <= 0
+  ).length;
 
   const loadProducts = async () => {
     try {
-      const response = await fetch("https://global-gs-backend.onrender.com");
+      const response = await fetch(`${API_URL}/api/products`);
       const data = await response.json();
-      setProducts(data);
+
+      if (Array.isArray(data)) {
+        setProducts(data);
+      } else {
+        console.error("Respuesta inesperada de productos:", data);
+        setProducts([]);
+      }
     } catch (error) {
       console.error(error);
+      setProducts([]);
       setMessage("Error cargando productos");
     }
   };
@@ -87,7 +97,7 @@ const outOfStockProducts = products.filter(
       setUploading(true);
       setMessage("Subiendo imagen...");
 
-      const response = await fetch("https://global-gs-backend.onrender.com", {
+      const response = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
         body: imageData,
       });
@@ -135,8 +145,8 @@ const outOfStockProducts = products.filter(
 
     try {
       const url = editingId
-        ? `https://global-gs-backend.onrender.com/api/products/${editingId}`
-        : "https://global-gs-backend.onrender.com/api/products";
+        ? `${API_URL}/api/products/${editingId}`
+        : `${API_URL}/api/products`;
 
       const method = editingId ? "PUT" : "POST";
 
@@ -194,7 +204,7 @@ const outOfStockProducts = products.filter(
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch("https://global-gs-backend.onrender.com", {
+      const response = await fetch(`${API_URL}/api/products/${id}`, {
         method: "DELETE",
       });
 
@@ -236,27 +246,28 @@ const outOfStockProducts = products.filter(
             Cerrar sesión
           </button>
         </div>
+
         <div className="dashboard-stats">
-  <div className="stat-card">
-    <h3>📦 Productos</h3>
-    <strong>{totalProducts}</strong>
-  </div>
+          <div className="stat-card">
+            <h3>📦 Productos</h3>
+            <strong>{totalProducts}</strong>
+          </div>
 
-  <div className="stat-card">
-    <h3>🟢 Disponibles</h3>
-    <strong>{availableProducts}</strong>
-  </div>
+          <div className="stat-card">
+            <h3>🟢 Disponibles</h3>
+            <strong>{availableProducts}</strong>
+          </div>
 
-  <div className="stat-card">
-    <h3>🟡 Pocas unidades</h3>
-    <strong>{lowStockProducts}</strong>
-  </div>
+          <div className="stat-card">
+            <h3>🟡 Pocas unidades</h3>
+            <strong>{lowStockProducts}</strong>
+          </div>
 
-  <div className="stat-card">
-    <h3>🔴 Agotados</h3>
-    <strong>{outOfStockProducts}</strong>
-  </div>
-</div>
+          <div className="stat-card">
+            <h3>🔴 Agotados</h3>
+            <strong>{outOfStockProducts}</strong>
+          </div>
+        </div>
 
         <form className="admin-form" onSubmit={handleSubmit}>
           <label>
