@@ -45,10 +45,13 @@ router.post("/login", async (req, res) => {
         role: user.role,
       },
     });
-  } catch (error) {
+    } catch (error) {
+    console.error("Error real en login:", error);
+
     res.status(500).json({
       success: false,
       message: "Error en el login",
+      error: error.message,
     });
   }
 });
