@@ -10,7 +10,7 @@ function Products() {
   const [category, setCategory] = useState("Todos");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/products")
+    fetch("https://global-gs-backend.onrender.com")
       .then((response) => response.json())
       .then((data) => {
         setProducts(data);

@@ -46,7 +46,7 @@ const outOfStockProducts = products.filter(
 
   const loadProducts = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/products");
+      const response = await fetch("https://global-gs-backend.onrender.com");
       const data = await response.json();
       setProducts(data);
     } catch (error) {
@@ -87,7 +87,7 @@ const outOfStockProducts = products.filter(
       setUploading(true);
       setMessage("Subiendo imagen...");
 
-      const response = await fetch("http://localhost:5000/api/upload", {
+      const response = await fetch("https://global-gs-backend.onrender.com", {
         method: "POST",
         body: imageData,
       });
@@ -135,8 +135,8 @@ const outOfStockProducts = products.filter(
 
     try {
       const url = editingId
-        ? `http://localhost:5000/api/products/${editingId}`
-        : "http://localhost:5000/api/products";
+        ? `https://global-gs-backend.onrender.com/api/products/${editingId}`
+        : "https://global-gs-backend.onrender.com/api/products";
 
       const method = editingId ? "PUT" : "POST";
 
@@ -194,7 +194,7 @@ const outOfStockProducts = products.filter(
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/products/${id}`, {
+      const response = await fetch("https://global-gs-backend.onrender.com", {
         method: "DELETE",
       });
 

@@ -10,7 +10,7 @@ function ProductDetails() {
   const whatsappNumber = "18292215896";
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/products`)
+    fetch(`https://global-gs-backend.onrender.com/api/products`)
       .then((response) => response.json())
       .then((data) => {
         const foundProduct = data.find(
