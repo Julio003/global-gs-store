@@ -33,15 +33,21 @@ function ProductDetails() {
   };
 
   const handleWhatsApp = () => {
-    const message = `Hola Global-GS, estoy interesado en:
+    const message = `Hola Global-GS, estoy interesado en comprar este producto:
 
-${product.name}
+Producto: ${product.name}
+Precio: RD$${product.price.toLocaleString("es-DO")}
+Categoría: ${product.category}
+Disponibilidad: ${getStockStatus(product.stock ?? 0)}
+Stock: ${product.stock ?? 0} unidades
 
-Precio: RD$${product.price.toLocaleString("es-DO")}`;
+Por favor, envíenme disponibilidad, forma de pago y método de entrega.
 
-    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-      message
-    )}`;
+Mi nombre:
+Mi teléfono:
+Mi correo:
+
+Visto en Global-GS Store.`;
 
     window.open(url, "_blank");
   };
