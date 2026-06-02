@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function Products() {
+  const API_URL = "https://global-gs-backend.onrender.com";
   const whatsappNumber = "18292215896";
 
   const [products, setProducts] = useState([]);
@@ -10,42 +11,41 @@ function Products() {
   const [category, setCategory] = useState("Todos");
 
   useEffect(() => {
-    fetch("https://global-gs-backend.onrender.com")
+    fetch(`${API_URL}/api/products`)
       .then((response) => response.json())
       .then((data) => {
-        setProducts(data);
+        setProducts(Array.isArray(data) ? data : []);
         setLoading(false);
       })
       .catch((error) => {
         console.error(error);
+        setProducts([]);
         setLoading(false);
       });
   }, []);
 
   const categories = [
     "Todos",
-    ...new Set(products.map((product) => product.category)),
+    ...new Set(products.map((product) => product.category || "Sin categoría")),
   ];
 
   const getStockStatus = (stock) => {
-    if (stock <= 0) {
-      return { label: "Agotado", className: "stock-out" };
-    }
-
-    if (stock <= 3) {
-      return { label: "Pocas unidades", className: "stock-low" };
-    }
-
+    if (stock <= 0) return { label: "Agotado", className: "stock-out" };
+    if (stock <= 3) return { label: "Pocas unidades", className: "stock-low" };
     return { label: "Disponible", className: "stock-available" };
   };
 
   const filteredProducts = products.filter((product) => {
+    const name = product.name || "";
+    const description = product.description || "";
+    const productCategory = product.category || "Sin categoría";
+
     const matchesSearch =
-      product.name.toLowerCase().includes(search.toLowerCase()) ||
-      product.description.toLowerCase().includes(search.toLowerCase());
+      name.toLowerCase().includes(search.toLowerCase()) ||
+      description.toLowerCase().includes(search.toLowerCase());
 
     const matchesCategory =
-      category === "Todos" || product.category === category;
+      category === "Todos" || productCategory === category;
 
     return matchesSearch && matchesCategory;
   });
@@ -61,8 +61,8 @@ function Products() {
     const message = `Hola Global-GS, estoy interesado en comprar este producto:
 
 Producto: ${product.name}
-Precio: RD$${product.price.toLocaleString("es-DO")}
-Categoría: ${product.category}
+Precio: RD$${Number(product.price || 0).toLocaleString("es-DO")}
+Categoría: ${product.category || "Sin categoría"}
 Disponibilidad: ${stockStatus.label}
 
 Por favor, envíenme disponibilidad, forma de pago y método de entrega.
@@ -103,7 +103,9 @@ Visto en Global-GS Store.`;
           {categories.map((item) => (
             <button
               key={item}
-              className={category === item ? "category-btn active" : "category-btn"}
+              className={
+                category === item ? "category-btn active" : "category-btn"
+              }
               onClick={() => setCategory(item)}
             >
               {item}
@@ -118,10 +120,15 @@ Visto en Global-GS Store.`;
 
           return (
             <article className="product-card" key={product._id}>
-              <img src={product.image} alt={product.name} />
+              <img
+                src={product.image}
+                alt={product.name || "Producto Global-GS"}
+              />
 
               <div className="product-info">
-                <span className="product-category">{product.category}</span>
+                <span className="product-category">
+                  {product.category || "Sin categoría"}
+                </span>
 
                 <span className={`stock-badge ${stockStatus.className}`}>
                   {stockStatus.label}
@@ -137,7 +144,7 @@ Visto en Global-GS Store.`;
                 <p>{product.description}</p>
 
                 <strong className="product-price">
-                  RD${product.price.toLocaleString("es-DO")}
+                  RD${Number(product.price || 0).toLocaleString("es-DO")}
                 </strong>
 
                 {(product.stock ?? 0) > 0 ? (
@@ -159,7 +166,9 @@ Visto en Global-GS Store.`;
       </section>
 
       {filteredProducts.length === 0 && (
-        <p className="empty-message">No encontramos productos con esa búsqueda.</p>
+        <p className="empty-message">
+          No encontramos productos con esa búsqueda.
+        </p>
       )}
     </main>
   );
