@@ -734,3 +734,30 @@ a {
     min-height: 36px;
   }
 }
+/* CORRECCIÓN VISTA PREVIA ADMIN */
+
+.admin-form img,
+.admin-panel img {
+  max-width: 220px;
+  max-height: 160px;
+  object-fit: cover;
+  border-radius: 14px;
+  display: block;
+  margin-top: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+.admin-form input[type="file"] {
+  padding: 10px;
+  background: #ffffff;
+}
+
+.admin-form input[readonly],
+.admin-form input:disabled {
+  background: #f8fafc;
+  color: #374151;
+}
+
+.admin-form textarea {
+  max-height: 180px;
+}
