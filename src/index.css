@@ -604,11 +604,7 @@ a {
   .menu a:hover {
     background: #f97316;
   }
-}
-@media (max-width: 768px) {
-  .product-card img {
-    height: 180px;
-  }
+
 }
 /* CATALOGO COMPACTO TIPO MARKETPLACE */
 
