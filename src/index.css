@@ -761,3 +761,55 @@ a {
 .admin-form textarea {
   max-height: 180px;
 }
+/* CORRECCIÓN ADMIN MÓVIL */
+
+@media (max-width: 768px) {
+  .admin-page {
+    padding: 18px 10px 50px;
+    overflow-x: hidden;
+  }
+
+  .admin-panel {
+    width: 100%;
+    max-width: 100%;
+    padding: 18px;
+    border-radius: 18px;
+    overflow-x: hidden;
+  }
+
+  .admin-form img,
+  .admin-panel img {
+    width: 100%;
+    max-width: 100%;
+    height: 160px;
+    max-height: 160px;
+    object-fit: contain;
+    background: #ffffff;
+  }
+
+  .admin-form input,
+  .admin-form textarea,
+  .admin-form select {
+    max-width: 100%;
+    font-size: 0.95rem;
+  }
+
+  .admin-form textarea {
+    min-height: 120px;
+    max-height: 160px;
+  }
+
+  .admin-actions {
+    flex-direction: column;
+  }
+
+  .admin-product-card {
+    overflow: hidden;
+  }
+
+  .admin-product-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: contain;
+  }
+}
