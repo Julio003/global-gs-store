@@ -231,19 +231,7 @@ a {
   }
 }
 
-@media (max-width: 640px) {
-  .products-hero {
-    padding: 28px;
-  }
 
-  .nav {
-    align-items: flex-start;
-  }
-
-  .menu {
-    width: 100%;
-  }
-}
 .admin-page {
   padding: 30px 18px 70px;
 }
