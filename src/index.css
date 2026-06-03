@@ -231,12 +231,7 @@ a {
   box-shadow: var(--shadow);
 }
 
-/* RESPONSIVE */
-@media (min-width: 768px) {
-  .products-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
+
 
 
 .admin-page {
@@ -528,7 +523,6 @@ a {
 }
 /* HEADER RESPONSIVE GLOBAL-GS */
 
-/* HEADER RESPONSIVE GLOBAL-GS */
 
 .menu-toggle {
   display: none;
