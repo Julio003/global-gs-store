@@ -46,6 +46,11 @@ function Admin() {
   const outOfStockProducts = products.filter(
     (product) => (product.stock ?? 0) <= 0
   ).length;
+  const inventoryValue = products.reduce((total, product) => {
+  const price = Number(product.price) || 0;
+  const stock = Number(product.stock) || 0;
+  return total + price * stock;
+}, 0);
   
   const inventoryValue = products.reduce(
   (total, product) =>
@@ -277,6 +282,12 @@ function Admin() {
             <strong>{outOfStockProducts}</strong>
           </div>
         </div>
+        <div className="stat-card">
+  <h3>💰 Valor inventario</h3>
+  <strong>
+    RD${inventoryValue.toLocaleString("es-DO")}
+  </strong>
+</div>
 
         {restockProducts.length > 0 && (
           <>
