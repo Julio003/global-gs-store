@@ -46,6 +46,15 @@ function Admin() {
   const outOfStockProducts = products.filter(
     (product) => (product.stock ?? 0) <= 0
   ).length;
+  
+  const inventoryValue = products.reduce(
+  (total, product) =>
+    total + (product.price || 0) * (product.stock || 0),
+  0
+);
+  const restockProducts = products.filter(
+  (product) => (product.stock ?? 0) <= 3
+);
 
   const loadProducts = async () => {
     try {
@@ -268,6 +277,33 @@ function Admin() {
             <strong>{outOfStockProducts}</strong>
           </div>
         </div>
+
+        {restockProducts.length > 0 && (
+          <>
+            <h2>⚠ Productos por reabastecer</h2>
+
+            <div className="admin-products">
+              {restockProducts.map((product) => (
+                <div key={product._id} className="admin-product-card">
+                  <img src={product.image} alt={product.name} />
+
+                  <div className="admin-product-info">
+                    <h3>{product.name}</h3>
+
+                    <p>
+                      Stock actual:
+                      <strong> {product.stock ?? 0}</strong>
+                    </p>
+
+                    <span>{product.category}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <hr style={{ margin: "30px 0" }} />
+          </>
+        )}
 
         <form className="admin-form" onSubmit={handleSubmit}>
           <label>
