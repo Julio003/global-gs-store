@@ -9,6 +9,13 @@ function Header() {
     setMenuOpen(false);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    closeMenu();
+    window.location.href = "/";
+  };
+
   return (
     <header className="site-header">
       <div className="nav">
@@ -20,9 +27,9 @@ function Header() {
           type="button"
           className="menu-toggle"
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Abrir menú"
+          aria-label="Abrir menÃº"
         >
-          ☰
+          â˜°
         </button>
 
         <nav className={menuOpen ? "menu open" : "menu"}>
@@ -40,30 +47,25 @@ function Header() {
 
           {!token && (
             <Link to="/login" onClick={closeMenu}>
-              Iniciar sesión
+              Iniciar sesiÃ³n
             </Link>
           )}
 
           {token && (
-  <>
-    <Link
-      to="/admin"
-      className="admin-link"
-      onClick={closeMenu}
-    >
-      Administración
-    </Link>
+            <>
+              <Link to="/admin" className="admin-link" onClick={closeMenu}>
+                AdministraciÃ³n
+              </Link>
 
-    <button
-      className="logout-btn"
-      onClick={() => {
-        localStorage.removeItem("token");
-        window.location.href = "/";
-      }}
-    >
-      Cerrar sesión
-    </button>
-  </>
-)}
+              <button type="button" className="logout-btn" onClick={handleLogout}>
+                Cerrar sesiÃ³n
+              </button>
+            </>
+          )}
+        </nav>
+      </div>
+    </header>
+  );
+}
 
 export default Header;

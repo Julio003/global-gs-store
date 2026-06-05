@@ -16,7 +16,7 @@ function Admin() {
     "Accesorios",
     "Audio",
     "Cables",
-    "Cámaras de seguridad",
+    "CÃ¡maras de seguridad",
     "Celulares",
     "Computadoras",
     "Herramientas",
@@ -24,7 +24,7 @@ function Admin() {
     "Oficina",
     "Redes",
     "Smartwatch",
-    "Soporte técnico",
+    "Soporte tÃ©cnico",
   ];
 
   const [form, setForm] = useState(emptyForm);
@@ -48,17 +48,15 @@ function Admin() {
   ).length;
 
   const inventoryValue = products.reduce((total, product) => {
-  const price = Number(product.price) || 0;
-  const stock = Number(product.stock) || 0;
+    const price = Number(product.price) || 0;
+    const stock = Number(product.stock) || 0;
 
-  return total + price * stock;
-}, 0);
-  
-  
+    return total + price * stock;
+  }, 0);
 
   const restockProducts = products.filter(
-  (product) => (product.stock ?? 0) <= 3
-);
+    (product) => (product.stock ?? 0) <= 3
+  );
 
   const loadProducts = async () => {
     try {
@@ -211,7 +209,7 @@ function Admin() {
 
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
-      "¿Seguro que deseas eliminar este producto del catálogo?"
+      "Â¿Seguro que deseas eliminar este producto del catÃ¡logo?"
     );
 
     if (!confirmDelete) return;
@@ -250,41 +248,46 @@ function Admin() {
           <div>
             <h1>Panel Administrador</h1>
             <p>
-              Agrega, edita y elimina productos reales del catálogo Global-GS
+              Agrega, edita y elimina productos reales del catÃ¡logo Global-GS
               Store.
             </p>
           </div>
 
           <button type="button" className="logout-btn" onClick={logout}>
-            Cerrar sesión
+            Cerrar sesiÃ³n
           </button>
         </div>
 
         <div className="dashboard-stats">
           <div className="stat-card">
-            <h3>📦 Productos</h3>
+            <h3>ðŸ“¦ Productos</h3>
             <strong>{totalProducts}</strong>
           </div>
 
           <div className="stat-card">
-            <h3>🟢 Disponibles</h3>
+            <h3>ðŸŸ¢ Disponibles</h3>
             <strong>{availableProducts}</strong>
           </div>
 
           <div className="stat-card">
-            <h3>🟡 Pocas unidades</h3>
+            <h3>ðŸŸ¡ Pocas unidades</h3>
             <strong>{lowStockProducts}</strong>
           </div>
 
           <div className="stat-card">
-            <h3>🔴 Agotados</h3>
+            <h3>ðŸ”´ Agotados</h3>
             <strong>{outOfStockProducts}</strong>
+          </div>
+
+          <div className="stat-card">
+            <h3>Valor inventario</h3>
+            <strong>RD${inventoryValue.toLocaleString("es-DO")}</strong>
           </div>
         </div>
 
         {restockProducts.length > 0 && (
           <>
-            <h2>⚠ Productos por reabastecer</h2>
+            <h2>âš  Productos por reabastecer</h2>
 
             <div className="admin-products">
               {restockProducts.map((product) => (
@@ -347,7 +350,7 @@ function Admin() {
           </label>
 
           <label>
-            Categoría
+            CategorÃ­a
             <select
               name="category"
               value={form.category}
@@ -381,13 +384,13 @@ function Admin() {
               name="image"
               value={form.image}
               onChange={handleChange}
-              placeholder="La URL se genera automáticamente al subir imagen"
+              placeholder="La URL se genera automÃ¡ticamente al subir imagen"
               required
             />
           </label>
 
           <label>
-            Descripción
+            DescripciÃ³n
             <textarea
               name="description"
               value={form.description}
@@ -408,7 +411,7 @@ function Admin() {
 
             {editingId && (
               <button type="button" className="cancel-btn" onClick={resetForm}>
-                Cancelar edición
+                Cancelar ediciÃ³n
               </button>
             )}
           </div>
@@ -431,7 +434,7 @@ function Admin() {
                 <span>{product.category}</span>
                 <strong>RD${product.price.toLocaleString("es-DO")}</strong>
                 <p>
-                  Stock: {product.stock ?? 0} —{" "}
+                  Stock: {product.stock ?? 0} â€”{" "}
                   <b>{getStockStatus(product.stock ?? 0)}</b>
                 </p>
               </div>
