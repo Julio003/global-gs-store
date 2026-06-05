@@ -1,25 +1,13 @@
 function Home() {
   return (
-    <div>
-      <section className="hero-banner">
+    <main className="home-page">
+      <section className="home-hero-image">
         <img
-          src="/global-gs-logo.jpg"
-          alt="Global-GS"
-          className="hero-logo"
+          src="/hero-global-gs.jpg"
+          alt="Global-GS Store - Catálogo digital"
         />
 
-        <h1>GLOBAL-GS STORE</h1>
-
-        <p className="hero-slogan">
-          Conecta tu Mundo
-        </p>
-
-        <p className="hero-description">
-          Tecnología, CCTV, Redes, Seguridad Electrónica
-          y Soporte Técnico en República Dominicana.
-        </p>
-
-        <div className="hero-buttons">
+        <div className="home-hero-actions">
           <a href="/productos" className="hero-btn">
             Ver Catálogo
           </a>
@@ -34,7 +22,7 @@ function Home() {
           </a>
         </div>
       </section>
-    </div>
+    </main>
   );
 }
 
