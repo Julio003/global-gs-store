@@ -16,7 +16,7 @@ function Admin() {
     "Accesorios",
     "Audio",
     "Cables",
-    "CÃ¡maras de seguridad",
+    "Cámaras de seguridad",
     "Celulares",
     "Computadoras",
     "Herramientas",
@@ -24,7 +24,7 @@ function Admin() {
     "Oficina",
     "Redes",
     "Smartwatch",
-    "Soporte tÃ©cnico",
+    "Soporte técnico",
   ];
 
   const [form, setForm] = useState(emptyForm);
@@ -209,7 +209,7 @@ function Admin() {
 
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
-      "Â¿Seguro que deseas eliminar este producto del catÃ¡logo?"
+      "¿Seguro que deseas eliminar este producto del catálogo?"
     );
 
     if (!confirmDelete) return;
@@ -248,34 +248,34 @@ function Admin() {
           <div>
             <h1>Panel Administrador</h1>
             <p>
-              Agrega, edita y elimina productos reales del catÃ¡logo Global-GS
+              Agrega, edita y elimina productos reales del catálogo Global-GS
               Store.
             </p>
           </div>
 
           <button type="button" className="logout-btn" onClick={logout}>
-            Cerrar sesiÃ³n
+            Cerrar sesión
           </button>
         </div>
 
         <div className="dashboard-stats">
           <div className="stat-card">
-            <h3>ðŸ“¦ Productos</h3>
+            <h3>📦 Productos</h3>
             <strong>{totalProducts}</strong>
           </div>
 
           <div className="stat-card">
-            <h3>ðŸŸ¢ Disponibles</h3>
+            <h3>🟢 Disponibles</h3>
             <strong>{availableProducts}</strong>
           </div>
 
           <div className="stat-card">
-            <h3>ðŸŸ¡ Pocas unidades</h3>
+            <h3>🟡 Pocas unidades</h3>
             <strong>{lowStockProducts}</strong>
           </div>
 
           <div className="stat-card">
-            <h3>ðŸ”´ Agotados</h3>
+            <h3>🔴 Agotados</h3>
             <strong>{outOfStockProducts}</strong>
           </div>
 
@@ -287,7 +287,7 @@ function Admin() {
 
         {restockProducts.length > 0 && (
           <>
-            <h2>âš  Productos por reabastecer</h2>
+            <h2>⚠ Productos por reabastecer</h2>
 
             <div className="admin-products">
               {restockProducts.map((product) => (
@@ -350,7 +350,7 @@ function Admin() {
           </label>
 
           <label>
-            CategorÃ­a
+            Categoría
             <select
               name="category"
               value={form.category}
@@ -384,13 +384,13 @@ function Admin() {
               name="image"
               value={form.image}
               onChange={handleChange}
-              placeholder="La URL se genera automÃ¡ticamente al subir imagen"
+              placeholder="La URL se genera automáticamente al subir imagen"
               required
             />
           </label>
 
           <label>
-            DescripciÃ³n
+            Descripción
             <textarea
               name="description"
               value={form.description}
@@ -411,7 +411,7 @@ function Admin() {
 
             {editingId && (
               <button type="button" className="cancel-btn" onClick={resetForm}>
-                Cancelar ediciÃ³n
+                Cancelar edición
               </button>
             )}
           </div>
@@ -434,7 +434,7 @@ function Admin() {
                 <span>{product.category}</span>
                 <strong>RD${product.price.toLocaleString("es-DO")}</strong>
                 <p>
-                  Stock: {product.stock ?? 0} â€”{" "}
+                  Stock: {product.stock ?? 0} —{" "}
                   <b>{getStockStatus(product.stock ?? 0)}</b>
                 </p>
               </div>

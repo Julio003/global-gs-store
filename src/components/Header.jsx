@@ -27,9 +27,9 @@ function Header() {
           type="button"
           className="menu-toggle"
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Abrir menÃº"
+          aria-label={"Abrir men\u00fa"}
         >
-          â˜°
+          {"\u2630"}
         </button>
 
         <nav className={menuOpen ? "menu open" : "menu"}>
@@ -47,18 +47,18 @@ function Header() {
 
           {!token && (
             <Link to="/login" onClick={closeMenu}>
-              Iniciar sesiÃ³n
+              {"Iniciar sesi\u00f3n"}
             </Link>
           )}
 
           {token && (
             <>
               <Link to="/admin" className="admin-link" onClick={closeMenu}>
-                AdministraciÃ³n
+                {"Administraci\u00f3n"}
               </Link>
 
               <button type="button" className="logout-btn" onClick={handleLogout}>
-                Cerrar sesiÃ³n
+                {"Cerrar sesi\u00f3n"}
               </button>
             </>
           )}
