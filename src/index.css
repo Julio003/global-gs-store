@@ -472,6 +472,131 @@ a {
   margin-top: 20px;
 }
 
+.admin-research {
+  margin: 24px 0;
+  padding: 22px;
+  background: #f8fafc;
+  border: 1px solid #dbe3ef;
+  border-radius: 20px;
+}
+
+.admin-research-header {
+  margin-bottom: 18px;
+}
+
+.admin-research-header span,
+.admin-research-suggestion span {
+  color: var(--orange);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-research-header h2 {
+  margin: 4px 0 0;
+  color: var(--navy);
+  font-size: 1.35rem;
+}
+
+.admin-research-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-research label,
+.admin-image-helper label {
+  display: grid;
+  gap: 8px;
+  color: var(--navy);
+  font-weight: 900;
+}
+
+.admin-research input,
+.admin-image-helper input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.admin-research input:focus,
+.admin-image-helper input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 4px rgba(0, 59, 122, 0.12);
+}
+
+.admin-research-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+}
+
+.admin-research-actions button,
+.admin-research-suggestion button,
+.admin-image-helper button {
+  border: none;
+  background: var(--navy);
+  color: white;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.admin-research-actions button:hover,
+.admin-research-suggestion button:hover,
+.admin-image-helper button:hover {
+  background: var(--orange);
+}
+
+.admin-research-suggestion {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+  margin-top: 16px;
+  padding: 16px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+}
+
+.admin-research-suggestion h3 {
+  margin: 5px 0 8px;
+  color: var(--navy);
+}
+
+.admin-research-suggestion p {
+  margin: 0 0 10px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.admin-research-suggestion strong {
+  color: var(--orange);
+}
+
+.admin-image-helper {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: end;
+  margin-top: 16px;
+}
+
+.admin-research-preview img {
+  width: 180px;
+  height: 130px;
+  object-fit: contain;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  margin-top: 14px;
+}
+
 .admin-product-card {
   display: grid;
   grid-template-columns: 110px 1fr auto;
@@ -760,6 +885,25 @@ a {
 
   .admin-actions {
     flex-direction: column;
+  }
+
+  .admin-research {
+    padding: 16px;
+  }
+
+  .admin-research-suggestion,
+  .admin-image-helper {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-research-suggestion button,
+  .admin-image-helper button {
+    width: 100%;
+  }
+
+  .admin-research-preview img {
+    width: 100%;
+    height: 170px;
   }
 
   .admin-product-card {

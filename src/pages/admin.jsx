@@ -32,6 +32,8 @@ function Admin() {
   const [message, setMessage] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [researchQuery, setResearchQuery] = useState("");
+  const [researchImageUrl, setResearchImageUrl] = useState("");
 
   const totalProducts = products.length;
 
@@ -241,6 +243,157 @@ function Admin() {
     return "Disponible";
   };
 
+  const normalizeText = (value) => {
+    return String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  };
+
+  const toTitleCase = (value) => {
+    return String(value || "")
+      .trim()
+      .replace(/\s+/g, " ")
+      .toLowerCase()
+      .replace(/\b\w/g, (letter) => letter.toUpperCase());
+  };
+
+  const getSuggestedCategory = (query) => {
+    const normalizedQuery = normalizeText(query);
+
+    const categoryRules = [
+      {
+        category: "Audio",
+        keywords: ["audifono", "auricular", "bocina", "speaker", "sound", "bluetooth"],
+      },
+      {
+        category: "Cámaras de seguridad",
+        keywords: ["camara", "cctv", "dvr", "nvr", "hikvision", "dahua", "seguridad"],
+      },
+      {
+        category: "Cables",
+        keywords: ["cable", "hdmi", "usb", "tipo c", "type c", "vga", "red"],
+      },
+      {
+        category: "Redes",
+        keywords: ["router", "switch", "wifi", "tp-link", "access point", "modem"],
+      },
+      {
+        category: "Smartwatch",
+        keywords: ["smartwatch", "reloj", "watch", "pulsera"],
+      },
+      {
+        category: "Celulares",
+        keywords: ["celular", "telefono", "iphone", "samsung", "xiaomi", "motorola"],
+      },
+      {
+        category: "Computadoras",
+        keywords: ["laptop", "pc", "computadora", "monitor", "teclado", "mouse"],
+      },
+      {
+        category: "Impresoras",
+        keywords: ["impresora", "toner", "cartucho", "epson", "canon", "hp"],
+      },
+      {
+        category: "Herramientas",
+        keywords: ["herramienta", "tester", "multimetro", "ponchadora", "taladro"],
+      },
+    ];
+
+    const match = categoryRules.find((rule) =>
+      rule.keywords.some((keyword) => normalizedQuery.includes(keyword))
+    );
+
+    return match?.category || "Accesorios";
+  };
+
+  const buildResearchDescription = (query, category) => {
+    const productName = toTitleCase(query) || "Producto tecnológico";
+
+    const descriptions = {
+      Audio: `${productName} con diseño moderno, sonido claro y conexión práctica para uso diario, oficina o actividades personales.`,
+      "Cámaras de seguridad": `${productName} ideal para vigilancia residencial o comercial, monitoreo seguro y uso con sistemas de seguridad.`,
+      Cables: `${productName} práctico para conectar equipos, transferir datos o mejorar la compatibilidad de dispositivos tecnológicos.`,
+      Redes: `${productName} diseñado para mejorar la conectividad, estabilidad de red y cobertura en hogares, oficinas o negocios.`,
+      Smartwatch: `${productName} con funciones inteligentes para actividad diaria, notificaciones y uso personal.`,
+      Celulares: `${productName} recomendado para comunicación, productividad y uso diario con diseño funcional.`,
+      Computadoras: `${productName} útil para trabajo, estudio, oficina y tareas tecnológicas diarias.`,
+      Impresoras: `${productName} orientado a impresión, oficina, documentos y productividad diaria.`,
+      Herramientas: `${productName} útil para instalaciones, soporte técnico, mantenimiento y trabajos tecnológicos.`,
+      "Soporte técnico": `${productName} orientado a servicios, mantenimiento, instalación y asistencia técnica.`,
+    };
+
+    return descriptions[category] || `${productName} disponible en Global-GS Store. Revisa compatibilidad, características y disponibilidad antes de confirmar la compra.`;
+  };
+
+  const researchSuggestion = (() => {
+    const query = researchQuery.trim();
+
+    if (!query) return null;
+
+    const category = getSuggestedCategory(query);
+
+    return {
+      name: toTitleCase(query),
+      category,
+      description: buildResearchDescription(query, category),
+    };
+  })();
+
+  const openResearchLink = (type) => {
+    const query = researchQuery.trim();
+
+    if (!query) {
+      setMessage("Escribe primero un modelo o nombre de producto");
+      return;
+    }
+
+    const encodedQuery = encodeURIComponent(`${query} especificaciones producto`);
+    const encodedImageQuery = encodeURIComponent(`${query} producto imagen`);
+
+    const links = {
+      google: `https://www.google.com/search?q=${encodedQuery}`,
+      images: `https://www.google.com/search?tbm=isch&q=${encodedImageQuery}`,
+      shopping: `https://www.google.com/search?tbm=shop&q=${encodedQuery}`,
+      mercado: `https://listado.mercadolibre.com.do/${encodeURIComponent(query)}`,
+      amazon: `https://www.amazon.com/s?k=${encodeURIComponent(query)}`,
+    };
+
+    window.open(links[type], "_blank", "noopener,noreferrer");
+  };
+
+  const applyResearchSuggestion = () => {
+    if (!researchSuggestion) {
+      setMessage("Escribe primero un modelo o nombre de producto");
+      return;
+    }
+
+    setForm({
+      ...form,
+      name: form.name || researchSuggestion.name,
+      category: researchSuggestion.category,
+      description: form.description || researchSuggestion.description,
+    });
+
+    setMessage("Datos sugeridos aplicados al formulario");
+  };
+
+  const applyResearchImage = () => {
+    const imageUrl = researchImageUrl.trim();
+
+    if (!imageUrl) {
+      setMessage("Pega primero la URL de una imagen del producto");
+      return;
+    }
+
+    setForm({
+      ...form,
+      image: imageUrl,
+    });
+
+    setMessage("Imagen aplicada al formulario");
+  };
+
   return (
     <main className="admin-page">
       <section className="admin-panel">
@@ -311,6 +464,86 @@ function Admin() {
             <hr style={{ margin: "30px 0" }} />
           </>
         )}
+
+        <section className="admin-research">
+          <div className="admin-research-header">
+            <div>
+              <span>Asistente de registro</span>
+              <h2>Buscar datos y fotos del producto</h2>
+            </div>
+          </div>
+
+          <div className="admin-research-grid">
+            <label>
+              Modelo, marca o pocas palabras
+              <input
+                type="search"
+                value={researchQuery}
+                onChange={(event) => setResearchQuery(event.target.value)}
+                placeholder="Ej: Miccell SP62, router TP-Link AC1200, cámara Dahua"
+              />
+            </label>
+
+            <div className="admin-research-actions">
+              <button type="button" onClick={() => openResearchLink("google")}>
+                Buscar datos
+              </button>
+
+              <button type="button" onClick={() => openResearchLink("images")}>
+                Buscar fotos
+              </button>
+
+              <button type="button" onClick={() => openResearchLink("shopping")}>
+                Ver precios
+              </button>
+
+              <button type="button" onClick={() => openResearchLink("mercado")}>
+                Mercado Libre
+              </button>
+
+              <button type="button" onClick={() => openResearchLink("amazon")}>
+                Amazon
+              </button>
+            </div>
+          </div>
+
+          {researchSuggestion && (
+            <div className="admin-research-suggestion">
+              <div>
+                <span>Sugerencia local</span>
+                <h3>{researchSuggestion.name}</h3>
+                <p>{researchSuggestion.description}</p>
+                <strong>{researchSuggestion.category}</strong>
+              </div>
+
+              <button type="button" onClick={applyResearchSuggestion}>
+                Usar datos en formulario
+              </button>
+            </div>
+          )}
+
+          <div className="admin-image-helper">
+            <label>
+              URL de imagen encontrada
+              <input
+                type="url"
+                value={researchImageUrl}
+                onChange={(event) => setResearchImageUrl(event.target.value)}
+                placeholder="Pega aquí la dirección de una imagen del producto"
+              />
+            </label>
+
+            <button type="button" onClick={applyResearchImage}>
+              Usar esta imagen
+            </button>
+          </div>
+
+          {researchImageUrl && (
+            <div className="admin-research-preview">
+              <img src={researchImageUrl} alt="Vista previa de imagen encontrada" />
+            </div>
+          )}
+        </section>
 
         <form className="admin-form" onSubmit={handleSubmit}>
           <label>
