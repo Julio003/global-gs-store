@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function Products() {
@@ -24,6 +24,20 @@ function Products() {
       });
   }, []);
 
+  const normalizeText = (value) => {
+    return String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .trim();
+  };
+
+  const formatPrice = (price) => {
+    return Number(price || 0).toLocaleString("es-DO");
+  };
+
+  const getProductId = (product) => product._id || product.id;
+
   const categories = [
     "Todos",
     ...new Set(products.map((product) => product.category || "Sin categoría")),
@@ -35,14 +49,60 @@ function Products() {
     return { label: "Disponible", className: "stock-available" };
   };
 
+  const getSearchScore = (product, query) => {
+    const normalizedQuery = normalizeText(query);
+
+    if (!normalizedQuery) return 0;
+
+    const words = normalizedQuery.split(/\s+/).filter(Boolean);
+    const name = normalizeText(product.name);
+    const description = normalizeText(product.description);
+    const categoryName = normalizeText(product.category);
+    const searchable = `${name} ${description} ${categoryName}`;
+
+    let score = 0;
+
+    if (name === normalizedQuery) score += 140;
+    if (name.includes(normalizedQuery)) score += 90;
+    if (categoryName.includes(normalizedQuery)) score += 45;
+    if (description.includes(normalizedQuery)) score += 35;
+
+    words.forEach((word) => {
+      if (name.includes(word)) score += 24;
+      if (categoryName.includes(word)) score += 12;
+      if (description.includes(word)) score += 8;
+    });
+
+    if (words.length > 1 && words.every((word) => searchable.includes(word))) {
+      score += 30;
+    }
+
+    return score;
+  };
+
+  const searchResults = search.trim()
+    ? products
+        .map((product) => ({
+          product,
+          score: getSearchScore(product, search),
+        }))
+        .filter((item) => item.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .map((item) => item.product)
+    : [];
+
+  const assistantProduct = searchResults[0] || null;
+  const relatedProducts = searchResults.slice(1, 4);
+
   const filteredProducts = products.filter((product) => {
-    const name = product.name || "";
-    const description = product.description || "";
+    const query = normalizeText(search);
     const productCategory = product.category || "Sin categoría";
+    const searchable = normalizeText(
+      `${product.name || ""} ${product.description || ""} ${productCategory}`
+    );
 
     const matchesSearch =
-      name.toLowerCase().includes(search.toLowerCase()) ||
-      description.toLowerCase().includes(search.toLowerCase());
+      !query || query.split(/\s+/).every((word) => searchable.includes(word));
 
     const matchesCategory =
       category === "Todos" || productCategory === category;
@@ -61,7 +121,7 @@ function Products() {
     const message = `Hola Global-GS, estoy interesado en comprar este producto:
 
 Producto: ${product.name}
-Precio: RD$${Number(product.price || 0).toLocaleString("es-DO")}
+Precio: RD$${formatPrice(product.price)}
 Categoría: ${product.category || "Sin categoría"}
 Disponibilidad: ${stockStatus.label}
 
@@ -94,7 +154,7 @@ Visto en Global-GS Store.`;
       <section className="catalog-toolbar">
         <input
           type="search"
-          placeholder="Buscar producto..."
+          placeholder="Buscar por modelo, nombre, categoría o descripción..."
           value={search}
           onChange={(event) => setSearch(event.target.value)}
         />
@@ -114,14 +174,109 @@ Visto en Global-GS Store.`;
         </div>
       </section>
 
+      {search.trim() && (
+        <section className="search-assistant">
+          <div className="assistant-header">
+            <div>
+              <span>Asistente de búsqueda</span>
+              <h2>Resultado para: “{search}”</h2>
+            </div>
+
+            <button type="button" onClick={() => setSearch("")}>
+              Limpiar
+            </button>
+          </div>
+
+          {assistantProduct ? (
+            <div className="assistant-result">
+              <Link
+                to={`/producto/${getProductId(assistantProduct)}`}
+                className="assistant-image"
+              >
+                <img
+                  src={assistantProduct.image || "/og-image.jpg"}
+                  alt={assistantProduct.name || "Producto Global-GS"}
+                />
+              </Link>
+
+              <div className="assistant-info">
+                <span className="assistant-match">Mejor coincidencia</span>
+                <h3>{assistantProduct.name}</h3>
+                <p>{assistantProduct.description}</p>
+
+                <div className="assistant-meta">
+                  <strong>RD${formatPrice(assistantProduct.price)}</strong>
+                  <span>{assistantProduct.category || "Sin categoría"}</span>
+                  <span
+                    className={`stock-badge ${
+                      getStockStatus(assistantProduct.stock ?? 0).className
+                    }`}
+                  >
+                    {getStockStatus(assistantProduct.stock ?? 0).label}
+                    {(assistantProduct.stock ?? 0) > 0
+                      ? ` (${assistantProduct.stock})`
+                      : ""}
+                  </span>
+                </div>
+
+                <div className="assistant-actions">
+                  <Link to={`/producto/${getProductId(assistantProduct)}`}>
+                    Ver información
+                  </Link>
+
+                  {(assistantProduct.stock ?? 0) > 0 ? (
+                    <button
+                      type="button"
+                      onClick={() => handleWhatsApp(assistantProduct)}
+                    >
+                      Comprar por WhatsApp
+                    </button>
+                  ) : (
+                    <button type="button" className="disabled-button" disabled>
+                      Producto agotado
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {relatedProducts.length > 0 && (
+                <div className="assistant-related">
+                  <h4>También puede servirte</h4>
+
+                  {relatedProducts.map((product) => (
+                    <Link
+                      key={getProductId(product)}
+                      to={`/producto/${getProductId(product)}`}
+                    >
+                      <img
+                        src={product.image || "/og-image.jpg"}
+                        alt={product.name || "Producto Global-GS"}
+                      />
+                      <span>{product.name}</span>
+                      <strong>RD${formatPrice(product.price)}</strong>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          ) : (
+            <p className="assistant-empty">
+              No encontramos un producto con ese modelo o palabra. Prueba con
+              una marca, categoría o parte del nombre.
+            </p>
+          )}
+        </section>
+      )}
+
       <section className="products-grid">
         {filteredProducts.map((product) => {
           const stockStatus = getStockStatus(product.stock ?? 0);
+          const productId = getProductId(product);
 
           return (
-            <article className="product-card" key={product._id}>
+            <article className="product-card" key={productId}>
               <img
-                src={product.image}
+                src={product.image || "/og-image.jpg"}
                 alt={product.name || "Producto Global-GS"}
               />
 
@@ -137,14 +292,14 @@ Visto en Global-GS Store.`;
                     : ""}
                 </span>
 
-                <Link to={`/producto/${product._id}`} className="product-link">
+                <Link to={`/producto/${productId}`} className="product-link">
                   <h2>{product.name}</h2>
                 </Link>
 
                 <p>{product.description}</p>
 
                 <strong className="product-price">
-                  RD${Number(product.price || 0).toLocaleString("es-DO")}
+                  RD${formatPrice(product.price)}
                 </strong>
 
                 {(product.stock ?? 0) > 0 ? (
