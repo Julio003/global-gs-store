@@ -787,3 +787,52 @@ a {
     height: 170px;
   }
 }
+/* BOTONES HOME */
+
+.home-buttons {
+  max-width: 1380px;
+  margin: 22px auto 0;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.home-btn {
+  min-width: 180px;
+  text-align: center;
+  padding: 15px 26px;
+  border-radius: 14px;
+  color: white;
+  font-weight: 900;
+  font-size: 1rem;
+  box-shadow: 0 10px 24px rgba(0, 26, 68, 0.18);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.home-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(0, 26, 68, 0.24);
+}
+
+.home-btn.catalogo {
+  background: var(--orange);
+}
+
+.home-btn.whatsapp {
+  background: var(--green);
+}
+
+@media (max-width: 768px) {
+  .home-buttons {
+    margin-top: 16px;
+    padding: 0 8px;
+    gap: 10px;
+  }
+
+  .home-btn {
+    flex: 1 1 100%;
+    min-width: 100%;
+    padding: 14px 18px;
+  }
+}

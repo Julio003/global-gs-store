@@ -7,6 +7,21 @@ function Home() {
           alt="Global-GS Store"
         />
       </section>
+
+      <div className="home-buttons">
+        <a href="/productos" className="home-btn catalogo">
+          Ver Catálogo
+        </a>
+
+        <a
+          href="https://wa.me/18292215896"
+          target="_blank"
+          rel="noreferrer"
+          className="home-btn whatsapp"
+        >
+          WhatsApp
+        </a>
+      </div>
     </main>
   );
 }
