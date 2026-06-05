@@ -45,14 +45,25 @@ function Header() {
           )}
 
           {token && (
-            <Link to="/admin" className="admin-link" onClick={closeMenu}>
-              Administración
-            </Link>
-          )}
-        </nav>
-      </div>
-    </header>
-  );
-}
+  <>
+    <Link
+      to="/admin"
+      className="admin-link"
+      onClick={closeMenu}
+    >
+      Administración
+    </Link>
+
+    <button
+      className="logout-btn"
+      onClick={() => {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+      }}
+    >
+      Cerrar sesión
+    </button>
+  </>
+)}
 
 export default Header;
