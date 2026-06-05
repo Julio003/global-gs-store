@@ -12,37 +12,39 @@ const upload = multer({
   },
 });
 
-router.post("/", upload.single("image"), async (req, res) => {
+const uploadBufferToCloudinary = (file) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder: "global-gs-store",
+        resource_type: "image",
+      },
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      }
+    );
+
+    stream.end(file.buffer);
+  });
+};
+
+router.post("/", upload.array("image", 7), async (req, res) => {
   try {
-    if (!req.file) {
+    if (!req.files || req.files.length === 0) {
       return res.status(400).json({
         success: false,
         message: "No se recibió ninguna imagen",
       });
     }
 
-    const uploadToCloudinary = () => {
-      return new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-          {
-            folder: "global-gs-store",
-            resource_type: "image",
-          },
-          (error, result) => {
-            if (error) reject(error);
-            else resolve(result);
-          }
-        );
-
-        stream.end(req.file.buffer);
-      });
-    };
-
-    const result = await uploadToCloudinary();
+    const results = await Promise.all(req.files.map(uploadBufferToCloudinary));
+    const imageUrls = results.map((result) => result.secure_url);
 
     res.json({
       success: true,
-      imageUrl: result.secure_url,
+      imageUrl: imageUrls[0],
+      imageUrls,
     });
   } catch (error) {
     console.error("Error subiendo imagen:", error);

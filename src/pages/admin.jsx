@@ -9,6 +9,7 @@ function Admin() {
     price: "",
     category: "Accesorios",
     image: "",
+    images: [],
     stock: "",
   };
 
@@ -34,6 +35,7 @@ function Admin() {
   const [uploading, setUploading] = useState(false);
   const [researchQuery, setResearchQuery] = useState("");
   const [researchImageUrl, setResearchImageUrl] = useState("");
+  const [galleryImageUrl, setGalleryImageUrl] = useState("");
 
   const totalProducts = products.length;
 
@@ -121,10 +123,7 @@ function Admin() {
         throw new Error("No se pudo subir la imagen");
       }
 
-      setForm({
-        ...form,
-        image: data.imageUrl,
-      });
+      updateFormImages([data.imageUrl]);
 
       setMessage("Imagen subida correctamente");
     } catch (error) {
@@ -135,10 +134,72 @@ function Admin() {
     }
   };
 
+  const handleGalleryUpload = async (event) => {
+    const files = Array.from(event.target.files || []).slice(0, 7);
+
+    if (files.length === 0) return;
+
+    const availableSlots = 7 - getProductImages(form).length;
+
+    if (availableSlots <= 0) {
+      setMessage("Ya tienes el máximo de 7 imágenes para este producto");
+      return;
+    }
+
+    const imageData = new FormData();
+    files.slice(0, availableSlots).forEach((file) => {
+      imageData.append("image", file);
+    });
+
+    try {
+      setUploading(true);
+      setMessage("Subiendo imágenes...");
+
+      const response = await fetch(`${API_URL}/api/upload`, {
+        method: "POST",
+        body: imageData,
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error("No se pudieron subir las imágenes");
+      }
+
+      updateFormImages(data.imageUrls || [data.imageUrl]);
+      setMessage("Imágenes agregadas correctamente");
+    } catch (error) {
+      console.error(error);
+      setMessage("Error subiendo imágenes");
+    } finally {
+      setUploading(false);
+      event.target.value = "";
+    }
+  };
+
+  const addGalleryImageUrl = () => {
+    const imageUrl = galleryImageUrl.trim();
+
+    if (!imageUrl) {
+      setMessage("Pega primero una URL de imagen");
+      return;
+    }
+
+    if (getProductImages(form).length >= 7) {
+      setMessage("Ya tienes el máximo de 7 imágenes para este producto");
+      return;
+    }
+
+    updateFormImages([imageUrl]);
+    setGalleryImageUrl("");
+    setMessage("Imagen agregada a la galería");
+  };
+
   const resetForm = () => {
     setForm(emptyForm);
     setEditingId(null);
     setMessage("");
+    setGalleryImageUrl("");
   };
 
   const logout = () => {
@@ -154,6 +215,7 @@ function Admin() {
       ...form,
       price: Number(form.price),
       stock: Number(form.stock),
+      images: getProductImages(form),
     };
 
     try {
@@ -198,6 +260,7 @@ function Admin() {
       price: product.price,
       category: product.category,
       image: product.image,
+      images: getProductImages(product),
       stock: product.stock ?? "",
     });
 
@@ -241,6 +304,52 @@ function Admin() {
     if (stock <= 0) return "Agotado";
     if (stock <= 3) return "Pocas unidades";
     return "Disponible";
+  };
+
+  const getProductImages = (product) => {
+    return [
+      product.image,
+      ...(Array.isArray(product.images) ? product.images : []),
+    ].filter(Boolean)
+      .filter((imageUrl, index, imageUrls) => imageUrls.indexOf(imageUrl) === index)
+      .slice(0, 7);
+  };
+
+  const updateFormImages = (imageUrls) => {
+    const images = [
+      ...getProductImages(form),
+      ...imageUrls.filter(Boolean),
+    ].filter((imageUrl, index, allImages) => allImages.indexOf(imageUrl) === index)
+      .slice(0, 7);
+
+    setForm({
+      ...form,
+      image: images[0] || "",
+      images,
+    });
+  };
+
+  const removeFormImage = (imageUrl) => {
+    const images = getProductImages(form).filter((item) => item !== imageUrl);
+
+    setForm({
+      ...form,
+      image: images[0] || "",
+      images,
+    });
+  };
+
+  const setPrimaryImage = (imageUrl) => {
+    const images = [
+      imageUrl,
+      ...getProductImages(form).filter((item) => item !== imageUrl),
+    ].slice(0, 7);
+
+    setForm({
+      ...form,
+      image: imageUrl,
+      images,
+    });
   };
 
   const normalizeText = (value) => {
@@ -386,13 +495,12 @@ function Admin() {
       return;
     }
 
-    setForm({
-      ...form,
-      image: imageUrl,
-    });
+    updateFormImages([imageUrl]);
 
     setMessage("Imagen aplicada al formulario");
   };
+
+  const formImages = getProductImages(form);
 
   return (
     <main className="admin-page">
@@ -605,13 +713,13 @@ function Admin() {
 
           {form.image && (
             <div className="image-preview">
-              <p>Vista previa:</p>
+              <p>Imagen principal:</p>
               <img src={form.image} alt="Vista previa del producto" />
             </div>
           )}
 
           <label>
-            URL de imagen generada
+            URL de imagen principal
             <input
               type="url"
               name="image"
@@ -621,6 +729,71 @@ function Admin() {
               required
             />
           </label>
+
+          <label>
+            Agregar varias imágenes opcionales
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleGalleryUpload}
+              disabled={uploading || formImages.length >= 7}
+            />
+          </label>
+
+          <div className="gallery-url-helper">
+            <label>
+              Agregar imagen por URL
+              <input
+                type="url"
+                value={galleryImageUrl}
+                onChange={(event) => setGalleryImageUrl(event.target.value)}
+                placeholder="Pega otra URL de imagen del producto"
+              />
+            </label>
+
+            <button type="button" onClick={addGalleryImageUrl}>
+              Agregar imagen
+            </button>
+          </div>
+
+          {formImages.length > 0 && (
+            <div className="product-gallery-editor">
+              <div className="gallery-editor-header">
+                <strong>Galería del producto</strong>
+                <span>{formImages.length}/7 imágenes</span>
+              </div>
+
+              <div className="gallery-editor-grid">
+                {formImages.map((imageUrl) => (
+                  <div key={imageUrl} className="gallery-editor-item">
+                    <img src={imageUrl} alt="Imagen del producto" />
+
+                    <div className="gallery-editor-actions">
+                      {form.image === imageUrl ? (
+                        <span>Principal</span>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setPrimaryImage(imageUrl)}
+                        >
+                          Principal
+                        </button>
+                      )}
+
+                      <button
+                        type="button"
+                        className="gallery-remove-btn"
+                        onClick={() => removeFormImage(imageUrl)}
+                      >
+                        Quitar
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <label>
             Descripción
@@ -666,6 +839,7 @@ function Admin() {
                 <p>{product.description}</p>
                 <span>{product.category}</span>
                 <strong>RD${product.price.toLocaleString("es-DO")}</strong>
+                <p>{getProductImages(product).length} imagen(es)</p>
                 <p>
                   Stock: {product.stock ?? 0} —{" "}
                   <b>{getStockStatus(product.stock ?? 0)}</b>

@@ -9,6 +9,7 @@ function ProductDetails() {
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [activeImage, setActiveImage] = useState("");
 
   useEffect(() => {
     fetch(`${API_URL}/api/products`)
@@ -21,6 +22,7 @@ function ProductDetails() {
         );
 
         setProduct(foundProduct || null);
+        setActiveImage(foundProduct?.image || "");
         setLoading(false);
       })
       .catch((error) => {
@@ -55,6 +57,15 @@ function ProductDetails() {
       label: "Disponible",
       className: "stock-available",
     };
+  };
+
+  const getProductImages = (productData) => {
+    return [
+      productData.image,
+      ...(Array.isArray(productData.images) ? productData.images : []),
+    ].filter(Boolean)
+      .filter((imageUrl, index, imageUrls) => imageUrls.indexOf(imageUrl) === index)
+      .slice(0, 7);
   };
 
   const handleWhatsApp = () => {
@@ -110,15 +121,37 @@ Visto en Global-GS Store.`;
   }
 
   const stockStatus = getStockStatus(product.stock ?? 0);
+  const productImages = getProductImages(product);
+  const currentImage = activeImage || productImages[0] || "/og-image.jpg";
 
   return (
     <main className="product-detail-page">
       <section className="product-detail-card">
         <div className="product-detail-image">
           <img
-            src={product.image || "/og-image.jpg"}
+            src={currentImage}
             alt={product.name || "Producto Global-GS"}
           />
+
+          {productImages.length > 1 && (
+            <div className="product-detail-gallery">
+              {productImages.map((imageUrl, index) => (
+                <button
+                  key={imageUrl}
+                  type="button"
+                  className={
+                    currentImage === imageUrl
+                      ? "gallery-thumb active"
+                      : "gallery-thumb"
+                  }
+                  onClick={() => setActiveImage(imageUrl)}
+                  aria-label={`Ver imagen ${index + 1}`}
+                >
+                  <img src={imageUrl} alt={`${product.name} ${index + 1}`} />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="product-detail-info">
