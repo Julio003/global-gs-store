@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link } from "react-router-dom";
 
 function Header() {
@@ -39,6 +39,10 @@ function Header() {
 
           <Link to="/productos" onClick={closeMenu}>
             Productos
+          </Link>
+
+          <Link to="/servicios" onClick={closeMenu}>
+            Servicios
           </Link>
 
           <Link to="/contacto" onClick={closeMenu}>
