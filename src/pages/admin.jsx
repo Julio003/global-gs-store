@@ -15,7 +15,7 @@ function Admin() {
 
   const categories = [
     "Accesorios",
-    "Bosinas",
+    "Bocinas",
     "Cocina",
     "Cámaras de seguridad",
     "Celulares",
