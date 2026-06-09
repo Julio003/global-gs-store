@@ -15,8 +15,8 @@ function Admin() {
 
   const categories = [
     "Accesorios",
-    "Audio",
-    "Cables",
+    "Bosinas",
+    "Cocina",
     "Cámaras de seguridad",
     "Celulares",
     "Computadoras",
@@ -24,7 +24,7 @@ function Admin() {
     "Impresoras",
     "Oficina",
     "Redes",
-    "Smartwatch",
+    "Herramientas",
     "Soporte técnico",
   ];
 
