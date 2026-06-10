@@ -173,16 +173,13 @@ a {
   gap: 14px;
 }
 
+/* Sección .product-card */
 .product-card {
-  background: var(--white);
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  height: auto;
+  min-height: unset;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  min-height: 390px;
+  justify-content: space-between;
 }
 
 .product-card:hover {
@@ -779,15 +776,10 @@ a {
 }
 
 /* DESKTOP COLUMNS */
-@media (min-width: 1100px) {
-  .products-grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1500px) {
-  .products-grid {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+@media (min-width: 1024px) {
+  .products-grid, .featured-grid {
+    grid-template-columns: repeat(6, 1fr); /* Ajuste para 6 tarjetas por fila */
+    grid-auto-rows: minmax(320px, auto);
   }
 }
 
