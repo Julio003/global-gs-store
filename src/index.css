@@ -1929,3 +1929,78 @@ a {
     height: 280px;
   }
 }
+/* Contenedor del slider */
+.hero-slider {
+  width: 95%;
+  max-width: 1500px;
+  margin: 25px auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: var(--white);
+}
+
+/* Cada slide: altura fija y posición relativa */
+.hero-slider .swiper-slide {
+  height: 480px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Imagen: cubrir todo el slide */
+.hero-slider .swiper-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Overlay de gradiente siempre encima de la imagen */
+.hero-slider .slide-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 30%;
+  background: linear-gradient(
+    to top,
+    rgba(0, 26, 68, 0.80),
+    rgba(0, 26, 68, 0.45) 40%,
+    rgba(0, 26, 68, 0.0) 100%
+  );
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Contenido de texto (HTML) encima del overlay */
+.hero-slider .slide-content {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: 8%;
+  z-index: 10;
+  color: #fff;
+  text-align: left;
+}
+
+/* Seguridad de texto: sombra y tamaño */
+.hero-slider .slide-content h2,
+.hero-slider .slide-content p {
+  margin: 0;
+  text-shadow: 0 6px 18px rgba(0,0,0,0.45);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .hero-slider .swiper-slide { height: 380px; }
+  .hero-slider .slide-overlay { height: 34%; }
+}
+@media (max-width: 768px) {
+  .hero-slider .swiper-slide { height: 280px; }
+  .hero-slider .slide-overlay { height: 38%; }
+  .hero-slider .slide-content { left: 6%; right: 6%; bottom: 6%; }
+}
