@@ -1946,3 +1946,22 @@ a {
     bottom: 10px !important;
   }
 }
+.hero-slider img {
+  width: 100%;
+  height: 480px;           /* Altura uniforme */
+  object-fit: cover;       /* Llenar espacio sin deformar */
+  border-radius: 20px;
+  display: block;
+}
+
+@media (max-width: 1024px) {
+  .hero-slider img {
+    height: 380px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-slider img {
+    height: 280px;
+  }
+}
