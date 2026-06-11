@@ -86,18 +86,100 @@ Visto en Global-GS Store.`;
     pagination={{ clickable: true }}
     loop={true}
   >
-    {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-  <SwiperSlide key={`slide-${num}`}>
-    <div
-      className="slide-bg"
-      style={{ backgroundImage: `url(/slide${num}.jpg)` }}
-    >
-      <div className="slide-overlay" />
-      {/* Sin texto encima: la imagen ya tiene su propio diseño */}
+    <SwiperSlide>
+  <div className="slide-bg" style={{ backgroundImage: 'url(/slide1.jpg)' }}>
+    <div className="slide-overlay" />
+    <div className="slide-content">
+      <h2>Título en HTML</h2>
+      <p>Subtítulo en HTML</p>
     </div>
-  </SwiperSlide>
-))}
+  </div>
+</SwiperSlide>
 
+
+   <SwiperSlide>
+  <div className="slide-bg" style={{ backgroundImage: 'url(/slide2.jpg)' }}>
+    <div className="slide-overlay" />
+    <div className="slide-content">
+      <h2>Título en HTML</h2>
+      <p>Subtítulo en HTML</p>
+    </div>
+  </div>
+</SwiperSlide>
+
+
+    <SwiperSlide>
+  <div className="slide-bg" style={{ backgroundImage: 'url(/slide3.jpg)' }}>
+    <div className="slide-overlay" />
+    <div className="slide-content">
+      <h2>Título en HTML</h2>
+      <p>Subtítulo en HTML</p>
+    </div>
+  </div>
+</SwiperSlide>
+
+
+    <SwiperSlide>
+  <div className="slide-bg" style={{ backgroundImage: 'url(/slide4.jpg)' }}>
+    <div className="slide-overlay" />
+    <div className="slide-content">
+      <h2>Título en HTML</h2>
+      <p>Subtítulo en HTML</p>
+    </div>
+  </div>
+</SwiperSlide>
+
+    <SwiperSlide>
+  <div className="slide-bg" style={{ backgroundImage: 'url(/slide5.jpg)' }}>
+    <div className="slide-overlay" />
+    <div className="slide-content">
+      <h2>Título en HTML</h2>
+      <p>Subtítulo en HTML</p>
+    </div>
+  </div>
+</SwiperSlide>
+
+    <SwiperSlide>
+  <div className="slide-bg" style={{ backgroundImage: 'url(/slide6.jpg)' }}>
+    <div className="slide-overlay" />
+    <div className="slide-content">
+      <h2>Título en HTML</h2>
+      <p>Subtítulo en HTML</p>
+    </div>
+  </div>
+</SwiperSlide>
+
+    <SwiperSlide>
+  <div className="slide-bg" style={{ backgroundImage: 'url(/slide7.jpg)' }}>
+    <div className="slide-overlay" />
+    <div className="slide-content">
+      <h2>Título en HTML</h2>
+      <p>Subtítulo en HTML</p>
+    </div>
+  </div>
+</SwiperSlide>
+
+    <SwiperSlide>
+  <div className="slide-bg" style={{ backgroundImage: 'url(/slide8.jpg)' }}>
+    <div className="slide-overlay" />
+    <div className="slide-content">
+      <h2>Título en HTML</h2>
+      <p>Subtítulo en HTML</p>
+    </div>
+  </div>
+</SwiperSlide>
+
+    <SwiperSlide>
+  <div className="slide-bg" style={{ backgroundImage: 'url(/slide9.jpg)' }}>
+    <div className="slide-overlay" />
+    <div className="slide-content">
+      <h2>Título en HTML</h2>
+      <p>Subtítulo en HTML</p>
+    </div>
+  </div>
+</SwiperSlide>
+  </Swiper>
+</section>
 
       <div className="home-buttons">
         <Link to="/productos" className="home-btn catalogo">
