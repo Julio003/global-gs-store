@@ -1880,32 +1880,24 @@ a {
   margin-bottom: 8px;
 }
 /* ==========================================================================
-   HERO SLIDER - SOLUCIÓN DEFINITIVA (SIN CORTES Y RESPONSIVE)
+   SOLUCIÓN DIRECTA PARA EL SLIDER
    ========================================================================== */
-.hero-slider {
-  max-width: 1400px; /* Reducimos ligeramente el ancho para dar aire a los lados */
-  margin: 20px auto;
-  overflow: hidden;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  background-color: #ffffff; /* Fondo blanco para los espacios de contención */
+.hero-slider, 
+[class*="slider"], 
+[class*="carousel"] {
+  max-width: 1300px !important;
+  margin: 15px auto !important;
+  max-height: 450px !important; /* Controla la altura estricta aquí */
+  overflow: hidden !important;
 }
 
-.hero-slider .swiper-wrapper,
-.hero-slider .slider-container {
-  /* Forzamos que el contenedor del slider tenga un tamaño controlado en laptops */
-  height: 55vh !important;
-  max-height: 480px !important;
-  min-height: 380px !important;
-}
-
-.hero-slider img {
-  width: 100%;
-  height: 100%;
-  /* CAMBIO CLAVE: Muestra la imagen completa sin recortar bordes ni estirarla */
-  object-fit: contain; 
-  object-position: center;
-  background-color: #ffffff;
+.hero-slider img, 
+[class*="slider"] img, 
+[class*="carousel"] img {
+  width: 100% !important;
+  height: 450px !important; /* Obliga a la imagen a no estirarse hacia abajo */
+  object-fit: contain !important; /* Muestra la imagen completa sin recortar */
+  background-color: #ffffff !important;
 }
 
 /* ==========================================================================
