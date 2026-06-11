@@ -2084,14 +2084,12 @@ a {
 /* El div de fondo de cada slide */
 .slide-bg {
   width: 100%;
-  aspect-ratio: 1500 / 480;   /* mantiene el tamaño del slide (1500x480) */
-  background-size: contain;     /* evita recortar la imagen; ajusta según lo que quieras */
-  background-position: center;
+  aspect-ratio: 1500 / 480;
+  background-size: contain;
+  background-position: center center;
   background-repeat: no-repeat;
-  background-color: var(--navy);
+  background-color: #fff;
   position: relative;
-  display: flex;
-  align-items: center;
 }
 
 
