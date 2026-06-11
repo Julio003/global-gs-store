@@ -1216,6 +1216,16 @@ a {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.featured-info p.expanded {
+  display: block;
+  line-clamp: none;
+  -webkit-line-clamp: none;
+  overflow: visible;
+  height: auto;
+  min-height: unset;
 }
 
 .featured-price {

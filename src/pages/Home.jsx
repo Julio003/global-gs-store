@@ -59,6 +59,7 @@ function Home() {
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [expandedProductId, setExpandedProductId] = useState(null);
 
   useEffect(() => {
     fetch(`${API_URL}/api/products`)
@@ -72,6 +73,16 @@ function Home() {
         setProducts([]);
         setLoading(false);
       });
+  }, []);
+
+  useEffect(() => {
+    const handleDocumentClick = (e) => {
+      if (!e.target.closest(".featured-card")) {
+        setExpandedProductId(null);
+      }
+    };
+    document.addEventListener("click", handleDocumentClick);
+    return () => document.removeEventListener("click", handleDocumentClick);
   }, []);
 
   const formatPrice = (price) => {
@@ -210,7 +221,15 @@ Visto en Global-GS Store.`;
                     />
                   </Link>
 
-                  <div className="featured-info">
+                  <div 
+                    className="featured-info"
+                    onClick={(e) => {
+                      if (!e.target.closest(".featured-buy") && !e.target.closest(".featured-title") && !e.target.closest(".featured-img")) {
+                        setExpandedProductId(expandedProductId === productId ? null : productId);
+                      }
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
                     <div className="featured-meta">
                       <span>{product.category || "Sin categoría"}</span>
                       <strong>
@@ -224,7 +243,9 @@ Visto en Global-GS Store.`;
                       <h3>{product.name}</h3>
                     </Link>
 
-                    <p>{product.description}</p>
+                    <p className={expandedProductId === productId ? "expanded" : ""}>
+                      {product.description}
+                    </p>
 
                     <strong className="featured-price">
                       RD${formatPrice(product.price)}
