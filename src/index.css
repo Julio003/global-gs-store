@@ -1879,23 +1879,14 @@ a {
 .service-card li {
   margin-bottom: 8px;
 }
-/* ==========================================================================
-   SOLUCIÓN DIRECTA PARA EL SLIDER
-   ========================================================================== */
-.hero-slider, 
-[class*="slider"], 
-[class*="carousel"] {
-  max-width: 1300px !important;
-  margin: 15px auto !important;
-  max-height: 450px !important; /* Controla la altura estricta aquí */
-  overflow: hidden !important;
+.hero-slider {
+  max-width: 1400px;
+  margin: auto;
 }
 
-.hero-slider img, 
-[class*="slider"] img, 
-[class*="carousel"] img {
-  width: 100% !important;
-  height: 450px !important; /* Obliga a la imagen a no estirarse hacia abajo */
-  object-fit: contain !important; /* Muestra la imagen completa sin recortar */
-  background-color: #ffffff !important;
+.hero-slider img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 20px;
 }

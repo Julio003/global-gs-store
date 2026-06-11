@@ -75,7 +75,7 @@ Visto en Global-GS Store.`;
 
   return (
     <main className="home-page">
-      <section className="hero-slider" style={{ maxWidth: '1300px', margin: '15px auto', overflow: 'hidden', borderRadius: '20px' }}>
+      <section className="hero-slider">
   <Swiper
     modules={[Autoplay, Navigation, Pagination]}
     autoplay={{
@@ -85,61 +85,41 @@ Visto en Global-GS Store.`;
     navigation
     pagination={{ clickable: true }}
     loop={true}
-    style={{ height: 'auto', maxVerticalAlign: 'middle' }}
   >
     <SwiperSlide>
-      <img src="/slide1.jpg" alt="Global-GS 1" style={{ width: '100%', height: 'auto', maxHeight: '450px', objectFit: 'contain', backgroundColor: '#ffffff', display: 'block' }} />
+      <img src="/slide1.jpg" alt="Global-GS 1" />
     </SwiperSlide>
 
     <SwiperSlide>
-      <img src="/slide2.jpg" alt="Global-GS 2" style={{ width: '100%', height: 'auto', maxHeight: '450px', objectFit: 'contain', backgroundColor: '#ffffff', display: 'block' }} />
+      <img src="/slide2.jpg" alt="Global-GS 2" />
     </SwiperSlide>
 
     <SwiperSlide>
-      <img src="/slide3.jpg" alt="Global-GS 3" style={{ width: '100%', height: 'auto', maxHeight: '450px', objectFit: 'contain', backgroundColor: '#ffffff', display: 'block' }} />
+      <img src="/slide3.jpg" alt="Global-GS 3" />
     </SwiperSlide>
 
     <SwiperSlide>
-      <img src="/slide4.jpg" alt="Global-GS 4" style={{ width: '100%', height: 'auto', maxHeight: '450px', objectFit: 'contain', backgroundColor: '#ffffff', display: 'block' }} />
+      <img src="/slide4.jpg" alt="Global-GS 4" />
     </SwiperSlide>
 
     <SwiperSlide>
-      <img src="/slide5.jpg" alt="Global-GS 5" style={{ width: '100%', height: 'auto', maxHeight: '450px', objectFit: 'contain', backgroundColor: '#ffffff', display: 'block' }} />
+      <img src="/slide5.jpg" alt="Global-GS 5" />
     </SwiperSlide>
 
     <SwiperSlide>
-      <img src="/slide6.jpg" alt="Global-GS 6" style={{ width: '100%', height: 'auto', maxHeight: '450px', objectFit: 'contain', backgroundColor: '#ffffff', display: 'block' }} />
+      <img src="/slide6.jpg" alt="Global-GS 6" />
     </SwiperSlide>
 
     <SwiperSlide>
-      <img src="/slide7.jpg" alt="Global-GS 7" style={{ width: '100%', height: 'auto', maxHeight: '450px', objectFit: 'contain', backgroundColor: '#ffffff', display: 'block' }} />
-    </SwiperSlide>
-
-    {/* DIAPOSITIVA 8: Reemplazo de la imagen con marca de agua por estructura limpia de código */}
-    <SwiperSlide>
-      <div className="slide-soporte-tecnico" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', height: '450px', background: '#ffffff' }}>
-        <div className="soporte-content" style={{ padding: '40px', display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'left' }}>
-          <div style={{ borderLeft: '5px solid var(--orange, #FF6A13)', paddingLeft: '15px', marginBottom: '20px' }}>
-            <h2 style={{ color: 'var(--navy, #002B49)', margin: 0, textTransform: 'uppercase', fontWeight: 'bold', fontSize: '28px' }}>SOPORTE TÉCNICO</h2>
-          </div>
-          <h3 style={{ color: 'var(--orange, #FF6A13)', marginTop: 0, fontSize: '20px', fontWeight: 'bold' }}>MANTENIMIENTO EXPERTO</h3>
-          <p style={{ color: '#4a5568', lineHeight: '1.6', fontSize: '16px' }}>No solo instalamos, sino que cuidamos su inversión. Nuestro equipo técnico está disponible para mantenimientos preventivos y correctivos.</p>
-          <p style={{ color: '#4a5568', lineHeight: '1.6', fontSize: '16px', marginBottom: 0 }}>Garantizamos que sus equipos operen con el máximo rendimiento, minimizando tiempos de inactividad.</p>
-        </div>
-        
-        {/* Lado derecho con diseño corporativo limpio */}
-        <div className="soporte-graphics" style={{ background: 'linear-gradient(135deg, #002B49 0%, #001f35 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', position: 'relative' }}>
-          <div style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '30px', borderRadius: '15px', textAlign: 'center', maxWidth: '300px', zIndex: 1 }}>
-            <span style={{ fontSize: '50px', color: '#FF6A13', display: 'block', marginBottom: '15px' }}>🛠️</span>
-            <h4 style={{ margin: '10px 0 5px 0', color: '#fff', fontWeight: 'bold', fontSize: '18px' }}>Asistencia Profesional</h4>
-            <p style={{ color: '#cbd5e1', fontSize: '14px', margin: 0 }}>Infraestructura protegida y optimizada siempre.</p>
-          </div>
-        </div>
-      </div>
+      <img src="/slide7.jpg" alt="Global-GS 7" />
     </SwiperSlide>
 
     <SwiperSlide>
-      <img src="/slide9.jpg" alt="Global-GS 9" style={{ width: '100%', height: 'auto', maxHeight: '450px', objectFit: 'contain', backgroundColor: '#ffffff', display: 'block' }} />
+      <img src="/slide8.jpg" alt="Global-GS 8" />
+    </SwiperSlide>
+
+    <SwiperSlide>
+      <img src="/slide9.jpg" alt="Global-GS 9" />
     </SwiperSlide>
   </Swiper>
 </section>
