@@ -1879,14 +1879,31 @@ a {
 .service-card li {
   margin-bottom: 8px;
 }
+/* ==========================
+   HERO SLIDER (REPARADO)
+========================== */
 .hero-slider {
   max-width: 1400px;
   margin: auto;
+  overflow: hidden;
+  border-radius: 20px;
+  /* Controla la altura máxima en pantallas grandes para que no tape los botones */
+  max-height: 70vh; /* Ocupará como máximo el 70% de la altura de la pantalla */
 }
 
 .hero-slider img {
   width: 100%;
-  height: auto;
+  /* Forzamos a que la imagen respete la altura máxima del contenedor padre */
+  height: 50vh; /* Puedes ajustar este valor (por ejemplo, entre 50vh y 60vh) */
+  max-height: 500px; /* Un límite fijo para que no se estire de más */
   display: block;
-  border-radius: 20px;
+  /* ¡ESTA ES LA CLAVE! Hace que la imagen se recorte sutilmente por los lados 
+     en lugar de estirarse hacia abajo, manteniendo su calidad y centrado */
+  object-fit: cover; 
+  object-position: center;
+}
+
+/* Ajuste opcional para la sección de Nuestra Misión */
+.nuestra-mision-section { /* Cambia esto por la clase real de esa sección si la tienes */
+  padding: 20px 0; /* Reduce el espaciado superior/inferior para ganar espacio */
 }
