@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -87,97 +87,40 @@ Visto en Global-GS Store.`;
     loop={true}
   >
     <SwiperSlide>
-  <div className="slide-bg" style={{ backgroundImage: 'url(/slide1.jpg)' }}>
-    <div className="slide-overlay" />
-    <div className="slide-content">
-      <h2>Título en HTML</h2>
-      <p>Subtítulo en HTML</p>
-    </div>
-  </div>
-</SwiperSlide>
-
-
-   <SwiperSlide>
-  <div className="slide-bg" style={{ backgroundImage: 'url(/slide2.jpg)' }}>
-    <div className="slide-overlay" />
-    <div className="slide-content">
-      <h2>Título en HTML</h2>
-      <p>Subtítulo en HTML</p>
-    </div>
-  </div>
-</SwiperSlide>
-
+      <img src="/slide1.jpg" alt="Global-GS Banner 1" className="slide-img" />
+    </SwiperSlide>
 
     <SwiperSlide>
-  <div className="slide-bg" style={{ backgroundImage: 'url(/slide3.jpg)' }}>
-    <div className="slide-overlay" />
-    <div className="slide-content">
-      <h2>Título en HTML</h2>
-      <p>Subtítulo en HTML</p>
-    </div>
-  </div>
-</SwiperSlide>
-
+      <img src="/slide2.jpg" alt="Global-GS Banner 2" className="slide-img" />
+    </SwiperSlide>
 
     <SwiperSlide>
-  <div className="slide-bg" style={{ backgroundImage: 'url(/slide4.jpg)' }}>
-    <div className="slide-overlay" />
-    <div className="slide-content">
-      <h2>Título en HTML</h2>
-      <p>Subtítulo en HTML</p>
-    </div>
-  </div>
-</SwiperSlide>
+      <img src="/slide3.jpg" alt="Global-GS Banner 3" className="slide-img" />
+    </SwiperSlide>
 
     <SwiperSlide>
-  <div className="slide-bg" style={{ backgroundImage: 'url(/slide5.jpg)' }}>
-    <div className="slide-overlay" />
-    <div className="slide-content">
-      <h2>Título en HTML</h2>
-      <p>Subtítulo en HTML</p>
-    </div>
-  </div>
-</SwiperSlide>
+      <img src="/slide4.jpg" alt="Global-GS Banner 4" className="slide-img" />
+    </SwiperSlide>
 
     <SwiperSlide>
-  <div className="slide-bg" style={{ backgroundImage: 'url(/slide6.jpg)' }}>
-    <div className="slide-overlay" />
-    <div className="slide-content">
-      <h2>Título en HTML</h2>
-      <p>Subtítulo en HTML</p>
-    </div>
-  </div>
-</SwiperSlide>
+      <img src="/slide5.jpg" alt="Global-GS Banner 5" className="slide-img" />
+    </SwiperSlide>
 
     <SwiperSlide>
-  <div className="slide-bg" style={{ backgroundImage: 'url(/slide7.jpg)' }}>
-    <div className="slide-overlay" />
-    <div className="slide-content">
-      <h2>Título en HTML</h2>
-      <p>Subtítulo en HTML</p>
-    </div>
-  </div>
-</SwiperSlide>
+      <img src="/slide6.jpg" alt="Global-GS Banner 6" className="slide-img" />
+    </SwiperSlide>
 
     <SwiperSlide>
-  <div className="slide-bg" style={{ backgroundImage: 'url(/slide8.jpg)' }}>
-    <div className="slide-overlay" />
-    <div className="slide-content">
-      <h2>Título en HTML</h2>
-      <p>Subtítulo en HTML</p>
-    </div>
-  </div>
-</SwiperSlide>
+      <img src="/slide7.jpg" alt="Global-GS Banner 7" className="slide-img" />
+    </SwiperSlide>
 
     <SwiperSlide>
-  <div className="slide-bg" style={{ backgroundImage: 'url(/slide9.jpg)' }}>
-    <div className="slide-overlay" />
-    <div className="slide-content">
-      <h2>Título en HTML</h2>
-      <p>Subtítulo en HTML</p>
-    </div>
-  </div>
-</SwiperSlide>
+      <img src="/slide8.jpg" alt="Global-GS Banner 8" className="slide-img" />
+    </SwiperSlide>
+
+    <SwiperSlide>
+      <img src="/slide9.jpg" alt="Global-GS Banner 9" className="slide-img" />
+    </SwiperSlide>
   </Swiper>
 </section>
 
