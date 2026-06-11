@@ -2004,3 +2004,6 @@ a {
   .hero-slider .slide-overlay { height: 38%; }
   .hero-slider .slide-content { left: 6%; right: 6%; bottom: 6%; }
 }
+.slide-bg { width:100%; height:100%; background-size:cover; background-position:center; position:relative; }
+.slide-overlay { position:absolute; left:0; right:0; bottom:0; height:30%; background:linear-gradient(to top, rgba(0,26,68,0.85), rgba(0,26,68,0)); z-index:5; pointer-events:none; }
+.slide-content { position:absolute; left:6%; right:6%; bottom:8%; z-index:10; color:#fff; text-shadow:0 6px 18px rgba(0,0,0,0.45); }
