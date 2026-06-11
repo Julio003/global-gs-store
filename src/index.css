@@ -2084,7 +2084,7 @@ a {
 /* El div de fondo de cada slide */
 .slide-bg {
   width: 100%;
-  aspect-ratio: 1500 / 630;
+  aspect-ratio: 1500 / 480;
   background-size: contain;   /* ← CAMBIA cover por contain */
   background-position: center;
   background-repeat: no-repeat;
