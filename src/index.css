@@ -1879,3 +1879,14 @@ a {
 .service-card li {
   margin-bottom: 8px;
 }
+.hero-slider {
+  max-width: 1400px;
+  margin: auto;
+}
+
+.hero-slider img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 20px;
+}

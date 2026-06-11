@@ -1,5 +1,11 @@
 ﻿import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 function Home() {
   const API_URL = "https://global-gs-backend.onrender.com";
@@ -69,9 +75,54 @@ Visto en Global-GS Store.`;
 
   return (
     <main className="home-page">
-      <section className="home-hero-image">
-        <img src="/og-image.jpg" alt="Global-GS Store" />
-      </section>
+      <section className="hero-slider">
+  <Swiper
+    modules={[Autoplay, Navigation, Pagination]}
+    autoplay={{
+      delay: 4000,
+      disableOnInteraction: false,
+    }}
+    navigation
+    pagination={{ clickable: true }}
+    loop={true}
+  >
+    <SwiperSlide>
+      <img src="/slide1.jpg" alt="Global-GS 1" />
+    </SwiperSlide>
+
+    <SwiperSlide>
+      <img src="/slide2.jpg" alt="Global-GS 2" />
+    </SwiperSlide>
+
+    <SwiperSlide>
+      <img src="/slide3.jpg" alt="Global-GS 3" />
+    </SwiperSlide>
+
+    <SwiperSlide>
+      <img src="/slide4.jpg" alt="Global-GS 4" />
+    </SwiperSlide>
+
+    <SwiperSlide>
+      <img src="/slide5.jpg" alt="Global-GS 5" />
+    </SwiperSlide>
+
+    <SwiperSlide>
+      <img src="/slide6.jpg" alt="Global-GS 6" />
+    </SwiperSlide>
+
+    <SwiperSlide>
+      <img src="/slide7.jpg" alt="Global-GS 7" />
+    </SwiperSlide>
+
+    <SwiperSlide>
+      <img src="/slide8.jpg" alt="Global-GS 8" />
+    </SwiperSlide>
+
+    <SwiperSlide>
+      <img src="/slide9.jpg" alt="Global-GS 9" />
+    </SwiperSlide>
+  </Swiper>
+</section>
 
       <div className="home-buttons">
         <Link to="/productos" className="home-btn catalogo">
