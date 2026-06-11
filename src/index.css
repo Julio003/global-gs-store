@@ -1879,14 +1879,70 @@ a {
 .service-card li {
   margin-bottom: 8px;
 }
+/* HERO SLIDER GLOBAL-GS */
 .hero-slider {
-  max-width: 1400px;
-  margin: auto;
+  width: 95%;               /* Ocupa casi todo el ancho, sin ser pantalla completa */
+  max-width: 1500px;        /* Límite elegante en pantallas grandes */
+  margin: 25px auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: var(--white);
 }
 
+/* Imágenes del slider */
 .hero-slider img {
   width: 100%;
-  height: auto;
+  height: 450px;            /* Altura uniforme */
+  object-fit: cover;        /* Llenar espacio sin franjas */
   display: block;
-  border-radius: 20px;
+}
+
+/* Flechas de navegación Swiper */
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--orange);     /* Color corporativo */
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  color: var(--blue);
+}
+
+/* Puntos de paginación Swiper */
+.swiper-pagination {
+  bottom: 15px !important;  /* Ajusta posición más visible */
+}
+
+.swiper-pagination-bullet {
+  background: var(--navy);
+  opacity: 0.5;
+  width: 10px;
+  height: 10px;
+  margin: 0 6px !important;
+  transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  background: var(--orange);
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .hero-slider img {
+    height: 300px;
+  }
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: none; /* Oculta flechas en móvil si prefieres solo los puntos */
+  }
+
+  .swiper-pagination {
+    bottom: 10px !important;
+  }
 }
