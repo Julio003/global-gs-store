@@ -275,10 +275,12 @@ Visto en Global-GS Store.`;
 
           return (
             <article className="product-card" key={productId}>
-              <img
-                src={product.image || "/og-image.jpg"}
-                alt={product.name || "Producto Global-GS"}
-              />
+              <Link to={`/producto/${productId}`} className="product-card-img-link">
+                <img
+                  src={product.image || "/og-image.jpg"}
+                  alt={product.name || "Producto Global-GS"}
+                />
+              </Link>
 
               <div className="product-info">
                 <span className="product-category">

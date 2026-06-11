@@ -6,6 +6,52 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+const slidesData = [
+  {
+    id: 1,
+    tag: "Tecnología & Innovación",
+    title: "Global-GS Store",
+    subtitle: "Tu mejor opción en Tecnología",
+    description: "Catálogo digital con el mejor soporte técnico, equipos de redes y cámaras de seguridad en República Dominicana.",
+    buttonText: "Ver Catálogo",
+    buttonLink: "/productos",
+    image: "/slide_store.png",
+    gradient: "linear-gradient(135deg, #001a44 0%, #003b7a 100%)"
+  },
+  {
+    id: 2,
+    tag: "Seguridad Electrónica",
+    title: "CCTV & Videovigilancia",
+    subtitle: "Protege lo que más importa",
+    description: "Instalación profesional de sistemas de cámaras de alta definición con monitoreo remoto en vivo desde tu celular.",
+    buttonText: "Contactar por WhatsApp",
+    buttonLink: "https://wa.me/18292215896",
+    image: "/slide_cctv.png",
+    gradient: "linear-gradient(135deg, #0d1e3d 0%, #1e3a8a 100%)"
+  },
+  {
+    id: 3,
+    tag: "Desarrollo de Software",
+    title: "Desarrollo Web & Tiendas Online",
+    subtitle: "Lleva tu negocio al siguiente nivel",
+    description: "Creamos sitios web corporativos y tiendas de comercio electrónico personalizadas para impulsar tus ventas.",
+    buttonText: "Ver Servicios",
+    buttonLink: "/servicios",
+    image: "/slide_web.png",
+    gradient: "linear-gradient(135deg, #001a44 0%, #0f172a 100%)"
+  },
+  {
+    id: 4,
+    tag: "Redes & Conectividad",
+    title: "Redes & Cableado Estructurado",
+    subtitle: "Conectividad de alta velocidad",
+    description: "Instalación de WiFi empresarial, redes estructuradas y configuración de equipos de comunicación estables.",
+    buttonText: "Saber más",
+    buttonLink: "/servicios",
+    image: "/slide_networks.png",
+    gradient: "linear-gradient(135deg, #0b1a30 0%, #003b7a 100%)"
+  }
+];
 
 function Home() {
   const API_URL = "https://global-gs-backend.onrender.com";
@@ -76,53 +122,45 @@ Visto en Global-GS Store.`;
   return (
     <main className="home-page">
       <section className="hero-slider">
-  <Swiper
-    modules={[Autoplay, Navigation, Pagination]}
-    autoplay={{
-      delay: 4000,
-      disableOnInteraction: false,
-    }}
-    navigation
-    pagination={{ clickable: true }}
-    loop={true}
-  >
-    <SwiperSlide>
-      <img src="/slide1.jpg" alt="Global-GS Banner 1" className="slide-img" />
-    </SwiperSlide>
-
-    <SwiperSlide>
-      <img src="/slide2.jpg" alt="Global-GS Banner 2" className="slide-img" />
-    </SwiperSlide>
-
-    <SwiperSlide>
-      <img src="/slide3.jpg" alt="Global-GS Banner 3" className="slide-img" />
-    </SwiperSlide>
-
-    <SwiperSlide>
-      <img src="/slide4.jpg" alt="Global-GS Banner 4" className="slide-img" />
-    </SwiperSlide>
-
-    <SwiperSlide>
-      <img src="/slide5.jpg" alt="Global-GS Banner 5" className="slide-img" />
-    </SwiperSlide>
-
-    <SwiperSlide>
-      <img src="/slide6.jpg" alt="Global-GS Banner 6" className="slide-img" />
-    </SwiperSlide>
-
-    <SwiperSlide>
-      <img src="/slide7.jpg" alt="Global-GS Banner 7" className="slide-img" />
-    </SwiperSlide>
-
-    <SwiperSlide>
-      <img src="/slide8.jpg" alt="Global-GS Banner 8" className="slide-img" />
-    </SwiperSlide>
-
-    <SwiperSlide>
-      <img src="/slide9.jpg" alt="Global-GS Banner 9" className="slide-img" />
-    </SwiperSlide>
-  </Swiper>
-</section>
+        <Swiper
+          modules={[Autoplay, Navigation, Pagination]}
+          autoplay={{
+            delay: 5500,
+            disableOnInteraction: false,
+          }}
+          navigation
+          pagination={{ clickable: true }}
+          loop={true}
+        >
+          {slidesData.map((slide) => (
+            <SwiperSlide key={slide.id} style={{ background: slide.gradient }}>
+              <div className="slide-info-container">
+                <span className="slide-tag">{slide.tag}</span>
+                <h2>{slide.title}</h2>
+                <h3 className="slide-subtitle">{slide.subtitle}</h3>
+                <p className="slide-description">{slide.description}</p>
+                {slide.buttonLink.startsWith("http") ? (
+                  <a
+                    href={slide.buttonLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="slide-cta-btn"
+                  >
+                    {slide.buttonText}
+                  </a>
+                ) : (
+                  <Link to={slide.buttonLink} className="slide-cta-btn">
+                    {slide.buttonText}
+                  </Link>
+                )}
+              </div>
+              <div className="slide-media-container">
+                <img src={slide.image} alt={slide.title} />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </section>
 
       <div className="home-buttons">
         <Link to="/productos" className="home-btn catalogo">
