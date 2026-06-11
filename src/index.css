@@ -1880,30 +1880,50 @@ a {
   margin-bottom: 8px;
 }
 /* ==========================
-   HERO SLIDER (REPARADO)
+   HERO SLIDER (REPARADO - VERSIÓN COMPLETA)
 ========================== */
 .hero-slider {
   max-width: 1400px;
   margin: auto;
   overflow: hidden;
   border-radius: 20px;
-  /* Controla la altura máxima en pantallas grandes para que no tape los botones */
-  max-height: 70vh; /* Ocupará como máximo el 70% de la altura de la pantalla */
+  /* Eliminamos la restricción de altura máxima para no cortar nada */
+  max-height: none; 
 }
 
 .hero-slider img {
   width: 100%;
-  /* Forzamos a que la imagen respete la altura máxima del contenedor padre */
-  height: 50vh; /* Puedes ajustar este valor (por ejemplo, entre 50vh y 60vh) */
-  max-height: 500px; /* Un límite fijo para que no se estire de más */
+  /* Volvemos a dejar que la altura sea automática para ver la imagen entera */
+  height: auto; 
   display: block;
-  /* ¡ESTA ES LA CLAVE! Hace que la imagen se recorte sutilmente por los lados 
-     en lugar de estirarse hacia abajo, manteniendo su calidad y centrado */
-  object-fit: cover; 
+  /* Cambiamos 'cover' por 'contain' o 'fill' para no recortar.
+     'contain' asegura que se vea toda, 'fill' la estira ligeramente.
+     Probemos con 'fill' que suele funcionar mejor para banners. */
+  object-fit: fill; 
   object-position: center;
 }
 
-/* Ajuste opcional para la sección de Nuestra Misión */
-.nuestra-mision-section { /* Cambia esto por la clase real de esa sección si la tienes */
-  padding: 20px 0; /* Reduce el espaciado superior/inferior para ganar espacio */
+/* ==========================
+   AJUSTE DE ESPACIADO DE PÁGINA (ESTO ES LO NUEVO)
+========================= */
+
+/* 1. Reducimos el relleno de la sección que contiene al slider */
+/* Necesitamos el nombre real de tu clase contenedora, asumiremos '.nuestra-mision-section'.
+   Si no funciona, envíame el HTML o una clase de contenedor que rodee al slider. */
+.nuestra-mision-section { 
+  padding-top: 10px !important; /* Mínimo relleno arriba */
+  padding-bottom: 20px !important; /* Espacio moderado abajo */
+}
+
+/* 2. Reducimos el margen inferior del slider para acercar los botones */
+.hero-slider {
+  margin-bottom: -15px !important; /* Un margen negativo suave sube los botones */
+}
+
+/* 3. Aseguramos que el contenedor de los botones no tenga relleno excesivo */
+/* Asumiremos que tus botones están en '.botones-container' o similar. */
+/* Reemplaza '.botones-container' por la clase real de tus botones. */
+.botones-container { 
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
