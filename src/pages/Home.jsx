@@ -13,24 +13,18 @@ function Home() {
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch(`${API_URL}/api/products`)
-      .then((response) => {
-        if (!response.ok) throw new Error("Error al cargar productos");
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
         setProducts(Array.isArray(data) ? data : []);
         setLoading(false);
-        setError(null);
       })
-      .catch((err) => {
-        console.error(err);
+      .catch((error) => {
+        console.error(error);
         setProducts([]);
         setLoading(false);
-        setError("No se pudieron cargar los productos. Intenta más tarde.");
       });
   }, []);
 
@@ -65,11 +59,15 @@ Mi correo:
 
 Visto en Global-GS Store.`;
 
-    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+      message
+    )}`;
+
     window.open(url, "_blank");
   };
 
-  const availableProducts = products.filter((p) => (p.stock ?? 0) > 0);
+  const availableProducts = products.filter((product) => (product.stock ?? 0) > 0);
+
   const featuredProducts =
     availableProducts.length > 0
       ? availableProducts.slice(0, 4)
@@ -77,46 +75,35 @@ Visto en Global-GS Store.`;
 
   return (
     <main className="home-page">
-
-      {/* SLIDER */}
       <section className="hero-slider">
-        <Swiper
-  modules={[Autoplay, Navigation, Pagination]}
-  autoplay={{
-    delay: 4000,
-    disableOnInteraction: false,
-  }}
-  navigation
-  pagination={{ clickable: true }}
-  loop={true}
-  slidesPerView={4}
-  spaceBetween={16}
-  breakpoints={{
-    0: { slidesPerView: 1, spaceBetween: 8 },
-    768: { slidesPerView: 2, spaceBetween: 12 },
-    1024: { slidesPerView: 3, spaceBetween: 16 },
-    1280: { slidesPerView: 4, spaceBetween: 20 }
-  }}
->
-  {[1,2,3,4,5,6,7,8,9].map((num) => (
-    <SwiperSlide key={`slide-${num}`}>
-      <div
-        className="slide-bg"
-        style={{ backgroundImage: `url(/slide${num}.jpg)` }}
-      >
-        <div className="slide-overlay" />
-      </div>
-    </SwiperSlide>
-  ))}
-</Swiper>
+  <Swiper
+    modules={[Autoplay, Navigation, Pagination]}
+    autoplay={{
+      delay: 4000,
+      disableOnInteraction: false,
+    }}
+    navigation
+    pagination={{ clickable: true }}
+    loop={true}
+  >
+    {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+  <SwiperSlide key={`slide-${num}`}>
+    <div
+      className="slide-bg"
+      style={{ backgroundImage: `url(/slide${num}.jpg)` }}
+    >
+      <div className="slide-overlay" />
+      {/* Sin texto encima: la imagen ya tiene su propio diseño */}
+    </div>
+  </SwiperSlide>
+))}
 
-      </section>
 
-      {/* BOTONES */}
       <div className="home-buttons">
         <Link to="/productos" className="home-btn catalogo">
           Ver Catálogo
         </Link>
+
         <a
           href="https://wa.me/18292215896"
           target="_blank"
@@ -127,7 +114,6 @@ Visto en Global-GS Store.`;
         </a>
       </div>
 
-      {/* PRODUCTOS DESTACADOS */}
       <section className="featured-section">
         <div className="featured-header">
           <div>
@@ -138,15 +124,13 @@ Visto en Global-GS Store.`;
               oficinas y empresas.
             </p>
           </div>
+
           <Link to="/productos" className="featured-view-all">
             Ver todos
           </Link>
         </div>
 
-        {/* Estados: error / cargando / vacío / lista */}
-        {error ? (
-          <p className="empty-message">{error}</p>
-        ) : loading ? (
+        {loading ? (
           <p className="empty-message">Cargando productos destacados...</p>
         ) : featuredProducts.length > 0 ? (
           <div className="featured-grid">
@@ -160,7 +144,6 @@ Visto en Global-GS Store.`;
                     <img
                       src={product.image || "/og-image.jpg"}
                       alt={product.name || "Producto Global-GS"}
-                      loading="lazy"
                     />
                   </Link>
 
@@ -168,14 +151,13 @@ Visto en Global-GS Store.`;
                     <div className="featured-meta">
                       <span>{product.category || "Sin categoría"}</span>
                       <strong>
-                        {stock > 0 ? `Disponible (${stock})` : "Agotado"}
+                        {stock > 0
+                          ? `Disponible (${stock})`
+                          : "Agotado"}
                       </strong>
                     </div>
 
-                    <Link
-                      to={`/producto/${productId}`}
-                      className="featured-title"
-                    >
+                    <Link to={`/producto/${productId}`} className="featured-title">
                       <h3>{product.name}</h3>
                     </Link>
 
@@ -193,10 +175,7 @@ Visto en Global-GS Store.`;
                         Comprar por WhatsApp
                       </button>
                     ) : (
-                      <button
-                        className="featured-buy disabled-button"
-                        disabled
-                      >
+                      <button className="featured-buy disabled-button" disabled>
                         Producto agotado
                       </button>
                     )}

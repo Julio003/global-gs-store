@@ -2085,14 +2085,12 @@ a {
 .slide-bg {
   width: 100%;
   aspect-ratio: 1500 / 480;
-  background-size: contain;   /* ← CAMBIA cover por contain */
-  background-position: center;
+  background-size: contain;
+  background-position: center center;
   background-repeat: no-repeat;
-  background-color: var(--navy);
+  background-color: #fff;
   position: relative;
-  overflow: hidden;
 }
-
 
 
 /* Capa oscura encima de la imagen */
@@ -2156,9 +2154,4 @@ a {
 
 .swiper-pagination-bullet-active {
   background: #ff6b00;
-}
-/* Asegura que Swiper no fuerce widths raros */
-.hero-slider .swiper-slide {
-  width: auto !important;
-  height: auto !important;
 }
