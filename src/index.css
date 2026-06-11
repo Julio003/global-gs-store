@@ -2007,3 +2007,55 @@ a {
 .slide-bg { width:100%; height:100%; background-size:cover; background-position:center; position:relative; }
 .slide-overlay { position:absolute; left:0; right:0; bottom:0; height:30%; background:linear-gradient(to top, rgba(0,26,68,0.85), rgba(0,26,68,0)); z-index:5; pointer-events:none; }
 .slide-content { position:absolute; left:6%; right:6%; bottom:8%; z-index:10; color:#fff; text-shadow:0 6px 18px rgba(0,0,0,0.45); }
+
+/* HERO SLIDER */
+.hero-slider {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+  margin-bottom: 24px;
+}
+
+.hero-slider .swiper {
+  width: 100%;
+  height: 100%;
+}
+
+/* El div de fondo de cada slide */
+.slide-bg {
+  width: 100%;
+  height: 70vh;              /* altura del slider */
+  min-height: 320px;         /* mínimo en pantallas pequeñas */
+  background-size: contain;  /* ← CLAVE: que NO recorte la imagen */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: var(--navy); /* fondo mientras carga */
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Capa oscura encima de la imagen */
+.slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* Texto del slide */
+.slide-content {
+  position: relative;
+  z-index: 2;
+  padding: 40px;
+  color: white;
+}
+
+.slide-content h2 {
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  margin: 0 0 12px;
+}
+
+.slide-content p {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  margin: 0;
+}
