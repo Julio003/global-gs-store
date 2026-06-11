@@ -2085,12 +2085,14 @@ a {
 .slide-bg {
   width: 100%;
   aspect-ratio: 1500 / 480;
-  background-size: contain;
-  background-position: center center;
+  background-size: contain;   /* ← CAMBIA cover por contain */
+  background-position: center;
   background-repeat: no-repeat;
-  background-color: #fff;
+  background-color: var(--navy);
   position: relative;
+  overflow: hidden;
 }
+
 
 
 /* Capa oscura encima de la imagen */
