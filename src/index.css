@@ -1881,20 +1881,12 @@ a {
 }
 .hero-slider {
   max-width: 1400px;
-  margin: 0 auto 20px auto;
-  border-radius: 20px;
-  overflow: hidden;
+  margin: auto;
 }
 
 .hero-slider img {
   width: 100%;
-  height: 320px;
-  object-fit: cover;
+  height: auto;
   display: block;
-}
-
-@media (max-width: 768px) {
-  .hero-slider img {
-    height: 220px;
-  }
+  border-radius: 20px;
 }
