@@ -87,40 +87,97 @@ Visto en Global-GS Store.`;
     loop={true}
   >
     <SwiperSlide>
-      <img src="/slide1.jpg" alt="Global-GS 1" />
-    </SwiperSlide>
+  <div className="slide-bg" style={{ backgroundImage: 'url(/slide1.jpg)' }}>
+    <div className="slide-overlay" />
+    <div className="slide-content">
+      <h2>Título en HTML</h2>
+      <p>Subtítulo en HTML</p>
+    </div>
+  </div>
+</SwiperSlide>
+
+
+   <SwiperSlide>
+  <div className="slide-bg" style={{ backgroundImage: 'url(/slide2.jpg)' }}>
+    <div className="slide-overlay" />
+    <div className="slide-content">
+      <h2>Título en HTML</h2>
+      <p>Subtítulo en HTML</p>
+    </div>
+  </div>
+</SwiperSlide>
+
 
     <SwiperSlide>
-      <img src="/slide2.jpg" alt="Global-GS 2" />
-    </SwiperSlide>
+  <div className="slide-bg" style={{ backgroundImage: 'url(/slide3.jpg)' }}>
+    <div className="slide-overlay" />
+    <div className="slide-content">
+      <h2>Título en HTML</h2>
+      <p>Subtítulo en HTML</p>
+    </div>
+  </div>
+</SwiperSlide>
+
 
     <SwiperSlide>
-      <img src="/slide3.jpg" alt="Global-GS 3" />
-    </SwiperSlide>
+  <div className="slide-bg" style={{ backgroundImage: 'url(/slide4.jpg)' }}>
+    <div className="slide-overlay" />
+    <div className="slide-content">
+      <h2>Título en HTML</h2>
+      <p>Subtítulo en HTML</p>
+    </div>
+  </div>
+</SwiperSlide>
 
     <SwiperSlide>
-      <img src="/slide4.jpg" alt="Global-GS 4" />
-    </SwiperSlide>
+  <div className="slide-bg" style={{ backgroundImage: 'url(/slide5.jpg)' }}>
+    <div className="slide-overlay" />
+    <div className="slide-content">
+      <h2>Título en HTML</h2>
+      <p>Subtítulo en HTML</p>
+    </div>
+  </div>
+</SwiperSlide>
 
     <SwiperSlide>
-      <img src="/slide5.jpg" alt="Global-GS 5" />
-    </SwiperSlide>
+  <div className="slide-bg" style={{ backgroundImage: 'url(/slide6.jpg)' }}>
+    <div className="slide-overlay" />
+    <div className="slide-content">
+      <h2>Título en HTML</h2>
+      <p>Subtítulo en HTML</p>
+    </div>
+  </div>
+</SwiperSlide>
 
     <SwiperSlide>
-      <img src="/slide6.jpg" alt="Global-GS 6" />
-    </SwiperSlide>
+  <div className="slide-bg" style={{ backgroundImage: 'url(/slide7.jpg)' }}>
+    <div className="slide-overlay" />
+    <div className="slide-content">
+      <h2>Título en HTML</h2>
+      <p>Subtítulo en HTML</p>
+    </div>
+  </div>
+</SwiperSlide>
 
     <SwiperSlide>
-      <img src="/slide7.jpg" alt="Global-GS 7" />
-    </SwiperSlide>
+  <div className="slide-bg" style={{ backgroundImage: 'url(/slide8.jpg)' }}>
+    <div className="slide-overlay" />
+    <div className="slide-content">
+      <h2>Título en HTML</h2>
+      <p>Subtítulo en HTML</p>
+    </div>
+  </div>
+</SwiperSlide>
 
     <SwiperSlide>
-      <img src="/slide8.jpg" alt="Global-GS 8" />
-    </SwiperSlide>
-
-    <SwiperSlide>
-      <img src="/slide9.jpg" alt="Global-GS 9" />
-    </SwiperSlide>
+  <div className="slide-bg" style={{ backgroundImage: 'url(/slide9.jpg)' }}>
+    <div className="slide-overlay" />
+    <div className="slide-content">
+      <h2>Título en HTML</h2>
+      <p>Subtítulo en HTML</p>
+    </div>
+  </div>
+</SwiperSlide>
   </Swiper>
 </section>
 
