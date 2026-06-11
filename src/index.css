@@ -1891,77 +1891,41 @@ a {
 }
 
 /* Imágenes del slider */
+.hero-slider {
+  width: 95%;
+  max-width: 1500px;
+  margin: 25px auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: var(--white);
+}
+
+/* Mantiene altura fija para evitar cortes */
+.hero-slider .swiper-slide {
+  height: 480px;              /* Altura uniforme para todas las diapositivas */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Imágenes y contenido dentro del slide */
 .hero-slider img {
   width: 100%;
-  height: 450px;            /* Altura uniforme */
-  object-fit: cover;        /* Llenar espacio sin franjas */
+  height: 100%;
+  object-fit: cover;           /* Llenar sin deformar */
   display: block;
-}
-
-/* Flechas de navegación Swiper */
-.swiper-button-next,
-.swiper-button-prev {
-  color: var(--orange);     /* Color corporativo */
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
-
-.swiper-button-next:hover,
-.swiper-button-prev:hover {
-  color: var(--blue);
-}
-
-/* Puntos de paginación Swiper */
-.swiper-pagination {
-  bottom: 15px !important;  /* Ajusta posición más visible */
-}
-
-.swiper-pagination-bullet {
-  background: var(--navy);
-  opacity: 0.5;
-  width: 10px;
-  height: 10px;
-  margin: 0 6px !important;
-  transition: all 0.3s ease;
-}
-
-.swiper-pagination-bullet-active {
-  background: var(--orange);
-  opacity: 1;
-  transform: scale(1.2);
 }
 
 /* Responsivo */
-@media (max-width: 768px) {
-  .hero-slider img {
-    height: 300px;
-  }
-
-  .swiper-button-next,
-  .swiper-button-prev {
-    display: none; /* Oculta flechas en móvil si prefieres solo los puntos */
-  }
-
-  .swiper-pagination {
-    bottom: 10px !important;
-  }
-}
-.hero-slider img {
-  width: 100%;
-  height: 480px;           /* Altura uniforme */
-  object-fit: cover;       /* Llenar espacio sin deformar */
-  border-radius: 20px;
-  display: block;
-}
-
 @media (max-width: 1024px) {
-  .hero-slider img {
+  .hero-slider .swiper-slide {
     height: 380px;
   }
 }
 
 @media (max-width: 768px) {
-  .hero-slider img {
+  .hero-slider .swiper-slide {
     height: 280px;
   }
 }
