@@ -2084,7 +2084,7 @@ a {
 /* El div de fondo de cada slide */
 .slide-bg {
   width: 100%;
-  aspect-ratio: 1200 / 630;
+  aspect-ratio: 1500 / 630;
   background-size: contain;   /* ← CAMBIA cover por contain */
   background-position: center;
   background-repeat: no-repeat;
@@ -2156,4 +2156,9 @@ a {
 
 .swiper-pagination-bullet-active {
   background: #ff6b00;
+}
+/* Asegura que Swiper no fuerce widths raros */
+.hero-slider .swiper-slide {
+  width: auto !important;
+  height: auto !important;
 }

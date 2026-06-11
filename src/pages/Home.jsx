@@ -81,23 +81,35 @@ Visto en Global-GS Store.`;
       {/* SLIDER */}
       <section className="hero-slider">
         <Swiper
-          modules={[Autoplay, Navigation, Pagination]}
-          autoplay={{ delay: 4000, disableOnInteraction: false }}
-          navigation
-          pagination={{ clickable: true }}
-          loop={true}
-        >
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-            <SwiperSlide key={`slide-${num}`}>
-              <div
-                className="slide-bg"
-                style={{ backgroundImage: `url(/slide${num}.jpg)` }}
-              >
-                <div className="slide-overlay" />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+  modules={[Autoplay, Navigation, Pagination]}
+  autoplay={{
+    delay: 4000,
+    disableOnInteraction: false,
+  }}
+  navigation
+  pagination={{ clickable: true }}
+  loop={true}
+  slidesPerView={4}
+  spaceBetween={16}
+  breakpoints={{
+    0: { slidesPerView: 1, spaceBetween: 8 },
+    768: { slidesPerView: 2, spaceBetween: 12 },
+    1024: { slidesPerView: 3, spaceBetween: 16 },
+    1280: { slidesPerView: 4, spaceBetween: 20 }
+  }}
+>
+  {[1,2,3,4,5,6,7,8,9].map((num) => (
+    <SwiperSlide key={`slide-${num}`}>
+      <div
+        className="slide-bg"
+        style={{ backgroundImage: `url(/slide${num}.jpg)` }}
+      >
+        <div className="slide-overlay" />
+      </div>
+    </SwiperSlide>
+  ))}
+</Swiper>
+
       </section>
 
       {/* BOTONES */}
