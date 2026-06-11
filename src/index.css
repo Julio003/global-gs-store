@@ -1899,4 +1899,17 @@ a {
   object-fit: contain !important; /* Muestra la imagen completa sin recortar */
   background-color: #ffffff !important;
 }
+.hero-slider {
+  width: 95%;              /* Ocupa casi todo el ancho */
+  max-width: 1500px;        /* Más ancho que el resto del contenido */
+  margin: 20px auto;
+  border-radius: 20px;
+  overflow: hidden;
+}
 
+.hero-slider img {
+  width: 100%;
+  height: 450px;            /* Altura uniforme */
+  object-fit: cover;        /* Llenar espacio sin dejar márgenes */
+  display: block;
+}
