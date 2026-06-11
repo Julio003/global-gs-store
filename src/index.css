@@ -1883,7 +1883,7 @@ a {
    HERO SLIDER - SOLUCIÓN DEFINITIVA (SIN CORTES Y RESPONSIVE)
    ========================================================================== */
 .hero-slider {
-  max-width: 1300px; /* Reducimos ligeramente el ancho para dar aire a los lados */
+  max-width: 1400px; /* Reducimos ligeramente el ancho para dar aire a los lados */
   margin: 20px auto;
   overflow: hidden;
   border-radius: 20px;
