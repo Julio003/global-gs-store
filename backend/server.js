@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import productRoutes from "./routes/productRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
+import whatsappRoutes from "./routes/whatsappRoutes.js";
 dotenv.config();
 
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/whatsapp", whatsappRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)
