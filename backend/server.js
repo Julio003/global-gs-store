@@ -37,6 +37,11 @@ app.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
   const challenge = req.query["hub.challenge"];
+app.post("/webhook", (req, res) => {
+  console.log("POST WEBHOOK RECIBIDO");
+  console.log(JSON.stringify(req.body, null, 2));
+  res.sendStatus(200);
+});
 
   if (
     mode === "subscribe" &&
