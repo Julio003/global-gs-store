@@ -49,3 +49,30 @@ export const notifyOwner = async (body) => {
 
   return sendWhatsAppText(ownerPhone, body);
 };
+
+export const sendWelcomeMessage = async (to) => {
+  return sendWhatsAppText(
+    to,
+    `👋 Bienvenido a Global-GS Store.
+
+Puedo ayudarte a encontrar productos, precios y disponibilidad.
+
+Escribe el nombre del producto o categoría que buscas.`
+  );
+};
+
+export const sendPurchaseConfirmation = async (
+  to,
+  productName,
+  productPrice
+) => {
+  return sendWhatsAppText(
+    to,
+    `✅ Hemos recibido tu solicitud.
+
+Producto: ${productName}
+Precio: RD$${productPrice}
+
+Un asesor de Global-GS se pondrá en contacto contigo para finalizar la compra.`
+  );
+};
