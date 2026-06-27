@@ -33,18 +33,24 @@ app.get("/", (req, res) => {
     message: "Global-GS Backend funcionando correctamente",
   });
 });
-app.get('/webhook', (req, res) => {
-  const verifyToken = 'global_gs_2026_bot';
-  const mode = req.query['hub.mode'];
-  const token = req.query['hub.verify_token'];
-  const challenge = req.query['hub.challenge'];
+app.post('/webhook', (req, res) => {
+  const body = req.body;
 
-  if (mode && token === verifyToken) {
-    res.status(200).send(challenge);
+  if (body.object === 'whatsapp_business_account') {
+    body.entry.forEach(entry => {
+      entry.changes.forEach(change => {
+        const message = change.value.messages?.[0];
+        if (message) {
+          console.log('Mensaje recibido:', message.text?.body);
+        }
+      });
+    });
+    res.status(200).send('EVENT_RECEIVED');
   } else {
-    res.status(403).send('Token inválido');
+    res.sendStatus(404);
   }
 });
+
 
 const PORT = process.env.PORT || 5000;
 
