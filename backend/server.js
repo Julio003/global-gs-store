@@ -33,6 +33,20 @@ app.get("/", (req, res) => {
     message: "Global-GS Backend funcionando correctamente",
   });
 });
+app.get('/webhook', (req, res) => {
+  const VERIFY_TOKEN = "global_gs_2026_bot";
+  const mode = req.query['hub.mode'];
+  const token = req.query['hub.verify_token'];
+  const challenge = req.query['hub.challenge'];
+
+  if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+    console.log("WEBHOOK VERIFICADO ✅");
+    res.status(200).send(challenge);
+  } else {
+    res.status(403).send('Token inválido ❌');
+  }
+});
+
 app.post('/webhook', (req, res) => {
   const body = req.body;
 
