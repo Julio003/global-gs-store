@@ -46,18 +46,6 @@ app.get('/webhook', (req, res) => {
   }
 });
 
-
-  if (
-    mode === "subscribe" &&
-    token === process.env.VERIFY_TOKEN
-  ) {
-    console.log("Webhook verificado correctamente");
-    res.status(200).send(challenge);
-  } else {
-    res.sendStatus(403);
-  }
-});
-
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
