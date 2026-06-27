@@ -32,6 +32,7 @@ app.get("/", (req, res) => {
     success: true,
     message: "Global-GS Backend funcionando correctamente",
   });
+});
 app.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
