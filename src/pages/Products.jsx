@@ -11,6 +11,17 @@ function Products() {
   const [category, setCategory] = useState("Todos");
 
   useEffect(() => {
+    document.title = "Catálogo de Productos | Global-GS Store República Dominicana";
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute(
+        "content",
+        "Explora nuestro catálogo de tecnología. Cámaras de seguridad, DVR, NVR, redes WiFi, cableado estructurado, accesorios y soporte técnico en República Dominicana."
+      );
+    }
+  }, []);
+
+  useEffect(() => {
     fetch(`${API_URL}/api/products`)
       .then((response) => response.json())
       .then((data) => {

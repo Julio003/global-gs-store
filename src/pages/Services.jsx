@@ -1,4 +1,17 @@
+import { useEffect } from "react";
+
 function Services() {
+  useEffect(() => {
+    document.title = "Servicios de Tecnología, Redes y CCTV | Global-GS Store";
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute(
+        "content",
+        "Ofrecemos servicios de desarrollo web full stack (páginas web y tiendas online), instalación de cámaras de seguridad (CCTV), redes WiFi y cableado, soporte técnico de PC."
+      );
+    }
+  }, []);
+
   return (
     <main className="services-page">
       <section className="services-hero">

@@ -76,6 +76,17 @@ function Home() {
   }, []);
 
   useEffect(() => {
+    document.title = "Global-GS Store | Tecnología y Seguridad Electrónica en República Dominicana";
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute(
+        "content",
+        "Catálogo digital Global-GS. Encuentra lo mejor en tecnología, accesorios, CCTV, redes, seguridad electrónica y soporte técnico especializado en RD."
+      );
+    }
+  }, []);
+
+  useEffect(() => {
     const handleDocumentClick = (e) => {
       if (!e.target.closest(".featured-card")) {
         setExpandedProductId(null);
