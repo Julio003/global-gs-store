@@ -2,6 +2,12 @@ import express from "express";
 import Lead from "../models/Lead.js";
 import { searchProducts } from "../services/productSearchService.js";
 import { notifyOwner, sendWhatsAppText } from "../services/whatsappService.js";
+import { createOrderFromCart } from "../services/orderService.js";
+import {
+  addProductToCart,
+  getCartSummary,
+  clearCart,
+} from "../services/cartService.js";
 
 const router = express.Router();
 
@@ -145,6 +151,50 @@ const handleIncomingText = async ({ from, text }) => {
   const isGreeting = hasAnyWord(text, greetingWords) && normalizedText.length < 25;
   const isBuying = hasAnyWord(text, buyingWords);
 
+  if (normalizedText === "carrito") {
+  const summary = await getCartSummary(from);
+
+  await sendWhatsAppText(from, summary);
+
+  return;
+  
+}if (normalizedText === "confirmar compra") {
+  const order = await createOrderFromCart(from);
+
+  if (!order) {
+    await sendWhatsAppText(
+      from,
+      "🛒 Tu carrito está vacío."
+    );
+
+    return;
+  }
+
+  await notifyOwner(
+    [
+      "🛍️ NUEVA ORDEN GLOBAL GS",
+      "",
+      `Cliente: ${from}`,
+      `Orden: ${order._id}`,
+      `Total: RD$${formatPrice(order.total)}`,
+    ].join("\n")
+  );
+
+  await sendWhatsAppText(
+    from,
+    [
+      "✅ Tu pedido fue creado correctamente.",
+      "",
+      `Número de orden: ${order._id}`,
+      `Total: RD$${formatPrice(order.total)}`,
+      "",
+      "Un asesor de Global GS se pondrá en contacto contigo para coordinar el pago y la entrega.",
+    ].join("\n")
+  );
+
+  return;
+}
+
   if (isGreeting) {
     await sendWhatsAppText(from, buildWelcomeMessage());
     return;
@@ -153,27 +203,30 @@ const handleIncomingText = async ({ from, text }) => {
   const products = await searchProducts(text, 3);
 
   if (isBuying) {
-    const product = getSelectedProduct(text, products);
-    const lead = await saveLead({
-      from,
-      message: text,
-      product,
-      status: "ready_to_buy",
-    });
+  const product = getSelectedProduct(text, products);
+
+  await addProductToCart(from, product);
+
+  const lead = await saveLead({
+    from,
+    message: text,
+    product,
+    status: "ready_to_buy",
+  });
 
     await notifyPurchaseIntent({ from, message: text, product, lead });
 
     await sendWhatsAppText(
-      from,
-      [
-        "Perfecto, ya te tengo como cliente listo para comprar.",
-        product
-          ? `Producto: ${product.name} - RD$${formatPrice(product.price)}`
-          : "Dime el producto exacto que quieres para confirmarlo.",
-        "",
-        "Un asesor de Global-GS recibirá tu solicitud. Para avanzar más rápido, envía tu nombre, zona de entrega y método de pago preferido.",
-      ].join("\n")
-    );
+  from,
+  [
+    "✅ Producto agregado al carrito.",
+    "",
+    `🛒 ${product.name}`,
+    `💰 RD$${formatPrice(product.price)}`,
+    "",
+    "Escribe *carrito* para ver tu pedido actual o sigue agregando más productos.",
+  ].join("\n")
+);
 
     return;
   }
