@@ -15,6 +15,7 @@ const productSchema = new mongoose.Schema(
         message: "Un producto puede tener hasta 7 imágenes",
       },
     },
+    video: { type: String, default: "" },
     stock: { type: Number, required: true, default: 0 },
     active: { type: Boolean, default: true },
   },

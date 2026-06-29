@@ -5,10 +5,11 @@ import cloudinary from "../config/cloudinary.js";
 const router = express.Router();
 
 const storage = multer.memoryStorage();
+
 const upload = multer({
   storage,
   limits: {
-    fileSize: 10 * 1024 * 1024,
+    fileSize: 100 * 1024 * 1024,
   },
 });
 
@@ -18,6 +19,23 @@ const uploadBufferToCloudinary = (file) => {
       {
         folder: "global-gs-store",
         resource_type: "image",
+      },
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      }
+    );
+
+    stream.end(file.buffer);
+  });
+};
+
+const uploadVideoToCloudinary = (file) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder: "global-gs-store/videos",
+        resource_type: "video",
       },
       (error, result) => {
         if (error) reject(error);
@@ -52,6 +70,31 @@ router.post("/", upload.array("image", 7), async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Error subiendo imagen",
+    });
+  }
+});
+
+router.post("/video", upload.single("video"), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "No se recibió ningún video",
+      });
+    }
+
+    const result = await uploadVideoToCloudinary(req.file);
+
+    res.json({
+      success: true,
+      videoUrl: result.secure_url,
+    });
+  } catch (error) {
+    console.error("Error subiendo video:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Error subiendo video",
     });
   }
 });
