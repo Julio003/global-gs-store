@@ -9,6 +9,9 @@ import ProductDetails from "./pages/ProductDetails";
 import Contact from "./pages/Contact";
 import Admin from "./pages/admin";
 import Login from "./pages/Login";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsConditions from "./pages/TermsConditions";
+import DataDeletion from "./pages/DataDeletion";
 
 function App() {
   return (
@@ -23,6 +26,9 @@ function App() {
         <Route path="/contacto" element={<Contact />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/politica-privacidad" element={<PrivacyPolicy />} />
+<Route path="/terminos-condiciones" element={<TermsConditions />} />
+<Route path="/eliminacion-datos" element={<DataDeletion />} />
       </Routes>
 
       <Footer />
