@@ -524,7 +524,7 @@ function Admin() {
           <div style={{ borderTop: "1px solid #e5e7eb", paddingTop: "20px", marginTop: "10px" }}>
             <label>
               🎬 Video del producto (opcional, máx. 35 segundos recomendado)
-              <input type="file" accept="video/mp4,video/webm,video/mov,video/*" onChange={handleVideoUpload} disabled={uploadingVideo} />
+              <input type="file" accept="video/*,video/mp4,video/quicktime" onChange={handleVideoUpload} disabled={uploadingVideo} />
             </label>
 
             {uploadingVideo && <p style={{ color: "#f97316", fontSize: "14px" }}>Subiendo video... por favor espera</p>}
