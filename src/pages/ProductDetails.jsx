@@ -1,25 +1,30 @@
 ﻿import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 function ProductDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const API_URL = "https://global-gs-backend.onrender.com";
   const whatsappNumber = "18292215896";
 
   const [product, setProduct] = useState(null);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState("");
   const [showVideo, setShowVideo] = useState(false);
+  const [touchStartX, setTouchStartX] = useState(null);
 
   useEffect(() => {
     fetch(`${API_URL}/api/products`)
       .then((response) => response.json())
       .then((data) => {
         const products = Array.isArray(data) ? data : [];
+        setProducts(products);
         const foundProduct = products.find((item) => item._id === id || item.id === id);
         setProduct(foundProduct || null);
         setActiveImage(foundProduct?.image || "");
+        setShowVideo(false);
         setLoading(false);
       })
       .catch((error) => {
@@ -28,6 +33,8 @@ function ProductDetails() {
         setLoading(false);
       });
   }, [id]);
+
+  const getProductId = (productData) => productData?._id || productData?.id;
 
   const formatPrice = (price) => Number(price || 0).toLocaleString("es-DO");
 
@@ -74,6 +81,45 @@ Visto en Global-GS Store.`;
     window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank");
   };
 
+  const categoryProducts = product
+    ? products.filter((item) => (item.category || "Sin categoría") === (product.category || "Sin categoría"))
+    : [];
+
+  const currentIndex = categoryProducts.findIndex((item) => getProductId(item) === getProductId(product));
+  const previousProduct =
+    categoryProducts.length > 1
+      ? categoryProducts[(currentIndex - 1 + categoryProducts.length) % categoryProducts.length]
+      : null;
+  const nextProduct =
+    categoryProducts.length > 1
+      ? categoryProducts[(currentIndex + 1) % categoryProducts.length]
+      : null;
+
+  const goToProduct = (targetProduct) => {
+    const targetId = getProductId(targetProduct);
+
+    if (!targetId || targetId === getProductId(product)) return;
+
+    navigate(`/producto/${targetId}`);
+  };
+
+  const handleTouchEnd = (event) => {
+    if (touchStartX === null || categoryProducts.length <= 1) return;
+
+    const distance = touchStartX - event.changedTouches[0].clientX;
+    const minSwipeDistance = 55;
+
+    if (distance > minSwipeDistance && nextProduct) {
+      goToProduct(nextProduct);
+    }
+
+    if (distance < -minSwipeDistance && previousProduct) {
+      goToProduct(previousProduct);
+    }
+
+    setTouchStartX(null);
+  };
+
   if (loading) return <p className="empty-message">Cargando producto...</p>;
 
   if (!product) {
@@ -94,8 +140,29 @@ Visto en Global-GS Store.`;
   const hasVideo = Boolean(product.video);
 
   return (
-    <main className="product-detail-page">
+    <main
+      className="product-detail-page"
+      onTouchStart={(event) => setTouchStartX(event.touches[0].clientX)}
+      onTouchEnd={handleTouchEnd}
+    >
       <section className="product-detail-card">
+        {categoryProducts.length > 1 && (
+          <div className="product-swipe-nav" aria-label="Navegar productos de la misma categoría">
+            <button type="button" onClick={() => goToProduct(previousProduct)} aria-label="Producto anterior">
+              ‹
+            </button>
+            <div>
+              <span>{product.category || "Sin categoría"}</span>
+              <strong>
+                {currentIndex + 1} de {categoryProducts.length}
+              </strong>
+            </div>
+            <button type="button" onClick={() => goToProduct(nextProduct)} aria-label="Producto siguiente">
+              ›
+            </button>
+          </div>
+        )}
+
         <div className="product-detail-image">
 
           {hasVideo && (
@@ -227,6 +294,37 @@ Visto en Global-GS Store.`;
             </Link>
           </div>
 
+          {categoryProducts.length > 1 && (
+            <section className="related-product-strip" aria-label="Más productos de esta categoría">
+              <div className="related-product-header">
+                <span>Más en esta categoría</span>
+                <strong>
+                  {currentIndex + 1}/{categoryProducts.length}
+                </strong>
+              </div>
+
+              <div className="related-product-row">
+                {categoryProducts.map((item) => {
+                  const itemId = getProductId(item);
+                  const isCurrent = itemId === getProductId(product);
+
+                  return (
+                    <button
+                      key={itemId}
+                      type="button"
+                      className={isCurrent ? "related-product-pill active" : "related-product-pill"}
+                      onClick={() => goToProduct(item)}
+                      disabled={isCurrent}
+                    >
+                      <img src={item.image || "/og-image.jpg"} alt={item.name || "Producto Global-GS"} />
+                      <span>{item.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
           <div className="product-detail-benefits">
             <div>
               <strong>Garantía</strong>
@@ -243,6 +341,20 @@ Visto en Global-GS Store.`;
           </div>
         </div>
       </section>
+
+      {categoryProducts.length > 1 && (
+        <nav className="product-bottom-nav" aria-label="Cambiar producto">
+          <button type="button" onClick={() => goToProduct(previousProduct)}>
+            ‹ Anterior
+          </button>
+          <span>
+            {currentIndex + 1}/{categoryProducts.length}
+          </span>
+          <button type="button" onClick={() => goToProduct(nextProduct)}>
+            Siguiente ›
+          </button>
+        </nav>
+      )}
     </main>
   );
 }
