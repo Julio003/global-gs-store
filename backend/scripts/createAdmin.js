@@ -16,7 +16,14 @@ const createAdmin = async () => {
       process.exit();
     }
 
-    const hashedPassword = await bcrypt.hash("Admin12345", 10);
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    if (!adminPassword || adminPassword.length < 12) {
+      console.error("Define ADMIN_PASSWORD en .env con minimo 12 caracteres");
+      process.exit(1);
+    }
+
+    const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
     await User.create({
       username: "admin",
@@ -26,7 +33,7 @@ const createAdmin = async () => {
 
     console.log("Usuario admin creado correctamente");
     console.log("Usuario: admin");
-    console.log("Contraseña: Admin12345");
+    console.log("Contraseña: definida en ADMIN_PASSWORD");
 
     process.exit();
   } catch (error) {

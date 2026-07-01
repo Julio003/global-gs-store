@@ -1,6 +1,7 @@
 import express from "express";
 import Product from "../models/Product.js";
 import { searchProducts } from "../services/productSearchService.js";
+import { requireAdmin, requireAuth } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -21,19 +22,20 @@ router.get("/search", async (req, res) => {
   res.json(products);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", requireAuth, requireAdmin, async (req, res) => {
   const product = await Product.create(req.body);
   res.status(201).json(product);
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", requireAuth, requireAdmin, async (req, res) => {
   const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
+    runValidators: true,
   });
   res.json(product);
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", requireAuth, requireAdmin, async (req, res) => {
   await Product.findByIdAndUpdate(req.params.id, { active: false });
   res.json({ message: "Producto eliminado" });
 });

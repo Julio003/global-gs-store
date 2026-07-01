@@ -1,6 +1,7 @@
 ﻿import express from "express";
 import multer from "multer";
 import cloudinary from "../config/cloudinary.js";
+import { requireAdmin, requireAuth } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -9,7 +10,15 @@ const storage = multer.memoryStorage();
 const upload = multer({
   storage,
   limits: {
-    fileSize: 100 * 1024 * 1024,
+    fileSize: 20 * 1024 * 1024,
+    files: 7,
+  },
+  fileFilter(req, file, callback) {
+    if (!file.mimetype.startsWith("image/") && !file.mimetype.startsWith("video/")) {
+      return callback(new Error("Tipo de archivo no permitido"));
+    }
+
+    callback(null, true);
   },
 });
 
@@ -46,6 +55,8 @@ const uploadVideoToCloudinary = (file) => {
     stream.end(file.buffer);
   });
 };
+
+router.use(requireAuth, requireAdmin);
 
 router.post("/", upload.array("image", 7), async (req, res) => {
   try {

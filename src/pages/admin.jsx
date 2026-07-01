@@ -57,6 +57,11 @@ function Admin() {
     }
   };
 
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem("token");
+    return token ? { Authorization: `Bearer ${token}` } : {};
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -84,6 +89,7 @@ function Admin() {
 
       const response = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
+        headers: getAuthHeaders(),
         body: imageData,
       });
 
@@ -113,6 +119,7 @@ function Admin() {
 
       const response = await fetch(`${API_URL}/api/upload/video`, {
         method: "POST",
+        headers: getAuthHeaders(),
         body: videoData,
       });
 
@@ -151,6 +158,7 @@ function Admin() {
 
       const response = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
+        headers: getAuthHeaders(),
         body: imageData,
       });
 
@@ -207,7 +215,7 @@ function Admin() {
 
       const response = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...getAuthHeaders() },
         body: JSON.stringify(productData),
       });
 
@@ -242,7 +250,10 @@ function Admin() {
     if (!window.confirm("¿Seguro que deseas eliminar este producto del catálogo?")) return;
 
     try {
-      const response = await fetch(`${API_URL}/api/products/${id}`, { method: "DELETE" });
+      const response = await fetch(`${API_URL}/api/products/${id}`, {
+        method: "DELETE",
+        headers: getAuthHeaders(),
+      });
       if (!response.ok) throw new Error("No se pudo eliminar el producto");
 
       setMessage("Producto eliminado correctamente");

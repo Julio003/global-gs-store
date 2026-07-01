@@ -1,4 +1,5 @@
 import express from "express";
+import crypto from "crypto";
 import Lead from "../models/Lead.js";
 import { searchProducts } from "../services/productSearchService.js";
 import { notifyOwner, sendWhatsAppText } from "../services/whatsappService.js";
@@ -6,12 +7,39 @@ import { createOrderFromCart } from "../services/orderService.js";
 import {
   addProductToCart,
   getCartSummary,
-  clearCart,
 } from "../services/cartService.js";
 
 const router = express.Router();
 
 const STORE_URL = process.env.PUBLIC_STORE_URL || "https://globalgsstore.com";
+
+const verifyWhatsAppSignature = (req, res, next) => {
+  const appSecret = process.env.WHATSAPP_APP_SECRET;
+
+  if (!appSecret) {
+    return next();
+  }
+
+  const signature = req.headers["x-hub-signature-256"];
+
+  if (!signature || !req.rawBody) {
+    return res.sendStatus(401);
+  }
+
+  const expectedSignature = `sha256=${crypto
+    .createHmac("sha256", appSecret)
+    .update(req.rawBody)
+    .digest("hex")}`;
+
+  const received = Buffer.from(signature);
+  const expected = Buffer.from(expectedSignature);
+
+  if (received.length !== expected.length || !crypto.timingSafeEqual(received, expected)) {
+    return res.sendStatus(401);
+  }
+
+  next();
+};
 
 const greetingWords = ["hola", "buenas", "saludos", "info", "informacion"];
 const buyingWords = [
@@ -255,7 +283,7 @@ router.get("/webhook", (req, res) => {
   return res.sendStatus(403);
 });
 
-router.post("/webhook", async (req, res) => {
+router.post("/webhook", verifyWhatsAppSignature, async (req, res) => {
   try {
     const entries = req.body.entry || [];
 
