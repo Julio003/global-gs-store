@@ -22,8 +22,11 @@ function ProductDetails() {
         const products = Array.isArray(data) ? data : [];
         setProducts(products);
         const foundProduct = products.find((item) => item._id === id || item.id === id);
+        const foundImages = foundProduct
+          ? [foundProduct.image, ...(Array.isArray(foundProduct.images) ? foundProduct.images : [])].filter(Boolean)
+          : [];
         setProduct(foundProduct || null);
-        setActiveImage(foundProduct?.image || "");
+        setActiveImage(foundImages[0] || "/og-image.jpg");
         setShowVideo(false);
         setLoading(false);
       })
@@ -217,7 +220,16 @@ Visto en Global-GS Store.`;
             />
           ) : (
             <>
-              <img src={currentImage} alt={product.name || "Producto Global-GS"} />
+              <div className="product-main-media">
+                <img
+                  key={currentImage}
+                  src={currentImage}
+                  alt={product.name || "Producto Global-GS"}
+                  onError={(event) => {
+                    event.currentTarget.src = "/og-image.jpg";
+                  }}
+                />
+              </div>
 
               {productImages.length > 1 && (
                 <div className="product-detail-gallery">
