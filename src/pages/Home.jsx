@@ -119,11 +119,9 @@ Precio: RD$${formatPrice(product.price)}
 Categoría: ${product.category || "Sin categoría"}
 Disponibilidad: ${getStockStatus(product.stock)}
 
-Por favor, envíenme disponibilidad, forma de pago y método de entrega.
-
 Mi nombre:
-Mi teléfono:
-Mi correo:
+
+Quiero coordinar la compra y la entrega.
 
 Visto en Global-GS Store.`;
 
