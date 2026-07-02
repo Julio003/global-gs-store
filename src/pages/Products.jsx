@@ -138,9 +138,7 @@ Disponibilidad: ${stockStatus.label}
 
 Mi nombre:
 
-Quiero coordinar la compra y la entrega.
-
-Visto en Global-GS Store.`;
+Quiero coordinar la compra y la entrega.`;
 
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
       message

@@ -75,9 +75,7 @@ Stock: ${product.stock ?? 0} unidades
 
 Mi nombre:
 
-Quiero coordinar la compra y la entrega.
-
-Visto en Global-GS Store.`;
+Quiero coordinar la compra y la entrega.`;
 
     window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank");
   };
