@@ -1,3 +1,4 @@
+import assistantRoutes from "./routes/assistantRoutes.js";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -42,6 +43,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/whatsapp", whatsappRoutes);
+app.use("/api/assistant", assistantRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)
