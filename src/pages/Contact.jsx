@@ -173,7 +173,7 @@ Enviado desde el sitio web.`;
               <span className="info-icon">✉️</span>
               <div>
                 <strong>Correo Electrónico</strong>
-                <p>contacto@globalgsstore.com</p>
+                <p>juliocvz.jvc@gmail.com</p>
               </div>
             </div>
 
