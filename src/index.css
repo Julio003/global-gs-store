@@ -2592,12 +2592,31 @@ a {
   opacity: 0.9;
 }
 
+.footer-share-btn.whatsapp,
 .footer-share-btn.wa {
-  background: #20b857;
+  background: #25d366;
+  color: #fff;
 }
 
+.footer-share-btn.facebook,
 .footer-share-btn.fb {
   background: #1877f2;
+  color: #fff;
+}
+
+.footer-share-btn.instagram {
+  background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af);
+  color: #fff;
+}
+
+.footer-share-btn.tiktok {
+  background: #000;
+  color: #fff;
+}
+
+.footer-share-btn.x {
+  background: #111827;
+  color: #fff;
 }
 
 .footer-share-btn.x {

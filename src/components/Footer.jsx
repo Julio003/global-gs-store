@@ -21,7 +21,7 @@
   },
   {
     label: "TikTok",
-    url: "https://www.tiktok.com/@globalgsstore",
+    url: "https://www.tiktok.com/@juliovasquezpolanco",
     className: "tiktok",
   },
   {
