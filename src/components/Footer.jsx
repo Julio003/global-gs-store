@@ -1,26 +1,92 @@
-﻿function Footer() {
+function Footer() {
+  const siteUrl = "https://globalgsstore.com";
+  const shareText =
+    "Global-GS Store: tecnologia, accesorios, CCTV, redes y soporte tecnico en RD.";
+
+  const shareLinks = [
+    {
+      label: "WhatsApp",
+      url: `https://wa.me/?text=${encodeURIComponent(`${shareText} ${siteUrl}`)}`,
+      className: "wa",
+    },
+    {
+      label: "Facebook",
+      url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+        siteUrl
+      )}`,
+      className: "fb",
+    },
+    {
+      label: "X",
+      url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+        shareText
+      )}&url=${encodeURIComponent(siteUrl)}`,
+      className: "x",
+    },
+  ];
+
+  const copyStoreLink = async () => {
+    try {
+      await navigator.clipboard.writeText(siteUrl);
+      alert("Enlace de Global-GS copiado.");
+    } catch {
+      window.prompt("Copia el enlace de Global-GS:", siteUrl);
+    }
+  };
+
   return (
-    <footer
-      style={{
-        background: "#001a44",
-        color: "white",
-        padding: "40px 20px",
-        marginTop: "50px",
-        textAlign: "center",
-      }}
-    >
-      <h3>Global-GS Store</h3>
+    <footer className="site-footer">
+      <div className="footer-inner">
+        <section className="footer-brand">
+          <h3>Global-GS Store</h3>
+          <p>
+            Soluciones tecnologicas, accesorios, seguridad electronica y soporte
+            tecnico.
+          </p>
+        </section>
 
-      <p>
-        Soluciones tecnológicas, accesorios, seguridad electrónica y soporte
-        técnico.
+        <section className="footer-contact">
+          <strong>Contacto</strong>
+          <a href="https://wa.me/18292215896" target="_blank" rel="noreferrer">
+            WhatsApp: 829-221-5896
+          </a>
+          <a
+            href="https://www.instagram.com/global_gs"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Instagram: @global_gs
+          </a>
+          <a href={siteUrl} target="_blank" rel="noreferrer">
+            globalgsstore.com
+          </a>
+        </section>
+
+        <section className="footer-share">
+          <strong>Compartir tienda</strong>
+          <div className="footer-share-actions">
+            {shareLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.url}
+                target="_blank"
+                rel="noreferrer"
+                className={`footer-share-btn ${link.className}`}
+              >
+                {link.label}
+              </a>
+            ))}
+
+            <button type="button" onClick={copyStoreLink}>
+              Copiar enlace
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <p className="footer-copy">
+        &copy; 2026 Global-GS. Todos los derechos reservados.
       </p>
-
-      <p>📱 WhatsApp: 829-221-5896</p>
-
-      <p>📸 Instagram: @global_gs</p>
-
-      <p>© 2026 Global-GS. Todos los derechos reservados.</p>
     </footer>
   );
 }

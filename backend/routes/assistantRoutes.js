@@ -7,6 +7,7 @@ const STORE_URL =
   process.env.PUBLIC_STORE_URL || "https://www.globalgsstore.com";
 
 const WHATSAPP_NUMBER = "18292215896";
+const INSTAGRAM_URL = "https://www.instagram.com/global_gs";
 
 const formatPrice = (price) => {
   return Number(price || 0).toLocaleString("es-DO");
@@ -60,12 +61,41 @@ const getProductUrl = (product) => {
 
 const getWhatsAppUrl = (product) => {
   const message = product
-    ? `Hola Global-GS, estoy interesado en este producto:%0A%0AProducto: ${product.name}%0APrecio: RD$${formatPrice(
-        product.price
-      )}%0A%0AVisto en Global-GS Store.`
-    : "Hola Global-GS, necesito información sobre sus productos y servicios.";
+    ? `Hola Global-GS, estoy interesado en comprar este producto:
 
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+Producto: ${product.name}
+Precio: RD$${formatPrice(
+        product.price
+      )}
+
+Mi nombre:
+
+Quiero coordinar la compra y la entrega.`
+    : "Hola Global-GS, necesito informacion sobre sus productos y servicios.";
+
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+};
+
+const buildAssistantInfoMessage = () => {
+  return [
+    "Este asistente funciona en modo basico, sin creditos de OpenAI.",
+    "",
+    "Puede responder preguntas frecuentes, buscar productos del catalogo y enviar al cliente a WhatsApp para confirmar la compra.",
+    "",
+    "WhatsApp: 829-221-5896",
+  ].join("\n");
+};
+
+const buildSocialMessage = () => {
+  return [
+    "Puedes ver y compartir Global-GS Store desde estos enlaces:",
+    "",
+    `Sitio web: ${STORE_URL}`,
+    `Instagram: ${INSTAGRAM_URL}`,
+    "WhatsApp: 829-221-5896",
+    "",
+    "Si necesitas un producto, dime el nombre o la categoria y lo busco en el catalogo.",
+  ].join("\n");
 };
 
 const buildWelcomeMessage = () => {
@@ -228,13 +258,41 @@ router.post("/chat", async (req, res) => {
       normalizedText.includes("servicio") ||
       normalizedText.includes("instalacion") ||
       normalizedText.includes("cctv") ||
-      normalizedText.includes("redes") ||
+      (normalizedText.includes("redes") &&
+        !normalizedText.includes("redes sociales")) ||
       normalizedText.includes("electrico") ||
       normalizedText.includes("web")
     ) {
       return res.json({
         success: true,
         answer: buildServicesMessage(),
+        products: [],
+      });
+    }
+
+    if (
+      /\b(openai|chatgpt|creditos|credito|ia)\b/.test(normalizedText) ||
+      normalizedText.includes("inteligencia artificial") ||
+      normalizedText.includes("asistente")
+    ) {
+      return res.json({
+        success: true,
+        answer: buildAssistantInfoMessage(),
+        products: [],
+      });
+    }
+
+    if (
+      normalizedText.includes("redes sociales") ||
+      normalizedText.includes("social") ||
+      normalizedText.includes("instagram") ||
+      normalizedText.includes("facebook") ||
+      normalizedText.includes("tiktok") ||
+      normalizedText.includes("compartir")
+    ) {
+      return res.json({
+        success: true,
+        answer: buildSocialMessage(),
         products: [],
       });
     }

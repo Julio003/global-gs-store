@@ -5,6 +5,64 @@ const API_BASE_URL =
     ? "http://localhost:5000"
     : "https://global-gs-backend.onrender.com";
 
+const quickQuestions = [
+  "Ver catalogo",
+  "Metodos de pago",
+  "Entrega",
+  "Servicios",
+  "Redes sociales",
+];
+
+const getLocalAnswer = (text) => {
+  const normalized = text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+
+  if (normalized.includes("pago") || normalized.includes("transferencia")) {
+    return "Aceptamos efectivo, transferencia bancaria y coordinacion por WhatsApp segun disponibilidad y zona. Escribenos al 829-221-5896 para confirmar.";
+  }
+
+  if (
+    normalized.includes("entrega") ||
+    normalized.includes("envio") ||
+    normalized.includes("delivery")
+  ) {
+    return "Coordinamos entregas segun ubicacion y disponibilidad. Puedes escribirnos por WhatsApp al 829-221-5896 con tu nombre y el producto que deseas.";
+  }
+
+  if (
+    normalized.includes("redes sociales") ||
+    normalized.includes("social") ||
+    normalized.includes("instagram") ||
+    normalized.includes("facebook") ||
+    normalized.includes("tiktok")
+  ) {
+    return "Puedes compartir la tienda desde https://globalgsstore.com y seguirnos en Instagram: https://www.instagram.com/global_gs.";
+  }
+
+  if (
+    normalized.includes("servicio") ||
+    normalized.includes("cctv") ||
+    normalized.includes("camara") ||
+    (normalized.includes("redes") && !normalized.includes("redes sociales")) ||
+    normalized.includes("web")
+  ) {
+    return "Ofrecemos CCTV, redes, soporte tecnico, instalaciones electricas, accesorios tecnologicos y desarrollo web. Para cotizar, escribenos al 829-221-5896.";
+  }
+
+  if (
+    normalized.includes("openai") ||
+    normalized.includes("chatgpt") ||
+    normalized.includes("credito") ||
+    /\bia\b/.test(normalized)
+  ) {
+    return "Este asistente funciona en modo basico, sin creditos de OpenAI. Busca productos del catalogo y responde preguntas frecuentes.";
+  }
+
+  return "Puedo ayudarte con catalogo, precios, disponibilidad, pagos, entregas y servicios. Tambien puedes escribirnos directo por WhatsApp al 829-221-5896.";
+};
+
 function AssistantWidget() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -32,8 +90,8 @@ function AssistantWidget() {
     });
   };
 
-  const sendMessage = async () => {
-    const cleanMessage = message.trim();
+  const sendMessage = async (presetMessage = message) => {
+    const cleanMessage = String(presetMessage).trim();
 
     if (!cleanMessage || loading) return;
 
@@ -59,6 +117,10 @@ function AssistantWidget() {
         }),
       });
 
+      if (!response.ok) {
+        throw new Error("Respuesta no valida del asistente");
+      }
+
       const data = await response.json();
 
       setMessages((prev) => [
@@ -67,7 +129,7 @@ function AssistantWidget() {
           from: "bot",
           text:
             data.answer ||
-            "Ahora mismo no pude responder. Escríbenos por WhatsApp al 829-221-5896.",
+            getLocalAnswer(cleanMessage),
         },
       ]);
     } catch (error) {
@@ -77,7 +139,7 @@ function AssistantWidget() {
         ...prev,
         {
           from: "bot",
-          text: "Hubo un problema conectando con el asistente. Escríbenos por WhatsApp al 829-221-5896.",
+          text: getLocalAnswer(cleanMessage),
         },
       ]);
     } finally {
@@ -89,6 +151,11 @@ function AssistantWidget() {
     if (event.key === "Enter") {
       sendMessage();
     }
+  };
+
+  const handleQuickQuestion = (question) => {
+    if (loading) return;
+    sendMessage(question);
   };
 
   return (
@@ -123,6 +190,19 @@ function AssistantWidget() {
             {loading && (
               <div className="assistant-message bot">Buscando información...</div>
             )}
+          </div>
+
+          <div className="assistant-quick-actions">
+            {quickQuestions.map((question) => (
+              <button
+                type="button"
+                key={question}
+                onClick={() => handleQuickQuestion(question)}
+                disabled={loading}
+              >
+                {question}
+              </button>
+            ))}
           </div>
 
           <div className="assistant-input">

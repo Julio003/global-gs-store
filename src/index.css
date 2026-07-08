@@ -2519,9 +2519,111 @@ a {
   opacity: 0.9;
 }
 
+.site-footer {
+  background: #001a44;
+  color: #fff;
+  margin-top: 50px;
+  padding: 34px 20px 22px;
+}
+
+.footer-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(240px, 1.3fr) minmax(180px, 0.8fr) minmax(260px, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.footer-brand h3 {
+  margin: 0 0 10px;
+  font-size: 1.35rem;
+}
+
+.footer-brand p,
+.footer-copy {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.55;
+}
+
+.footer-contact,
+.footer-share {
+  display: grid;
+  gap: 10px;
+}
+
+.footer-contact strong,
+.footer-share strong {
+  color: #fff;
+  font-size: 0.96rem;
+}
+
+.footer-contact a {
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 700;
+}
+
+.footer-contact a:hover {
+  color: var(--orange);
+}
+
+.footer-share-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.footer-share-btn,
+.footer-share-actions button {
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.86rem;
+  font-weight: 800;
+  padding: 10px 12px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.footer-share-btn:hover,
+.footer-share-actions button:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.footer-share-btn.wa {
+  background: #20b857;
+}
+
+.footer-share-btn.fb {
+  background: #1877f2;
+}
+
+.footer-share-btn.x {
+  background: #111827;
+}
+
+.footer-share-actions button {
+  background: var(--orange);
+}
+
+.footer-copy {
+  max-width: 1180px;
+  margin: 26px auto 0;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: center;
+  font-size: 0.9rem;
+}
+
 /* Mobile Responsive */
 @media (max-width: 900px) {
   .contact-container {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-inner {
     grid-template-columns: 1fr;
   }
 }
@@ -2637,6 +2739,37 @@ a {
   background: var(--orange);
   color: #fff;
   margin-left: auto;
+}
+
+.assistant-quick-actions {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 10px 12px;
+  background: #fff;
+  border-top: 1px solid #e5e7eb;
+}
+
+.assistant-quick-actions button {
+  flex: 0 0 auto;
+  border: 1px solid #dbe3ef;
+  background: #f8fafc;
+  color: var(--navy);
+  border-radius: 999px;
+  padding: 8px 11px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.assistant-quick-actions button:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+.assistant-quick-actions button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .assistant-input {
