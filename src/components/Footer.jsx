@@ -1,29 +1,35 @@
-function Footer() {
+﻿function Footer() {
   const siteUrl = "https://globalgsstore.com";
   const shareText =
     "Global-GS Store: tecnologia, accesorios, CCTV, redes y soporte tecnico en RD.";
 
   const shareLinks = [
-    {
-      label: "WhatsApp",
-      url: `https://wa.me/?text=${encodeURIComponent(`${shareText} ${siteUrl}`)}`,
-      className: "wa",
-    },
-    {
-      label: "Facebook",
-      url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-        siteUrl
-      )}`,
-      className: "fb",
-    },
-    {
-      label: "X",
-      url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-        shareText
-      )}&url=${encodeURIComponent(siteUrl)}`,
-      className: "x",
-    },
-  ];
+  {
+    label: "WhatsApp",
+    url: `https://wa.me/18292215896?text=${encodeURIComponent(siteUrl)}`,
+    className: "whatsapp",
+  },
+  {
+    label: "Facebook",
+    url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(siteUrl)}`,
+    className: "facebook",
+  },
+  {
+    label: "Instagram",
+    url: "https://www.instagram.com/global_gs",
+    className: "instagram",
+  },
+  {
+    label: "TikTok",
+    url: "https://www.tiktok.com/@globalgsstore",
+    className: "tiktok",
+  },
+  {
+    label: "X",
+    url: `https://twitter.com/intent/tweet?url=${encodeURIComponent(siteUrl)}&text=${encodeURIComponent("Visita Global-GS Store")}`,
+    className: "x",
+  },
+];
 
   const copyStoreLink = async () => {
     try {

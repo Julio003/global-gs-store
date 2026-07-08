@@ -2616,6 +2616,15 @@ a {
   text-align: center;
   font-size: 0.9rem;
 }
+.footer-share-btn.instagram {
+  background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af);
+  color: #fff;
+}
+
+.footer-share-btn.tiktok {
+  background: #000;
+  color: #fff;
+}
 
 /* Mobile Responsive */
 @media (max-width: 900px) {
