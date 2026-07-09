@@ -1,35 +1,43 @@
-﻿function Footer() {
+function Footer() {
   const siteUrl = "https://globalgsstore.com";
+  const instagramUrl = "https://www.instagram.com/global.gs_/";
+  const tiktokUrl = "https://www.tiktok.com/@juliovasquezpolanco";
   const shareText =
     "Global-GS Store: tecnologia, accesorios, CCTV, redes y soporte tecnico en RD.";
 
   const shareLinks = [
-  {
-    label: "WhatsApp",
-    url: `https://wa.me/18292215896?text=${encodeURIComponent(siteUrl)}`,
-    className: "whatsapp",
-  },
-  {
-    label: "Facebook",
-    url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(siteUrl)}`,
-    className: "facebook",
-  },
-  {
-    label: "Instagram",
-    url: "https://www.instagram.com/global_gs",
-    className: "instagram",
-  },
-  {
-    label: "TikTok",
-    url: "https://www.tiktok.com/@juliovasquezpolanco",
-    className: "tiktok",
-  },
-  {
-    label: "X",
-    url: `https://twitter.com/intent/tweet?url=${encodeURIComponent(siteUrl)}&text=${encodeURIComponent("Visita Global-GS Store")}`,
-    className: "x",
-  },
-];
+    {
+      label: "WhatsApp",
+      url: `https://wa.me/18292215896?text=${encodeURIComponent(
+        `${shareText} ${siteUrl}`
+      )}`,
+      className: "whatsapp",
+    },
+    {
+      label: "Facebook",
+      url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+        siteUrl
+      )}`,
+      className: "facebook",
+    },
+    {
+      label: "Instagram",
+      url: instagramUrl,
+      className: "instagram",
+    },
+    {
+      label: "TikTok",
+      url: tiktokUrl,
+      className: "tiktok",
+    },
+    {
+      label: "X",
+      url: `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+        siteUrl
+      )}&text=${encodeURIComponent(shareText)}`,
+      className: "x",
+    },
+  ];
 
   const copyStoreLink = async () => {
     try {
@@ -56,12 +64,11 @@
           <a href="https://wa.me/18292215896" target="_blank" rel="noreferrer">
             WhatsApp: 829-221-5896
           </a>
-          <a
-            href="https://www.instagram.com/global_gs"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Instagram: @global_gs
+          <a href={instagramUrl} target="_blank" rel="noreferrer">
+            Instagram: @global.gs_
+          </a>
+          <a href={tiktokUrl} target="_blank" rel="noreferrer">
+            TikTok: @juliovasquezpolanco
           </a>
           <a href={siteUrl} target="_blank" rel="noreferrer">
             globalgsstore.com

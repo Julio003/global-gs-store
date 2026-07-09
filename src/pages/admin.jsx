@@ -62,6 +62,34 @@ function Admin() {
     return token ? { Authorization: `Bearer ${token}` } : {};
   };
 
+  const readApiMessage = async (response) => {
+    try {
+      const data = await response.json();
+      return data.message || data.error || "";
+    } catch {
+      return "";
+    }
+  };
+
+  const handleAuthFailure = (response, apiMessage) => {
+    if (response.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      setMessage(apiMessage || "Tu sesion expiro. Inicia sesion otra vez para guardar cambios.");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1800);
+      return true;
+    }
+
+    if (response.status === 403) {
+      setMessage(apiMessage || "Tu usuario no tiene permiso de administrador.");
+      return true;
+    }
+
+    return false;
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -201,15 +229,43 @@ function Admin() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const productImages = getProductImages(form);
+
     const productData = {
       ...form,
+      name: form.name.trim(),
+      description: form.description.trim(),
+      category: form.category.trim(),
+      image: (productImages[0] || form.image).trim(),
       price: Number(form.price),
       stock: Number(form.stock),
-      images: getProductImages(form),
-      video: form.video || "",
+      images: productImages,
+      video: (form.video || "").trim(),
     };
 
+    if (!productData.name || !productData.description || !productData.category) {
+      setMessage("Completa nombre, categoria y descripcion antes de guardar.");
+      return;
+    }
+
+    if (!productData.image) {
+      setMessage("Agrega una imagen principal antes de guardar.");
+      return;
+    }
+
+    if (!Number.isFinite(productData.price) || productData.price < 0) {
+      setMessage("Revisa el precio: debe ser un numero valido.");
+      return;
+    }
+
+    if (!Number.isFinite(productData.stock) || productData.stock < 0) {
+      setMessage("Revisa el stock: debe ser un numero valido.");
+      return;
+    }
+
     try {
+      setMessage(editingId ? "Actualizando producto..." : "Guardando producto...");
+
       const url = editingId ? `${API_URL}/api/products/${editingId}` : `${API_URL}/api/products`;
       const method = editingId ? "PUT" : "POST";
 
@@ -219,14 +275,19 @@ function Admin() {
         body: JSON.stringify(productData),
       });
 
-      if (!response.ok) throw new Error("No se pudo guardar el producto");
+      const apiMessage = await readApiMessage(response);
 
-      setMessage(editingId ? "Producto actualizado correctamente" : "Producto guardado correctamente");
+      if (!response.ok) {
+        if (handleAuthFailure(response, apiMessage)) return;
+        throw new Error(apiMessage || "No se pudo guardar el producto");
+      }
+
+      setMessage(apiMessage || (editingId ? "Producto actualizado correctamente" : "Producto guardado correctamente"));
       await loadProducts();
       resetForm();
     } catch (error) {
       console.error(error);
-      setMessage("Error al guardar el producto");
+      setMessage(error.message || "Error al guardar el producto");
     }
   };
 
@@ -254,9 +315,14 @@ function Admin() {
         method: "DELETE",
         headers: getAuthHeaders(),
       });
-      if (!response.ok) throw new Error("No se pudo eliminar el producto");
+      const apiMessage = await readApiMessage(response);
 
-      setMessage("Producto eliminado correctamente");
+      if (!response.ok) {
+        if (handleAuthFailure(response, apiMessage)) return;
+        throw new Error(apiMessage || "No se pudo eliminar el producto");
+      }
+
+      setMessage(apiMessage || "Producto eliminado correctamente");
       await loadProducts();
       if (editingId === id) resetForm();
     } catch (error) {

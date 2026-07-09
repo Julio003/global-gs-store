@@ -7,7 +7,8 @@ const STORE_URL =
   process.env.PUBLIC_STORE_URL || "https://www.globalgsstore.com";
 
 const WHATSAPP_NUMBER = "18292215896";
-const INSTAGRAM_URL = "https://www.instagram.com/global_gs";
+const INSTAGRAM_URL = "https://www.instagram.com/global.gs_/";
+const TIKTOK_URL = "https://www.tiktok.com/@juliovasquezpolanco";
 
 const formatPrice = (price) => {
   return Number(price || 0).toLocaleString("es-DO");
@@ -92,6 +93,7 @@ const buildSocialMessage = () => {
     "",
     `Sitio web: ${STORE_URL}`,
     `Instagram: ${INSTAGRAM_URL}`,
+    `TikTok: ${TIKTOK_URL}`,
     "WhatsApp: 829-221-5896",
     "",
     "Si necesitas un producto, dime el nombre o la categoria y lo busco en el catalogo.",
