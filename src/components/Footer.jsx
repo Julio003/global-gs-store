@@ -1,5 +1,5 @@
 function Footer() {
-  const siteUrl = "https://globalgsstore.com";
+  const siteUrl = "https://www.globalgsstore.com";
   const instagramUrl = "https://www.instagram.com/global.gs_/";
   const tiktokUrl = "https://www.tiktok.com/@juliovasquezpolanco";
   const shareText =
@@ -71,7 +71,7 @@ function Footer() {
             TikTok: @juliovasquezpolanco
           </a>
           <a href={siteUrl} target="_blank" rel="noreferrer">
-            globalgsstore.com
+            www.globalgsstore.com
           </a>
         </section>
 

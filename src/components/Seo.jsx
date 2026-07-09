@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export const SITE_URL = "https://globalgsstore.com";
+export const SITE_URL = "https://www.globalgsstore.com";
 export const DEFAULT_SOCIAL_IMAGE = `${SITE_URL}/og-image.jpg`;
 export const INSTAGRAM_URL = "https://www.instagram.com/global.gs_/";
 export const TIKTOK_URL = "https://www.tiktok.com/@juliovasquezpolanco";

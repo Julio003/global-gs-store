@@ -11,7 +11,7 @@ import {
 
 const router = express.Router();
 
-const STORE_URL = process.env.PUBLIC_STORE_URL || "https://globalgsstore.com";
+const STORE_URL = process.env.PUBLIC_STORE_URL || "https://www.globalgsstore.com";
 
 const verifyWhatsAppSignature = (req, res, next) => {
   const appSecret = process.env.WHATSAPP_APP_SECRET;

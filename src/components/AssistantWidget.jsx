@@ -38,7 +38,7 @@ const getLocalAnswer = (text) => {
     normalized.includes("facebook") ||
     normalized.includes("tiktok")
   ) {
-    return "Puedes compartir la tienda desde https://globalgsstore.com, seguirnos en Instagram: https://www.instagram.com/global.gs_/ y TikTok: https://www.tiktok.com/@juliovasquezpolanco.";
+    return "Puedes compartir la tienda desde https://www.globalgsstore.com, seguirnos en Instagram: https://www.instagram.com/global.gs_/ y TikTok: https://www.tiktok.com/@juliovasquezpolanco.";
   }
 
   if (

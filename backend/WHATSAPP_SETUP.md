@@ -5,7 +5,7 @@
 Agrega estas variables al servicio `global-gs-backend` en Render:
 
 ```txt
-PUBLIC_STORE_URL=https://globalgsstore.com
+PUBLIC_STORE_URL=https://www.globalgsstore.com
 WHATSAPP_VERIFY_TOKEN=elige_un_token_secreto
 WHATSAPP_PHONE_NUMBER_ID=tu_phone_number_id_de_meta
 WHATSAPP_ACCESS_TOKEN=tu_token_de_meta
