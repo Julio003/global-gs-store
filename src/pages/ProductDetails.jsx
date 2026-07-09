@@ -1,5 +1,6 @@
 ﻿import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import Seo, { DEFAULT_SOCIAL_IMAGE, SITE_URL } from "../components/Seo";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -124,6 +125,13 @@ Quiero coordinar la compra y la entrega.`;
   if (!product) {
     return (
       <main className="product-detail-page">
+        <Seo
+          title="Producto no encontrado | Global-GS Store"
+          description="Este producto no esta disponible en el catalogo Global-GS Store."
+          path={`/producto/${id}`}
+          robots="noindex, follow"
+        />
+
         <div className="product-not-found">
           <h1>Producto no encontrado</h1>
           <p>Este producto no está disponible o fue eliminado del catálogo.</p>
@@ -137,6 +145,65 @@ Quiero coordinar la compra y la entrega.`;
   const productImages = getProductImages(product);
   const currentImage = activeImage || productImages[0] || "/og-image.jpg";
   const hasVideo = Boolean(product.video);
+  const productId = getProductId(product);
+  const productUrl = `${SITE_URL}/producto/${productId}`;
+  const productDescription =
+    product.description || `${product.name} disponible en Global-GS Store.`;
+  const productSeoImages = productImages.length
+    ? productImages.map((imageUrl) =>
+        imageUrl.startsWith("http") ? imageUrl : `${SITE_URL}${imageUrl}`
+      )
+    : [DEFAULT_SOCIAL_IMAGE];
+  const productSchema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: product.name,
+      image: productSeoImages,
+      description: productDescription,
+      sku: productId,
+      category: product.category || "Tecnologia",
+      brand: {
+        "@type": "Brand",
+        name: "Global-GS Store",
+      },
+      offers: {
+        "@type": "Offer",
+        url: productUrl,
+        priceCurrency: "DOP",
+        price: Number(product.price || 0),
+        availability:
+          Number(product.stock || 0) > 0
+            ? "https://schema.org/InStock"
+            : "https://schema.org/OutOfStock",
+        itemCondition: "https://schema.org/NewCondition",
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Inicio",
+          item: SITE_URL,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Productos",
+          item: `${SITE_URL}/productos`,
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: product.name,
+          item: productUrl,
+        },
+      ],
+    },
+  ];
 
   return (
     <main
@@ -144,6 +211,16 @@ Quiero coordinar la compra y la entrega.`;
       onTouchStart={(event) => setTouchStartX(event.touches[0].clientX)}
       onTouchEnd={handleTouchEnd}
     >
+      <Seo
+        title={`${product.name} | RD$${formatPrice(product.price)} | Global-GS Store`}
+        description={`${product.name}. ${productDescription}`}
+        path={`/producto/${productId}`}
+        image={productSeoImages[0]}
+        type="product"
+        keywords={`${product.name}, ${product.category || "tecnologia"}, Global-GS Store, comprar en RD`}
+        schema={productSchema}
+      />
+
       <section className="product-detail-card">
         {categoryProducts.length > 1 && (
           <div className="product-swipe-nav" aria-label="Navegar productos de la misma categoría">

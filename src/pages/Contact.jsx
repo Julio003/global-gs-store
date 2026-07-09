@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Seo, { INSTAGRAM_URL, SITE_URL, TIKTOK_URL } from "../components/Seo";
 
 function Contact() {
   const whatsappNumber = "18292215896";
@@ -41,6 +42,27 @@ Enviado desde el sitio web.`;
 
   return (
     <main className="contact-page page">
+      <Seo
+        title="Contacto Global-GS Store | WhatsApp y soporte tecnico en RD"
+        description="Contacta a Global-GS Store por WhatsApp para productos tecnologicos, CCTV, redes, accesorios, soporte tecnico y servicios digitales en Republica Dominicana."
+        path="/contacto"
+        keywords="contacto Global-GS, WhatsApp tecnologia RD, soporte tecnico, CCTV, accesorios, redes"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          name: "Contacto Global-GS Store",
+          url: `${SITE_URL}/contacto`,
+          mainEntity: {
+            "@type": "Store",
+            name: "Global-GS Store",
+            url: SITE_URL,
+            telephone: "+1-829-221-5896",
+            areaServed: "Republica Dominicana",
+            sameAs: [INSTAGRAM_URL, TIKTOK_URL],
+          },
+        }}
+      />
+
       <section className="contact-hero">
         <h1>Contacto Global-GS Store</h1>
         <p>¿Tienes dudas o necesitas soporte técnico? Escríbenos y te responderemos de inmediato.</p>
@@ -196,12 +218,20 @@ Enviado desde el sitio web.`;
               WhatsApp Directo
             </a>
             <a 
-              href="https://www.instagram.com/global_gs" 
+              href={INSTAGRAM_URL}
               target="_blank" 
               rel="noreferrer" 
               className="social-btn ig"
             >
               Instagram
+            </a>
+            <a
+              href={TIKTOK_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="social-btn tiktok"
+            >
+              TikTok
             </a>
           </div>
         </section>

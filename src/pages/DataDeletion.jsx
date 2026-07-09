@@ -1,12 +1,14 @@
-import { useEffect } from "react";
+import Seo from "../components/Seo";
 
 function DataDeletion() {
-  useEffect(() => {
-    document.title = "Eliminación de Datos | Global-GS Store";
-  }, []);
-
   return (
     <main className="legal-page">
+      <Seo
+        title="Eliminacion de datos | Global-GS Store"
+        description="Instrucciones para solicitar eliminacion de datos personales relacionados con Global-GS Store."
+        path="/eliminacion-datos"
+      />
+
       <h1>Eliminación de Datos de Usuario</h1>
 
       <p>

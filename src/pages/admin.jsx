@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Seo from "../components/Seo";
 
 function Admin() {
   const API_URL = "https://global-gs-backend.onrender.com";
@@ -436,6 +437,13 @@ function Admin() {
 
   return (
     <main className="admin-page">
+      <Seo
+        title="Panel administrador | Global-GS Store"
+        description="Panel privado de administracion Global-GS Store."
+        path="/admin"
+        robots="noindex, nofollow"
+      />
+
       <section className="admin-panel">
         <div className="admin-header">
           <div>

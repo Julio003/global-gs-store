@@ -1,12 +1,14 @@
-import { useEffect } from "react";
+import Seo from "../components/Seo";
 
 function TermsConditions() {
-  useEffect(() => {
-    document.title = "Términos y Condiciones | Global-GS Store";
-  }, []);
-
   return (
     <main className="legal-page">
+      <Seo
+        title="Terminos y condiciones | Global-GS Store"
+        description="Terminos y condiciones de uso, compras, disponibilidad, precios y servicios de Global-GS Store."
+        path="/terminos-condiciones"
+      />
+
       <h1>Términos y Condiciones</h1>
 
       <p>

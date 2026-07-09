@@ -1,25 +1,16 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import Seo, { DEFAULT_SOCIAL_IMAGE, SITE_URL } from "../components/Seo";
 
 function Products() {
   const API_URL = "https://global-gs-backend.onrender.com";
   const whatsappNumber = "18292215896";
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(searchParams.get("buscar") || "");
   const [category, setCategory] = useState("Todos");
-
-  useEffect(() => {
-    document.title = "Catálogo de Productos | Global-GS Store República Dominicana";
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute(
-        "content",
-        "Explora nuestro catálogo de tecnología. Cámaras de seguridad, DVR, NVR, redes WiFi, cableado estructurado, accesorios y soporte técnico en República Dominicana."
-      );
-    }
-  }, []);
 
   useEffect(() => {
     fetch(`${API_URL}/api/products`)
@@ -53,6 +44,17 @@ function Products() {
     "Todos",
     ...new Set(products.map((product) => product.category || "Sin categoría")),
   ];
+
+  const updateSearch = (value) => {
+    const nextSearch = value;
+    setSearch(nextSearch);
+
+    if (nextSearch.trim()) {
+      setSearchParams({ buscar: nextSearch });
+    } else {
+      setSearchParams({});
+    }
+  };
 
   const getStockStatus = (stock) => {
     if (stock <= 0) return { label: "Agotado", className: "stock-out" };
@@ -121,6 +123,39 @@ function Products() {
     return matchesSearch && matchesCategory;
   });
 
+  const productListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Catalogo de productos Global-GS Store",
+    itemListElement: filteredProducts.slice(0, 20).map((product, index) => {
+      const productId = getProductId(product);
+      const stock = Number(product.stock || 0);
+
+      return {
+        "@type": "ListItem",
+        position: index + 1,
+        url: `${SITE_URL}/producto/${productId}`,
+        item: {
+          "@type": "Product",
+          name: product.name,
+          image: product.image || DEFAULT_SOCIAL_IMAGE,
+          description: product.description || "Producto Global-GS Store",
+          category: product.category || "Tecnologia",
+          offers: {
+            "@type": "Offer",
+            priceCurrency: "DOP",
+            price: Number(product.price || 0),
+            availability:
+              stock > 0
+                ? "https://schema.org/InStock"
+                : "https://schema.org/OutOfStock",
+            url: `${SITE_URL}/producto/${productId}`,
+          },
+        },
+      };
+    }),
+  };
+
   const handleWhatsApp = (product) => {
     if ((product.stock ?? 0) <= 0) {
       alert("Este producto está agotado actualmente.");
@@ -153,6 +188,14 @@ Quiero coordinar la compra y la entrega.`;
 
   return (
     <main className="products-page">
+      <Seo
+        title="Catalogo de productos tecnologicos | Global-GS Store RD"
+        description="Explora productos de tecnologia, bocinas, accesorios, herramientas, cocina, CCTV, redes y soporte tecnico en Global-GS Store Republica Dominicana."
+        path="/productos"
+        keywords="catalogo tecnologia RD, accesorios, bocinas, herramientas, cocina, camaras seguridad, redes, Global-GS Store"
+        schema={productListSchema}
+      />
+
       <section className="products-hero">
         <h1>Catálogo Global-GS Store</h1>
         <p>Busca productos, revisa precios y compra por WhatsApp.</p>
@@ -163,7 +206,7 @@ Quiero coordinar la compra y la entrega.`;
           type="search"
           placeholder="Buscar por modelo, nombre, categoría o descripción..."
           value={search}
-          onChange={(event) => setSearch(event.target.value)}
+          onChange={(event) => updateSearch(event.target.value)}
         />
 
         <div className="category-buttons">
@@ -189,7 +232,7 @@ Quiero coordinar la compra y la entrega.`;
               <h2>Resultado para: “{search}”</h2>
             </div>
 
-            <button type="button" onClick={() => setSearch("")}>
+            <button type="button" onClick={() => updateSearch("")}>
               Limpiar
             </button>
           </div>

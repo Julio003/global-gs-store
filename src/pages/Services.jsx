@@ -1,19 +1,34 @@
-import { useEffect } from "react";
+import Seo, { SITE_URL } from "../components/Seo";
 
 function Services() {
-  useEffect(() => {
-    document.title = "Servicios de Tecnología, Redes y CCTV | Global-GS Store";
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute(
-        "content",
-        "Ofrecemos servicios de desarrollo web full stack (páginas web y tiendas online), instalación de cámaras de seguridad (CCTV), redes WiFi y cableado, soporte técnico de PC."
-      );
-    }
-  }, []);
-
   return (
     <main className="services-page">
+      <Seo
+        title="Servicios de tecnologia, CCTV, redes y soporte | Global-GS Store"
+        description="Servicios Global-GS: instalacion de camaras CCTV, redes WiFi, cableado estructurado, soporte tecnico, desarrollo web y tiendas online en Republica Dominicana."
+        path="/servicios"
+        keywords="servicios tecnologia RD, instalacion CCTV, camaras seguridad, redes WiFi, soporte tecnico, desarrollo web, tiendas online"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: "Servicios tecnologicos Global-GS",
+          provider: {
+            "@type": "Store",
+            name: "Global-GS Store",
+            url: SITE_URL,
+          },
+          areaServed: "Republica Dominicana",
+          serviceType: [
+            "Instalacion CCTV",
+            "Redes y cableado estructurado",
+            "Soporte tecnico",
+            "Desarrollo web",
+            "Tiendas online",
+          ],
+          url: `${SITE_URL}/servicios`,
+        }}
+      />
+
       <section className="services-hero">
         <h1>Servicios Global-GS</h1>
 

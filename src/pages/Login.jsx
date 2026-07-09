@@ -1,5 +1,7 @@
 ﻿import { useState } from "react";
 
+import Seo from "../components/Seo";
+
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -52,6 +54,13 @@ function Login() {
         borderRadius: "12px",
       }}
     >
+      <Seo
+        title="Iniciar sesion | Global-GS Store"
+        description="Acceso administrativo de Global-GS Store."
+        path="/login"
+        robots="noindex, nofollow"
+      />
+
       <h1>Iniciar Sesión</h1>
 
       <form onSubmit={handleLogin}>

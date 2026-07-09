@@ -2,6 +2,12 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import Seo, {
+  DEFAULT_SOCIAL_IMAGE,
+  INSTAGRAM_URL,
+  SITE_URL,
+  TIKTOK_URL,
+} from "../components/Seo";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -76,17 +82,6 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    document.title = "Global-GS Store | Tecnología y Seguridad Electrónica en República Dominicana";
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute(
-        "content",
-        "Catálogo digital Global-GS. Encuentra lo mejor en tecnología, accesorios, CCTV, redes, seguridad electrónica y soporte técnico especializado en RD."
-      );
-    }
-  }, []);
-
-  useEffect(() => {
     const handleDocumentClick = (e) => {
       if (!e.target.closest(".featured-card")) {
         setExpandedProductId(null);
@@ -139,6 +134,38 @@ Quiero coordinar la compra y la entrega.`;
 
   return (
     <main className="home-page">
+      <Seo
+        title="Global-GS Store | Tecnologia, CCTV, accesorios y soporte tecnico en RD"
+        description="Catalogo digital Global-GS Store. Compra tecnologia, accesorios, bocinas, herramientas, CCTV, redes y solicita soporte tecnico en Republica Dominicana."
+        path="/"
+        keywords="Global-GS Store, tienda tecnologia RD, accesorios tecnologia, CCTV Republica Dominicana, bocinas, herramientas, soporte tecnico"
+        schema={[
+          {
+            "@context": "https://schema.org",
+            "@type": "Store",
+            name: "Global-GS Store",
+            url: SITE_URL,
+            image: DEFAULT_SOCIAL_IMAGE,
+            description:
+              "Catalogo digital de tecnologia, accesorios, CCTV, redes, seguridad electronica y soporte tecnico en Republica Dominicana.",
+            areaServed: "Republica Dominicana",
+            telephone: "+1-829-221-5896",
+            sameAs: [INSTAGRAM_URL, TIKTOK_URL],
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "Global-GS Store",
+            url: SITE_URL,
+            potentialAction: {
+              "@type": "SearchAction",
+              target: `${SITE_URL}/productos?buscar={search_term_string}`,
+              "query-input": "required name=search_term_string",
+            },
+          },
+        ]}
+      />
+
       <section className="hero-slider">
         <Swiper
           modules={[Autoplay, Navigation, Pagination]}

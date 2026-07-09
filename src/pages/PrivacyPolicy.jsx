@@ -1,12 +1,14 @@
-import { useEffect } from "react";
+import Seo from "../components/Seo";
 
 function PrivacyPolicy() {
-  useEffect(() => {
-    document.title = "Política de Privacidad | Global-GS Store";
-  }, []);
-
   return (
     <main className="legal-page">
+      <Seo
+        title="Politica de privacidad | Global-GS Store"
+        description="Politica de privacidad de Global-GS Store sobre datos de clientes, pedidos, soporte y contacto."
+        path="/politica-privacidad"
+      />
+
       <h1>Política de Privacidad</h1>
 
       <p>
