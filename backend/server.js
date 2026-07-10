@@ -7,6 +7,7 @@ import productRoutes from "./routes/productRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import whatsappRoutes from "./routes/whatsappRoutes.js";
+import leadRoutes from "./routes/leadRoutes.js";
 dotenv.config();
 
 
@@ -44,6 +45,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/whatsapp", whatsappRoutes);
 app.use("/api/assistant", assistantRoutes);
+app.use("/api/leads", leadRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)

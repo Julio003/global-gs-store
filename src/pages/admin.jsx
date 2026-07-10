@@ -38,6 +38,7 @@ function Admin() {
   const [researchQuery, setResearchQuery] = useState("");
   const [researchImageUrl, setResearchImageUrl] = useState("");
   const [galleryImageUrl, setGalleryImageUrl] = useState("");
+  const [leads, setLeads] = useState([]);
 
   const totalProducts = products.length;
   const availableProducts = products.filter((p) => (p.stock ?? 0) > 3).length;
@@ -45,6 +46,7 @@ function Admin() {
   const outOfStockProducts = products.filter((p) => (p.stock ?? 0) <= 0).length;
   const inventoryValue = products.reduce((total, p) => total + (Number(p.price) || 0) * (Number(p.stock) || 0), 0);
   const restockProducts = products.filter((p) => (p.stock ?? 0) <= 3);
+  const pendingLeads = leads.filter((lead) => !["contacted", "closed"].includes(lead.status)).length;
 
   const loadProducts = async () => {
     try {
@@ -55,6 +57,25 @@ function Admin() {
       console.error(error);
       setProducts([]);
       setMessage("Error cargando productos");
+    }
+  };
+
+  const loadLeads = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/leads`, {
+        headers: getAuthHeaders(),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (handleAuthFailure(response, data.message || "")) return;
+        throw new Error(data.message || "Error cargando clientes interesados");
+      }
+
+      setLeads(Array.isArray(data.leads) ? data.leads : []);
+    } catch (error) {
+      console.error(error);
+      setMessage(error.message || "Error cargando clientes interesados");
     }
   };
 
@@ -91,13 +112,61 @@ function Admin() {
     return false;
   };
 
+  const updateLeadStatus = async (leadId, status) => {
+    try {
+      const response = await fetch(`${API_URL}/api/leads/${leadId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+        body: JSON.stringify({ status }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (handleAuthFailure(response, data.message || "")) return;
+        throw new Error(data.message || "No se pudo actualizar el cliente");
+      }
+
+      setMessage(data.message || "Cliente actualizado");
+      await loadLeads();
+    } catch (error) {
+      console.error(error);
+      setMessage(error.message || "No se pudo actualizar el cliente");
+    }
+  };
+
+  const formatDate = (value) => {
+    if (!value) return "Sin fecha";
+    return new Date(value).toLocaleString("es-DO", {
+      dateStyle: "short",
+      timeStyle: "short",
+    });
+  };
+
+  const getLeadWhatsAppUrl = (lead) => {
+    const digits = String(lead.customerPhone || "").replace(/[^\d]/g, "");
+    const phone = digits.length === 10 ? `1${digits}` : digits;
+    if (!phone) return "";
+
+    const message = [
+      `Hola ${lead.customerName || ""}`.trim(),
+      "Te escribimos de Global-GS Store para dar seguimiento a tu solicitud.",
+      lead.product?.name ? `Producto: ${lead.product.name}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      window.location.href = "/login";
+      window.location.replace("/login");
       return;
     }
     loadProducts();
+    loadLeads();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleChange = (event) => {
@@ -224,7 +293,7 @@ function Admin() {
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    window.location.href = "/login";
+    window.location.replace("/login");
   };
 
   const handleSubmit = async (event) => {
@@ -459,7 +528,65 @@ function Admin() {
           <div className="stat-card"><h3>🟡 Pocas unidades</h3><strong>{lowStockProducts}</strong></div>
           <div className="stat-card"><h3>🔴 Agotados</h3><strong>{outOfStockProducts}</strong></div>
           <div className="stat-card"><h3>Valor inventario</h3><strong>RD${inventoryValue.toLocaleString("es-DO")}</strong></div>
+          <div className="stat-card"><h3>Clientes pendientes</h3><strong>{pendingLeads}</strong></div>
         </div>
+
+        <section className="admin-leads">
+          <div className="admin-leads-header">
+            <div>
+              <span>Bot de ventas</span>
+              <h2>Clientes interesados</h2>
+            </div>
+            <button type="button" onClick={loadLeads}>
+              Actualizar
+            </button>
+          </div>
+
+          {leads.length === 0 ? (
+            <p className="empty-message">
+              Todavia no hay clientes registrados por el bot.
+            </p>
+          ) : (
+            <div className="admin-leads-grid">
+              {leads.slice(0, 8).map((lead) => {
+                const whatsappUrl = getLeadWhatsAppUrl(lead);
+
+                return (
+                  <article key={lead._id} className={`admin-lead-card ${lead.status}`}>
+                    <div className="admin-lead-top">
+                      <strong>{lead.customerName || "Cliente sin nombre"}</strong>
+                      <span>{lead.status}</span>
+                    </div>
+                    <p>{lead.message || "Sin mensaje"}</p>
+                    {lead.product?.name && (
+                      <div className="admin-lead-product">
+                        <span>{lead.product.name}</span>
+                        <strong>RD${Number(lead.product.price || 0).toLocaleString("es-DO")}</strong>
+                      </div>
+                    )}
+                    <small>{formatDate(lead.createdAt)}</small>
+
+                    <div className="admin-lead-actions">
+                      {whatsappUrl ? (
+                        <a href={whatsappUrl} target="_blank" rel="noreferrer">
+                          WhatsApp
+                        </a>
+                      ) : (
+                        <span>Sin telefono</span>
+                      )}
+                      <button type="button" onClick={() => updateLeadStatus(lead._id, "contacted")}>
+                        Contactado
+                      </button>
+                      <button type="button" onClick={() => updateLeadStatus(lead._id, "closed")}>
+                        Cerrado
+                      </button>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+        </section>
 
         {restockProducts.length > 0 && (
           <>

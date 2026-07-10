@@ -1,5 +1,7 @@
 import express from "express";
 import Product from "../models/Product.js";
+import Lead from "../models/Lead.js";
+import { notifyOwner } from "../services/whatsappService.js";
 
 const router = express.Router();
 
@@ -60,6 +62,46 @@ const getProductUrl = (product) => {
   return `${STORE_URL}/producto/${product._id}`;
 };
 
+const buyingWords = [
+  "comprar",
+  "compra",
+  "me interesa",
+  "lo quiero",
+  "quiero ese",
+  "apartame",
+  "apartar",
+  "reservar",
+  "ordenar",
+  "pedido",
+  "disponible",
+  "confirmar",
+  "llamame",
+  "llamarme",
+  "cotizar",
+];
+
+const hasBuyingIntent = (message) => {
+  const normalized = normalizeText(message);
+  return buyingWords.some((word) => normalized.includes(normalizeText(word)));
+};
+
+const extractPhone = (message) => {
+  const match = String(message || "").match(/(?:\+?1)?[\s.-]?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/);
+  return match ? match[0].replace(/[^\d+]/g, "") : "";
+};
+
+const extractName = (message) => {
+  const match = String(message || "").match(
+    /(?:mi nombre es|me llamo|soy)\s+([a-zA-ZÃÁÉÍÓÚÜÑáéíóúüñ\s]{2,40})/i
+  );
+
+  return match ? match[1].trim().replace(/\s+/g, " ") : "";
+};
+
+const getLeadProduct = (products) => {
+  return products.find((product) => Number(product.stock || 0) > 0) || products[0] || null;
+};
+
 const getWhatsAppUrl = (product) => {
   const message = product
     ? `Hola Global-GS, estoy interesado en comprar este producto:
@@ -75,6 +117,86 @@ Quiero coordinar la compra y la entrega.`
     : "Hola Global-GS, necesito informacion sobre sus productos y servicios.";
 
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+};
+
+const buildWebLeadMessage = ({ product, phone }) => {
+  const productText = product
+    ? [
+        `Producto: ${product.name}`,
+        `Precio: RD$${formatPrice(product.price)}`,
+        `Categoria: ${product.category || "Sin categoria"}`,
+      ].join("\n")
+    : "Producto: pendiente de confirmar";
+
+  const whatsappMessage = [
+    "Hola Global-GS, quiero coordinar esta compra.",
+    "",
+    productText,
+    "",
+    "Mi nombre:",
+    phone ? `Mi WhatsApp: ${phone}` : "Mi WhatsApp:",
+  ].join("\n");
+
+  return [
+    "Listo, deje tu interes registrado para que Global-GS pueda darte seguimiento.",
+    "",
+    product
+      ? `Producto seleccionado: ${product.name} - RD$${formatPrice(product.price)}`
+      : "Dime el producto o categoria que buscas para ayudarte mejor.",
+    "",
+    phone
+      ? `Telefono recibido: ${phone}`
+      : "Para no perder tu pedido, escribe tu nombre y WhatsApp. Ejemplo: Soy Juan, mi WhatsApp es 8291234567.",
+    "",
+    `Tambien puedes abrir WhatsApp directo aqui: https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`,
+  ].join("\n");
+};
+
+const saveWebLead = async ({ message, product, status }) => {
+  const phone = extractPhone(message);
+  const customerName = extractName(message);
+
+  const lead = await Lead.create({
+    source: "web",
+    customerPhone: phone,
+    customerName,
+    message,
+    status,
+    product: product
+      ? {
+          id: product._id,
+          name: product.name,
+          price: product.price,
+          category: product.category,
+          image: product.image,
+        }
+      : undefined,
+    conversation: [
+      {
+        direction: "incoming",
+        text: message,
+      },
+    ],
+  });
+
+  notifyOwner(
+    [
+      "Nuevo cliente interesado desde el chat web Global-GS",
+      "",
+      customerName ? `Nombre: ${customerName}` : "Nombre: no indicado",
+      phone ? `WhatsApp: ${phone}` : "WhatsApp: no indicado",
+      product ? `Producto: ${product.name}` : "Producto: no identificado",
+      product ? `Precio: RD$${formatPrice(product.price)}` : "",
+      `Mensaje: ${message}`,
+      `Lead ID: ${lead._id}`,
+    ]
+      .filter(Boolean)
+      .join("\n")
+  ).catch((error) => {
+    console.error("No se pudo notificar lead web:", error.message);
+  });
+
+  return { lead, phone };
 };
 
 const buildAssistantInfoMessage = () => {
@@ -219,6 +341,8 @@ router.post("/chat", async (req, res) => {
 
     const text = String(message).trim();
     const normalizedText = normalizeText(text);
+    const phone = extractPhone(text);
+    const buyingIntent = hasBuyingIntent(text);
 
     if (
       ["hola", "buenas", "saludos", "info", "informacion"].some((word) =>
@@ -320,10 +444,39 @@ router.post("/chat", async (req, res) => {
       .lean();
 
     if (products.length === 0) {
+      if (buyingIntent || phone) {
+        const { phone: savedPhone } = await saveWebLead({
+          message: text,
+          product: null,
+          status: buyingIntent ? "ready_to_buy" : "interested",
+        });
+
+        return res.json({
+          success: true,
+          answer: buildWebLeadMessage({ product: null, phone: savedPhone }),
+          products: [],
+        });
+      }
+
       return res.json({
         success: true,
         answer: buildNoProductsMessage(),
         products: [],
+      });
+    }
+
+    if (buyingIntent || phone) {
+      const product = getLeadProduct(products);
+      const { phone: savedPhone } = await saveWebLead({
+        message: text,
+        product,
+        status: buyingIntent ? "ready_to_buy" : "interested",
+      });
+
+      return res.json({
+        success: true,
+        answer: buildWebLeadMessage({ product, phone: savedPhone }),
+        products,
       });
     }
 

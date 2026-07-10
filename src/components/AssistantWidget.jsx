@@ -6,11 +6,11 @@ const API_BASE_URL =
     : "https://global-gs-backend.onrender.com";
 
 const quickQuestions = [
+  "Quiero comprar",
+  "Dejar mi numero",
   "Ver catalogo",
   "Metodos de pago",
   "Entrega",
-  "Servicios",
-  "Redes sociales",
 ];
 
 const getLocalAnswer = (text) => {
@@ -21,6 +21,16 @@ const getLocalAnswer = (text) => {
 
   if (normalized.includes("pago") || normalized.includes("transferencia")) {
     return "Aceptamos efectivo, transferencia bancaria y coordinacion por WhatsApp segun disponibilidad y zona. Escribenos al 829-221-5896 para confirmar.";
+  }
+
+  if (
+    normalized.includes("comprar") ||
+    normalized.includes("compra") ||
+    normalized.includes("me interesa") ||
+    normalized.includes("dejar mi numero") ||
+    normalized.includes("dejar mi telefono")
+  ) {
+    return "Claro. Para no perder tu compra, escribeme el producto, tu nombre y tu WhatsApp. Ejemplo: Soy Juan, quiero una bocina, mi WhatsApp es 8291234567. Tambien puedes abrir WhatsApp directo: https://wa.me/18292215896";
   }
 
   if (
@@ -70,7 +80,7 @@ function AssistantWidget() {
   const [messages, setMessages] = useState([
     {
       from: "bot",
-      text: "👋 Hola, soy el asistente de Global-GS Store. Puedes preguntarme por productos, precios, pagos, envíos o servicios.",
+      text: "👋 Hola, soy el bot de ventas de Global-GS Store. Dime que producto buscas o escribe tu nombre y WhatsApp para darte seguimiento.",
     },
   ]);
 
@@ -165,7 +175,7 @@ function AssistantWidget() {
           <div className="assistant-header">
             <div>
               <strong>Asistente Global-GS</strong>
-              <span>Productos, precios y servicios</span>
+              <span>Ventas, productos y seguimiento</span>
             </div>
 
             <button type="button" onClick={() => setOpen(false)}>

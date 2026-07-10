@@ -7,7 +7,7 @@ const leadSchema = new mongoose.Schema(
       enum: ["whatsapp", "instagram", "facebook", "web"],
       default: "whatsapp",
     },
-    customerPhone: { type: String, required: true },
+    customerPhone: { type: String, default: "" },
     customerName: { type: String, default: "" },
     message: { type: String, default: "" },
     status: {

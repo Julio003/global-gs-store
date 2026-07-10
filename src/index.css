@@ -474,6 +474,138 @@ a {
   margin-top: 20px;
 }
 
+.admin-leads {
+  margin: 24px 0;
+  padding: 22px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 20px;
+}
+
+.admin-leads-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.admin-leads-header span {
+  color: var(--orange);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-leads-header h2 {
+  margin: 4px 0 0;
+  color: var(--navy);
+}
+
+.admin-leads-header button {
+  border: none;
+  background: var(--orange);
+  color: #fff;
+  padding: 11px 14px;
+  border-radius: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.admin-leads-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.admin-lead-card {
+  display: grid;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid #fed7aa;
+  border-radius: 16px;
+  padding: 15px;
+}
+
+.admin-lead-card.ready_to_buy {
+  border-color: #22c55e;
+  box-shadow: 0 10px 24px rgba(34, 197, 94, 0.12);
+}
+
+.admin-lead-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.admin-lead-top strong {
+  color: var(--navy);
+}
+
+.admin-lead-top span {
+  background: #fef3c7;
+  color: #92400e;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 900;
+  padding: 5px 9px;
+}
+
+.admin-lead-card p {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.45;
+}
+
+.admin-lead-product {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 10px;
+  color: var(--navy);
+  font-size: 0.9rem;
+}
+
+.admin-lead-card small {
+  color: var(--muted);
+}
+
+.admin-lead-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin-lead-actions a,
+.admin-lead-actions button,
+.admin-lead-actions span {
+  border: none;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 900;
+  padding: 9px 10px;
+}
+
+.admin-lead-actions a {
+  background: #22c55e;
+  color: #fff;
+}
+
+.admin-lead-actions button {
+  background: var(--navy);
+  color: #fff;
+  cursor: pointer;
+}
+
+.admin-lead-actions span {
+  background: #e5e7eb;
+  color: #6b7280;
+}
+
 .admin-research {
   margin: 24px 0;
   padding: 22px;
