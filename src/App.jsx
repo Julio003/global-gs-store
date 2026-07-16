@@ -13,10 +13,13 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsConditions from "./pages/TermsConditions";
 import DataDeletion from "./pages/DataDeletion";
 import AssistantWidget from "./components/AssistantWidget";
+import InstallAppPrompt from "./components/InstallAppPrompt";
+import OfflineNotice from "./components/OfflineNotice";
 
 function App() {
   return (
     <>
+      <OfflineNotice />
       <Header />
 
       <Routes>
@@ -34,6 +37,7 @@ function App() {
 
       <Footer />
       <AssistantWidget />
+      <InstallAppPrompt />
     </>
   );
 }
