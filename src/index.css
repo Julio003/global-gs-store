@@ -3052,7 +3052,7 @@ a {
 @media (max-width: 600px) {
   .install-app-prompt {
     left: 10px;
-    bottom: 10px;
+    bottom: 78px;
     grid-template-columns: minmax(0, 1fr) 36px;
     width: calc(100vw - 20px);
   }
