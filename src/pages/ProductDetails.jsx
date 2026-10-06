@@ -1,28 +1,28 @@
 ﻿import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Seo, { DEFAULT_SOCIAL_IMAGE, SITE_URL } from "../components/Seo";
+import { fetchProductCatalog } from "../services/productCatalog";
 
 function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const API_URL = "https://global-gs-backend.onrender.com";
   const whatsappNumber = "18292215896";
 
   const [product, setProduct] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [usingFallback, setUsingFallback] = useState(false);
   const [activeImage, setActiveImage] = useState("");
   const [showVideo, setShowVideo] = useState(false);
   const [touchStartX, setTouchStartX] = useState(null);
 
   useEffect(() => {
-    fetch(`${API_URL}/api/products`)
-      .then((response) => response.json())
-      .then((data) => {
-        const products = Array.isArray(data) ? data : [];
-        setProducts(products);
-        const foundProduct = products.find((item) => item._id === id || item.id === id);
+    fetchProductCatalog()
+      .then(({ products: catalogProducts, usingFallback: fallbackActive }) => {
+        setProducts(catalogProducts);
+        setUsingFallback(fallbackActive);
+        const foundProduct = catalogProducts.find((item) => item._id === id || item.id === id);
         const foundImages = foundProduct
           ? [foundProduct.image, ...(Array.isArray(foundProduct.images) ? foundProduct.images : [])].filter(Boolean)
           : [];
@@ -222,6 +222,12 @@ Quiero coordinar la compra y la entrega.`;
       />
 
       <section className="product-detail-card">
+        {usingFallback && (
+          <p className="catalog-fallback-notice product-detail-fallback">
+            Catalogo disponible en modo de respaldo. Confirma existencia por WhatsApp.
+          </p>
+        )}
+
         {categoryProducts.length > 1 && (
           <div className="product-swipe-nav" aria-label="Navegar productos de la misma categoría">
             <button type="button" onClick={() => goToProduct(previousProduct)} aria-label="Producto anterior">

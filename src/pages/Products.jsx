@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import Seo, { DEFAULT_SOCIAL_IMAGE, SITE_URL } from "../components/Seo";
+import { fetchProductCatalog } from "../services/productCatalog";
 
 function Products() {
-  const API_URL = "https://global-gs-backend.onrender.com";
   const whatsappNumber = "18292215896";
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [usingFallback, setUsingFallback] = useState(false);
   const [search, setSearch] = useState(searchParams.get("buscar") || "");
   const [category, setCategory] = useState("Todos");
 
   useEffect(() => {
-    fetch(`${API_URL}/api/products`)
-      .then((response) => response.json())
-      .then((data) => {
-        setProducts(Array.isArray(data) ? data : []);
+    fetchProductCatalog()
+      .then(({ products: catalogProducts, usingFallback: fallbackActive }) => {
+        setProducts(catalogProducts);
+        setUsingFallback(fallbackActive);
         setLoading(false);
       })
       .catch((error) => {
@@ -200,6 +201,12 @@ Quiero coordinar la compra y la entrega.`;
         <h1>Catálogo Global-GS Store</h1>
         <p>Busca productos, revisa precios y compra por WhatsApp.</p>
       </section>
+
+      {usingFallback && (
+        <p className="catalog-fallback-notice">
+          Catalogo disponible en modo de respaldo. Confirma existencia por WhatsApp.
+        </p>
+      )}
 
       <section className="catalog-toolbar">
         <input

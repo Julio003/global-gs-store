@@ -8,6 +8,7 @@ import Seo, {
   SITE_URL,
   TIKTOK_URL,
 } from "../components/Seo";
+import { fetchProductCatalog } from "../services/productCatalog";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -60,18 +61,18 @@ const slidesData = [
 ];
 
 function Home() {
-  const API_URL = "https://global-gs-backend.onrender.com";
   const whatsappNumber = "18292215896";
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [usingFallback, setUsingFallback] = useState(false);
   const [expandedProductId, setExpandedProductId] = useState(null);
 
   useEffect(() => {
-    fetch(`${API_URL}/api/products`)
-      .then((response) => response.json())
-      .then((data) => {
-        setProducts(Array.isArray(data) ? data : []);
+    fetchProductCatalog()
+      .then(({ products: catalogProducts, usingFallback: fallbackActive }) => {
+        setProducts(catalogProducts);
+        setUsingFallback(fallbackActive);
         setLoading(false);
       })
       .catch((error) => {
@@ -223,6 +224,12 @@ Quiero coordinar la compra y la entrega.`;
       </div>
 
       <section className="featured-section">
+        {usingFallback && (
+          <p className="catalog-fallback-notice">
+            Catalogo disponible en modo de respaldo. Confirma existencia por WhatsApp.
+          </p>
+        )}
+
         <div className="featured-header">
           <div>
             <span className="featured-label">Productos recomendados</span>
