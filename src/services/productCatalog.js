@@ -1,5 +1,6 @@
 const API_URL = "https://global-gs-backend.onrender.com";
 const FALLBACK_URL = "/products-fallback.json";
+const API_TIMEOUT_MS = 4000;
 
 const readProducts = async (response, sourceName) => {
   if (!response.ok) {
@@ -16,8 +17,13 @@ const readProducts = async (response, sourceName) => {
 };
 
 export const fetchProductCatalog = async () => {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+
   try {
-    const response = await fetch(`${API_URL}/api/products`);
+    const response = await fetch(`${API_URL}/api/products`, {
+      signal: controller.signal,
+    });
     const products = await readProducts(response, "El servidor");
 
     return { products, usingFallback: false };
@@ -28,5 +34,7 @@ export const fetchProductCatalog = async () => {
     const products = await readProducts(fallbackResponse, "El respaldo");
 
     return { products, usingFallback: true };
+  } finally {
+    clearTimeout(timeout);
   }
 };

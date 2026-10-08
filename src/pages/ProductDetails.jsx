@@ -2,6 +2,11 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Seo, { DEFAULT_SOCIAL_IMAGE, SITE_URL } from "../components/Seo";
 import { fetchProductCatalog } from "../services/productCatalog";
+import {
+  getProductImageSrcSet,
+  getProductImageUrl,
+  useProductImageFallback,
+} from "../utils/productImages";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -302,11 +307,12 @@ Quiero coordinar la compra y la entrega.`;
               <div className="product-main-media">
                 <img
                   key={currentImage}
-                  src={currentImage}
+                  src={getProductImageUrl(currentImage, 1200)}
+                  srcSet={getProductImageSrcSet(currentImage, [640, 960, 1200])}
+                  sizes="(max-width: 760px) 100vw, 55vw"
                   alt={product.name || "Producto Global-GS"}
-                  onError={(event) => {
-                    event.currentTarget.src = "/og-image.jpg";
-                  }}
+                  decoding="async"
+                  onError={useProductImageFallback}
                 />
               </div>
 
@@ -320,7 +326,13 @@ Quiero coordinar la compra y la entrega.`;
                       onClick={() => setActiveImage(imageUrl)}
                       aria-label={`Ver imagen ${index + 1}`}
                     >
-                      <img src={imageUrl} alt={`${product.name} ${index + 1}`} />
+                      <img
+                        src={getProductImageUrl(imageUrl, 240)}
+                        alt={`${product.name} ${index + 1}`}
+                        loading="lazy"
+                        decoding="async"
+                        onError={useProductImageFallback}
+                      />
                     </button>
                   ))}
 
@@ -407,7 +419,13 @@ Quiero coordinar la compra y la entrega.`;
                       onClick={() => goToProduct(item)}
                       disabled={isCurrent}
                     >
-                      <img src={item.image || "/og-image.jpg"} alt={item.name || "Producto Global-GS"} />
+                      <img
+                        src={getProductImageUrl(item.image, 320)}
+                        alt={item.name || "Producto Global-GS"}
+                        loading="lazy"
+                        decoding="async"
+                        onError={useProductImageFallback}
+                      />
                       <span>{item.name}</span>
                     </button>
                   );

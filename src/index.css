@@ -188,14 +188,18 @@ a {
 }
 
 .product-card-img-link {
-  display: block;
+  display: grid;
+  place-items: center;
   width: 100%;
+  background: #ffffff;
+  overflow: hidden;
 }
 
 .product-card img {
   width: 100%;
   height: 180px;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 8px;
   display: block;
 }
 
@@ -1297,14 +1301,18 @@ a {
 }
 
 .featured-img {
-  display: block;
+  display: grid;
+  place-items: center;
   width: 100%;
+  background: #ffffff;
+  overflow: hidden;
 }
 
 .featured-img img {
   width: 100%;
   height: 150px !important;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 8px;
   display: block;
 }
 
@@ -2021,7 +2029,8 @@ a {
   width: 100%;
   height: 100%;
   min-height: 210px;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 10px;
   display: block;
 }
 
@@ -2140,7 +2149,7 @@ a {
 .assistant-related img {
   width: 58px;
   height: 58px;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 10px;
   grid-row: span 2;
 }

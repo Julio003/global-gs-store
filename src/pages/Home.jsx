@@ -9,6 +9,11 @@ import Seo, {
   TIKTOK_URL,
 } from "../components/Seo";
 import { fetchProductCatalog } from "../services/productCatalog";
+import {
+  getProductImageSrcSet,
+  getProductImageUrl,
+  useProductImageFallback,
+} from "../utils/productImages";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -257,8 +262,13 @@ Quiero coordinar la compra y la entrega.`;
                 <article className="featured-card" key={productId}>
                   <Link to={`/producto/${productId}`} className="featured-img">
                     <img
-                      src={product.image || "/og-image.jpg"}
+                      src={getProductImageUrl(product.image, 640)}
+                      srcSet={getProductImageSrcSet(product.image, [320, 640])}
+                      sizes="(max-width: 480px) 100vw, (max-width: 760px) 50vw, 25vw"
                       alt={product.name || "Producto Global-GS"}
+                      loading="lazy"
+                      decoding="async"
+                      onError={useProductImageFallback}
                     />
                   </Link>
 

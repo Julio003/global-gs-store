@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import Seo, { DEFAULT_SOCIAL_IMAGE, SITE_URL } from "../components/Seo";
 import { fetchProductCatalog } from "../services/productCatalog";
+import {
+  getProductImageSrcSet,
+  getProductImageUrl,
+  useProductImageFallback,
+} from "../utils/productImages";
 
 function Products() {
   const whatsappNumber = "18292215896";
@@ -251,8 +256,12 @@ Quiero coordinar la compra y la entrega.`;
                 className="assistant-image"
               >
                 <img
-                  src={assistantProduct.image || "/og-image.jpg"}
+                  src={getProductImageUrl(assistantProduct.image, 720)}
+                  srcSet={getProductImageSrcSet(assistantProduct.image, [360, 720])}
+                  sizes="(max-width: 760px) 100vw, 360px"
                   alt={assistantProduct.name || "Producto Global-GS"}
+                  decoding="async"
+                  onError={useProductImageFallback}
                 />
               </Link>
 
@@ -306,8 +315,11 @@ Quiero coordinar la compra y la entrega.`;
                       to={`/producto/${getProductId(product)}`}
                     >
                       <img
-                        src={product.image || "/og-image.jpg"}
+                        src={getProductImageUrl(product.image, 240)}
                         alt={product.name || "Producto Global-GS"}
+                        loading="lazy"
+                        decoding="async"
+                        onError={useProductImageFallback}
                       />
                       <span>{product.name}</span>
                       <strong>RD${formatPrice(product.price)}</strong>
@@ -334,8 +346,13 @@ Quiero coordinar la compra y la entrega.`;
             <article className="product-card" key={productId}>
               <Link to={`/producto/${productId}`} className="product-card-img-link">
                 <img
-                  src={product.image || "/og-image.jpg"}
+                  src={getProductImageUrl(product.image, 640)}
+                  srcSet={getProductImageSrcSet(product.image, [320, 640])}
+                  sizes="(max-width: 380px) 100vw, (max-width: 760px) 50vw, 25vw"
                   alt={product.name || "Producto Global-GS"}
+                  loading="lazy"
+                  decoding="async"
+                  onError={useProductImageFallback}
                 />
               </Link>
 
