@@ -1,6 +1,9 @@
 export const PRODUCT_IMAGE_FALLBACK = "/og-image.jpg";
 
 const CLOUDINARY_UPLOAD_SEGMENT = "/image/upload/";
+const CLOUDINARY_SOURCE =
+  "https://res.cloudinary.com/dvjjqokdy/image/upload/";
+const CATALOG_IMAGE_PROXY = "/catalog-image/";
 
 export const getProductImageUrl = (url, width = 640) => {
   if (!url) return PRODUCT_IMAGE_FALLBACK;
@@ -8,27 +11,14 @@ export const getProductImageUrl = (url, width = 640) => {
   const safeWidth = Math.max(160, Math.min(Number(width) || 640, 1600));
 
   if (
-    url.includes("res.cloudinary.com/") &&
+    url.startsWith(CLOUDINARY_SOURCE) &&
     url.includes(CLOUDINARY_UPLOAD_SEGMENT)
   ) {
-    return url.replace(
-      CLOUDINARY_UPLOAD_SEGMENT,
-      `${CLOUDINARY_UPLOAD_SEGMENT}f_auto,q_auto:eco,c_limit,w_${safeWidth}/`,
-    );
+    const imagePath = url.slice(CLOUDINARY_SOURCE.length);
+    return `${CATALOG_IMAGE_PROXY}f_auto,q_auto:eco,c_limit,w_${safeWidth}/${imagePath}`;
   }
 
   return url;
-};
-
-export const getProductImageSrcSet = (url, widths = [320, 640]) => {
-  if (!url || !url.includes("res.cloudinary.com/")) return undefined;
-
-  return widths
-    .map((width) => {
-      const srcSetUrl = getProductImageUrl(url, width).replaceAll(",", "%2C");
-      return `${srcSetUrl} ${width}w`;
-    })
-    .join(", ");
 };
 
 export const useProductImageFallback = (event) => {

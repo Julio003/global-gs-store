@@ -4,6 +4,17 @@ import { VitePWA } from "vite-plugin-pwa";
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: {
+    proxy: {
+      "/catalog-image": {
+        target: "https://res.cloudinary.com",
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) =>
+          path.replace("/catalog-image", "/dvjjqokdy/image/upload"),
+      },
+    },
+  },
   plugins: [
     react(),
     VitePWA({

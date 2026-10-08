@@ -10,7 +10,6 @@ import Seo, {
 } from "../components/Seo";
 import { fetchProductCatalog } from "../services/productCatalog";
 import {
-  getProductImageSrcSet,
   getProductImageUrl,
   useProductImageFallback,
 } from "../utils/productImages";
@@ -263,8 +262,6 @@ Quiero coordinar la compra y la entrega.`;
                   <Link to={`/producto/${productId}`} className="featured-img">
                     <img
                       src={getProductImageUrl(product.image, 640)}
-                      srcSet={getProductImageSrcSet(product.image, [320, 640])}
-                      sizes="(max-width: 480px) 100vw, (max-width: 760px) 50vw, 25vw"
                       alt={product.name || "Producto Global-GS"}
                       loading="lazy"
                       decoding="async"

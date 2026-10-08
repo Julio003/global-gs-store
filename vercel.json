@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/catalog-image/:path*",
+      "destination": "https://res.cloudinary.com/dvjjqokdy/image/upload/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }

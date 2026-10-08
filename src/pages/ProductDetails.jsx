@@ -3,7 +3,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Seo, { DEFAULT_SOCIAL_IMAGE, SITE_URL } from "../components/Seo";
 import { fetchProductCatalog } from "../services/productCatalog";
 import {
-  getProductImageSrcSet,
   getProductImageUrl,
   useProductImageFallback,
 } from "../utils/productImages";
@@ -308,8 +307,6 @@ Quiero coordinar la compra y la entrega.`;
                 <img
                   key={currentImage}
                   src={getProductImageUrl(currentImage, 1200)}
-                  srcSet={getProductImageSrcSet(currentImage, [640, 960, 1200])}
-                  sizes="(max-width: 760px) 100vw, 55vw"
                   alt={product.name || "Producto Global-GS"}
                   decoding="async"
                   onError={useProductImageFallback}
