@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import Seo, { DEFAULT_SOCIAL_IMAGE, SITE_URL } from "../components/Seo";
 import { fetchProductCatalog } from "../services/productCatalog";
+import ProductVideos from "../components/ProductVideos";
 import {
   getProductImageUrl,
   useProductImageFallback,
@@ -234,6 +235,8 @@ Quiero coordinar la compra y la entrega.`;
           ))}
         </div>
       </section>
+
+      <ProductVideos products={filteredProducts} usingFallback={usingFallback} onBuy={handleWhatsApp} />
 
       {search.trim() && (
         <section className="search-assistant">
